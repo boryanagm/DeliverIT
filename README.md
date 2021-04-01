@@ -130,9 +130,9 @@ Some things you need to be able to explain during your project defense:
 
 ## Appendix 
 - [**Guidelines for designing good REST API**](https://florimond.dev/blog/articles/2018/08/restful-api-design-13-best-practices-to-make-your-users-happy/)
-- [*Guidelines for URL encoding*](http://www.talisman.org/~erlkonig/misc/lunatech%5Ewhat-every-webdev-must-know-about-url-encoding/) 
-- [*Awlays prefer constructor injection*](https://www.vojtechruzicka.com/field-dependency-injection-considered-harmful/) 
-- [*Git commits - an effectife style guide*](https://dev.to/pavlosisaris/git-commits-an-effective-style-guide-2kkn)   
-- [*How to Write a Git Commit Message*](https://chris.beams.io/posts/git-commit/) 
+- [**Guidelines for URL encoding**](http://www.talisman.org/~erlkonig/misc/lunatech%5Ewhat-every-webdev-must-know-about-url-encoding/) 
+- [**Awlays prefer constructor injection**](https://www.vojtechruzicka.com/field-dependency-injection-considered-harmful/) 
+- [**Git commits - an effectife style guide**](https://dev.to/pavlosisaris/git-commits-an-effective-style-guide-2kkn)   
+- [**How to Write a Git Commit Message**](https://chris.beams.io/posts/git-commit/) 
 
 
