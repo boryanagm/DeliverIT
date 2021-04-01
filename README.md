@@ -7,8 +7,11 @@
 
 ## Overview
 Your task is to develop DeliverIT - a web application that serves the needs of a freight forwarding company. 
+<br>
 DeliverIT's customers can place orders on international shopping sites (like Amazon.de or eBay.com) and have their parcels delivered to the company's warehouses. 
+<br>
 DeliverIT has two types of users - customers and employees. The customers can see how many parcels they have on the way. The employees have a bit more capabilities. They can add new parcels to the system, modify existing ones, check how many parcels has a given warehouse received and more. 
+<br>
 Here is an example use case – you’ve order something online from a foreign shopping site and you wish to leave handling, customs fees, and transportation to somebody else. Here is where DeliverIT comes in. Their main warehouse is in Bulgaria, for example, and they have other warehouses in different countries, like Germany, Spain, USA, etc. When placing your order, you address it to a DeliverIT warehouse. When the package arrives, the employees see who it is for and create a parcel in the system. If your parcel appears on the site, then it has arrived at the warehouse successfully and the next step is for it to depart to the main warehouse. 
 <br><br>
 
@@ -126,10 +129,10 @@ Some things you need to be able to explain during your project defense:
 <br><br>
 
 ## Appendix 
-- Guidelines for designing good REST API 
-- Guidelines for URL encoding 
-- Always prefer constructor injection 
-- Git commits - an effective style guide  
-- How to Write a Git Commit Message 
+- [*Guidelines for designing good REST API*](https://florimond.dev/blog/articles/2018/08/restful-api-design-13-best-practices-to-make-your-users-happy/)
+- [*Guidelines for URL encoding*](http://www.talisman.org/~erlkonig/misc/lunatech%5Ewhat-every-webdev-must-know-about-url-encoding/) 
+- [*Awlays prefer constructor injection*](https://www.vojtechruzicka.com/field-dependency-injection-considered-harmful/) 
+- [*Git commints - an effectife style guide*](https://dev.to/pavlosisaris/git-commits-an-effective-style-guide-2kkn)   
+- [*How to Write a Git Commit Message*](https://chris.beams.io/posts/git-commit/) 
 
 
