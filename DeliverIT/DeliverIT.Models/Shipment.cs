@@ -1,8 +1,8 @@
-﻿using Deliverit.Models.Abstract;
-using DeliverIT.Models.Enums;
+﻿using Deliverit.Models;
+using Deliverit.Models.Abstract;
 using System;
 using System.Collections.Generic;
-using System.Text;
+
 
 namespace DeliverIT.Models
 {
@@ -11,6 +11,8 @@ namespace DeliverIT.Models
         public Guid Id { get; set; }
         public DateTime DepartureDate { get; set; }
         public DateTime ArrivalDate { get; set; }
+
+        public Guid StatusId { get; set; }
         public Status Status { get; set; }
 
         public Guid WarehouseId { get; set; }
