@@ -10,8 +10,8 @@ namespace DeliverIT.Models.Abstract
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public Guid AddressId { get; set; }
 
+        public Guid AddressId { get; set; }
         public Address Address { get; set; }
 
         public ICollection<Parcel> Parcels { get; set; }

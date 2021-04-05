@@ -10,6 +10,10 @@ namespace Deliverit.Database.DataConfigurations
         {
             builder.HasKey(c => c.Id);
 
+            builder.Property(c => c.Name)
+                   .HasMaxLength(35)
+                   .IsRequired();
+
             // TODO: Should I describe the relation with Cities?
         }
     }

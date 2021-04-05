@@ -5,23 +5,23 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Deliverit.Database.DataConfigurations
 {
-    public class CustomerConfig : IEntityTypeConfiguration<Customer>
+    public class EmployeeConfig : IEntityTypeConfiguration<Employee>
     {
-        public void Configure(EntityTypeBuilder<Customer> builder)
+        public void Configure(EntityTypeBuilder<Employee> builder)
         {
-            builder.HasKey(c => c.Id);
+            builder.HasKey(e => e.Id);
 
-            builder.Property(c => c.FirstName)
+            builder.Property(e => e.FirstName)
                    .HasMaxLength(35)
                    .IsRequired();
 
-            builder.Property(c => c.LastName)
+            builder.Property(e => e.LastName)
                    .HasMaxLength(35)
                    .IsRequired();
 
-            builder.HasOne(c => c.Address)
-                   .WithMany(a => a.Customers)
-                   .HasForeignKey(c => c.AddressId);
+            builder.HasOne(e => e.Address)
+                   .WithMany(a => a.Employees)
+                   .HasForeignKey(e => e.AddressId);
 
             // TODO: Should I describe the relation with Parcels?
         }
