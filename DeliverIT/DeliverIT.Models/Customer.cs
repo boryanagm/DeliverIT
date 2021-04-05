@@ -19,7 +19,7 @@ namespace DeliverIT.Models
         public string LastName { get; set; }
 
 
-        [ForeignKey("Address")]
+     //   [ForeignKey("Address")]
         public Guid AddressId { get; set; }
         public Address Address { get; set; }
 
