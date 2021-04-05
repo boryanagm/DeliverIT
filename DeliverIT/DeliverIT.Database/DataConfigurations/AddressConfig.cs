@@ -11,14 +11,21 @@ namespace Deliverit.Database.DataConfigurations
     {
         public void Configure(EntityTypeBuilder<Address> builder)
         {
-            builder.HasKey(b => b.Id);
+            builder.HasKey(a => a.Id);
 
-            builder.Property(b => b.StreetName)
+            builder.Property(a => a.StreetName)
                    .HasMaxLength(50)
                    .IsRequired();
 
-            // TODO: Not completed
-                   
+            builder.HasOne(a => a.City)
+                   .WithMany(c => c.Addresses)
+                   .HasForeignKey(c => c.Id);
+
+            builder.HasOne(a => a.Warehouse)
+                   .WithOne(w => w.Address)
+                   .HasForeignKey<Warehouse>(a => a.AddressId); // OR HasForeignKey<Address>(a => a.WarehouseId);??
+
+            // TODO: Should I describe the relation with Customers and Employees?
         }
     }
 }
