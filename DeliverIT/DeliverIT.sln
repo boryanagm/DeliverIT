@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliverIT.Models", "DeliverIT.Models\DeliverIT.Models.csproj", "{C0324640-0C0F-4198-BAC9-78D0F1E82DA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deliverit.Models", "DeliverIT.Models\Deliverit.Models.csproj", "{C0324640-0C0F-4198-BAC9-78D0F1E82DA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deliverit.Database", "DeliverIT.Database\Deliverit.Database.csproj", "{B0E0781C-4BA6-4A26-9F20-1EA8255EDC5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{C0324640-0C0F-4198-BAC9-78D0F1E82DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0324640-0C0F-4198-BAC9-78D0F1E82DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0324640-0C0F-4198-BAC9-78D0F1E82DA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0E0781C-4BA6-4A26-9F20-1EA8255EDC5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0E0781C-4BA6-4A26-9F20-1EA8255EDC5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0E0781C-4BA6-4A26-9F20-1EA8255EDC5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0E0781C-4BA6-4A26-9F20-1EA8255EDC5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
