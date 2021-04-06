@@ -8,9 +8,6 @@ namespace DeliverIT.Models
 {
     public class Warehouse : Entity
     {
-        [Key]
-        public Guid Id { get; set; }
-
         [ForeignKey("Address")]
         public Guid AddressId { get; set; }
         public Address Address { get; set; }

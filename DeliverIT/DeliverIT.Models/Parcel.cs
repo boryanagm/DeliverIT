@@ -8,9 +8,6 @@ namespace DeliverIT.Models
 {
     public class Parcel : Entity
     {
-        [Key]
-        public Guid Id { get; set; }
-
         [Range(1, 100, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         [Required]
         public int Weight { get; set; }

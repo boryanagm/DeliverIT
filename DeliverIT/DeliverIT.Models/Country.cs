@@ -7,8 +7,6 @@ namespace Deliverit.Models
 {
     public class Country : Entity
     {
-        [Key]
-        public Guid Id { get; set; }
 
         [StringLength(55, MinimumLength = 4, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         [Required]

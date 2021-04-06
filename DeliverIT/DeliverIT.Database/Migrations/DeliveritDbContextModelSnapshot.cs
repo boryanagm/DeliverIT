@@ -61,7 +61,7 @@ namespace Deliverit.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AddressId")
+                    b.Property<Guid>("AddressId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FirstName")
@@ -330,7 +330,9 @@ namespace Deliverit.Database.Migrations
                 {
                     b.HasOne("DeliverIT.Models.Address", "Address")
                         .WithMany("Customers")
-                        .HasForeignKey("AddressId");
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DeliverIT.Models.Employee", b =>

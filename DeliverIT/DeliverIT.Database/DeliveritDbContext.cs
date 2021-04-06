@@ -33,7 +33,7 @@ namespace DeliverIT.Database
             // base.OnConfiguring(optionsBuilder);
             if (!optionsBuilder.IsConfigured)
             {
-                base.OnConfiguring(optionsBuilder);
+                base.OnConfiguring(optionsBuilder); // Is this necessary?
                 optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS; Database=DeliveritDatabase; Trusted_Connection=True");
             }
         }
@@ -55,6 +55,15 @@ namespace DeliverIT.Database
                        .WithMany(w => w.Parcels)
                        .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Address>()
+                        .HasMany(a => a.Customers)
+                        .WithOne(c => c.Address)
+                        .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Customer>()
+                        .HasOne(c => c.Address)
+                        .WithMany(a => a.Customers)
+                        .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

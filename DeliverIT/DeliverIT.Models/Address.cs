@@ -9,8 +9,6 @@ namespace DeliverIT.Models
 {
     public class Address : Entity
     {
-        [Key]
-        public Guid Id { get; set; }
 
         [StringLength(100, MinimumLength = 1, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         [Required]

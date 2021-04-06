@@ -9,9 +9,6 @@ namespace DeliverIT.Models
 {
     public class Shipment : Entity
     {
-        [Key]
-        public Guid Id { get; set; }
-
         [DataType(DataType.Date)]
         public DateTime DepartureDate { get; set; }
 

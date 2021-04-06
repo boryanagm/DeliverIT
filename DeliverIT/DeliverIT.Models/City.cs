@@ -9,8 +9,6 @@ namespace Deliverit.Models
 {
     public class City : Entity
     {
-        [Key]
-        public Guid Id { get; set; }
         public string Name { get; set; }
 
         [ForeignKey("Country")]

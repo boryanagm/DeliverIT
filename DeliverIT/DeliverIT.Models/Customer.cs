@@ -1,15 +1,13 @@
-﻿using System;
+﻿using Deliverit.Models.Abstract;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DeliverIT.Models
 {
-    public class Customer
+    public class Customer : Entity
     {
-        [Key]
-        public Guid Id { get; set; }
-
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         [Required]
         public string FirstName { get; set; }
