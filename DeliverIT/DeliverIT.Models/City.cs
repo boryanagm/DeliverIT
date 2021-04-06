@@ -9,6 +9,8 @@ namespace Deliverit.Models
 {
     public class City : Entity
     {
+        [StringLength(55, MinimumLength = 2, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
+        [Required]
         public string Name { get; set; }
 
         [ForeignKey("Country")]

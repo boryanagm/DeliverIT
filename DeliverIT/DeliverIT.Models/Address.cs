@@ -14,11 +14,11 @@ namespace DeliverIT.Models
         [Required]
         public string StreetName { get; set; }
 
-       // [ForeignKey("City")]
+        [ForeignKey("City")]
         public Guid CityId { get; set; }
         public City City { get; set; }
 
-      //  [ForeignKey("Warehouse")]
+       [ForeignKey("Warehouse")]
         public Guid WarehouseId { get; set; }
         public Warehouse Warehouse { get; set; }
 

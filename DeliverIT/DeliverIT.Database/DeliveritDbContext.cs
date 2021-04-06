@@ -30,17 +30,15 @@ namespace DeliverIT.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // base.OnConfiguring(optionsBuilder);
             if (!optionsBuilder.IsConfigured)
             {
-                base.OnConfiguring(optionsBuilder); // Is this necessary?
+                base.OnConfiguring(optionsBuilder); 
                 optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS; Database=DeliveritDatabase; Trusted_Connection=True");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // We can set relations here
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
@@ -55,6 +53,7 @@ namespace DeliverIT.Database
                        .WithMany(w => w.Parcels)
                        .OnDelete(DeleteBehavior.Restrict);
 
+
             modelBuilder.Entity<Address>()
                         .HasMany(a => a.Customers)
                         .WithOne(c => c.Address)
@@ -63,6 +62,28 @@ namespace DeliverIT.Database
             modelBuilder.Entity<Customer>()
                         .HasOne(c => c.Address)
                         .WithMany(a => a.Customers)
+                        .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<Parcel>()
+                        .HasOne(p => p.Shipment)
+                        .WithMany(s => s.Parcels)
+                        .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Shipment>()
+                        .HasMany(s => s.Parcels)
+                        .WithOne(p => p.Shipment)
+                        .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<Warehouse>()
+                        .HasOne(w => w.Address)
+                        .WithOne(a => a.Warehouse)
+                        .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Address>()
+                        .HasOne(a => a.Warehouse)
+                        .WithOne(w => w.Address)
                         .OnDelete(DeleteBehavior.Restrict);
         }
     }

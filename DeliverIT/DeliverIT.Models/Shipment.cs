@@ -12,7 +12,7 @@ namespace DeliverIT.Models
         [DataType(DataType.Date)]
         public DateTime DepartureDate { get; set; }
 
-        [DataType(DataType.Date)] // TODO: Should be past DepartureDate
+        [DataType(DataType.Date)] 
         public DateTime ArrivalDate { get; set; }
 
 
