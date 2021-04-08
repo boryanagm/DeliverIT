@@ -1,4 +1,5 @@
-﻿using Deliverit.Models;
+﻿using Deliverit.Database.Seed;
+using Deliverit.Models;
 using DeliverIT.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -42,16 +43,9 @@ namespace DeliverIT.Database
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<City>().HasData(new List<City>()
-            {
-                new City()
-                {
-                    Id = new Guid(),
-                    Name = "Barcelona",
-                }
-            });
-
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.Seed();
+           
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); // Reflection
 
             modelBuilder.Entity<Warehouse>()
                         .HasMany(w => w.Parcels)
