@@ -18,7 +18,7 @@ namespace Deliverit.Services
 
         public City Get(Guid id)
         {
-            var city = context.Cities
+            var city = this.context.Cities
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
 
@@ -27,7 +27,9 @@ namespace Deliverit.Services
 
         public IEnumerable<City> GetAll()
         {
-            throw new NotImplementedException();
+            var cities = this.context.Cities;
+
+            return cities;
         }
     }
 }

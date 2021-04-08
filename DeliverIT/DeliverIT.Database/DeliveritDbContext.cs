@@ -48,7 +48,6 @@ namespace DeliverIT.Database
                 {
                     Id = new Guid(),
                     Name = "Barcelona",
-
                 }
             });
 
