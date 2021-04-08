@@ -2,6 +2,7 @@
 using DeliverIT.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace DeliverIT.Database
@@ -32,7 +33,7 @@ namespace DeliverIT.Database
         {
             if (!optionsBuilder.IsConfigured)
             {
-                base.OnConfiguring(optionsBuilder); 
+                base.OnConfiguring(optionsBuilder);
                 optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS; Database=DeliveritDatabase; Trusted_Connection=True");
             }
         }
@@ -40,6 +41,16 @@ namespace DeliverIT.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<City>().HasData(new List<City>()
+            {
+                new City()
+                {
+                    Id = new Guid(),
+                    Name = "Barcelona",
+
+                }
+            });
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 

@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\" />
+    <ProjectReference Include="..\DeliverIT.Database\Deliverit.Database.csproj" />
+    <ProjectReference Include="..\DeliverIT.Models\Deliverit.Models.csproj" />
   </ItemGroup>
 
 </Project>
