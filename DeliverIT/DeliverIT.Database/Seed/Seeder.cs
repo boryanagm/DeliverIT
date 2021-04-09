@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Deliverit.Database.Seed
 {
@@ -17,6 +16,20 @@ namespace Deliverit.Database.Seed
                     Id = Guid.Parse("e99abf10-63e9-4212-9053-87cb1d80763e"),
                     Name = "Barcelona",
                     CountryId = Guid.Parse("2a84fe90-6605-4052-8a49-e7251af05754")
+                },
+
+                new City()
+                {
+                    Id = Guid.Parse("e422b2de-f54d-4a4e-9259-0f3f4033f93d"),
+                    Name = "Berlin",
+                    CountryId = Guid.Parse("afbcad66-1a0a-49f2-9e9c-2c61ded8ae08")
+                },
+
+                new City()
+                { 
+                   Id = Guid.Parse("7fdbb1a0-9f76-4b63-aab4-901c61591336"),
+                   Name = "Paris",
+                   CountryId = Guid.Parse("72ec653b-aeb1-42fc-bcd1-153f005b1cd4")
                 }
             };
             modelBuilder.Entity<City>().HasData(cities);
@@ -27,6 +40,18 @@ namespace Deliverit.Database.Seed
                 {
                    Id = Guid.Parse("2a84fe90-6605-4052-8a49-e7251af05754"),
                    Name = "Spain"
+                },
+
+                new Country()
+                {
+                   Id = Guid.Parse("afbcad66-1a0a-49f2-9e9c-2c61ded8ae08"),
+                   Name = "Germany"
+                },
+
+                new Country()
+                { 
+                   Id = Guid.Parse("72ec653b-aeb1-42fc-bcd1-153f005b1cd4"),
+                   Name = "France"
                 }
             };
             modelBuilder.Entity<Country>().HasData(countries);
