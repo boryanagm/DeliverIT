@@ -47,48 +47,48 @@ namespace DeliverIT.Database
            
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); // Reflection
 
-            modelBuilder.Entity<Warehouse>()
-                        .HasMany(w => w.Parcels)
-                        .WithOne(p => p.Warehouse)
-                        .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Warehouse>()
+            //            .HasMany(w => w.Parcels)
+            //            .WithOne(p => p.Warehouse)
+            //            .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Parcel>()
-                       .HasOne(p => p.Warehouse)
-                       .WithMany(w => w.Parcels)
-                       .OnDelete(DeleteBehavior.Restrict);
-
-
-            modelBuilder.Entity<Address>()
-                        .HasMany(a => a.Customers)
-                        .WithOne(c => c.Address)
-                        .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Customer>()
-                        .HasOne(c => c.Address)
-                        .WithMany(a => a.Customers)
-                        .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Parcel>()
+            //           .HasOne(p => p.Warehouse)
+            //           .WithMany(w => w.Parcels)
+            //           .OnDelete(DeleteBehavior.Restrict);
 
 
-            modelBuilder.Entity<Parcel>()
-                        .HasOne(p => p.Shipment)
-                        .WithMany(s => s.Parcels)
-                        .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Address>()
+            //            .HasMany(a => a.Customers)
+            //            .WithOne(c => c.Address)
+            //            .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Shipment>()
-                        .HasMany(s => s.Parcels)
-                        .WithOne(p => p.Shipment)
-                        .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Customer>()
+            //            .HasOne(c => c.Address)
+            //            .WithMany(a => a.Customers)
+            //            .OnDelete(DeleteBehavior.Restrict);
 
 
-            modelBuilder.Entity<Warehouse>()
-                        .HasOne(w => w.Address)
-                        .WithOne(a => a.Warehouse)
-                        .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Parcel>()
+            //            .HasOne(p => p.Shipment)
+            //            .WithMany(s => s.Parcels)
+            //            .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Address>()
-                        .HasOne(a => a.Warehouse)
-                        .WithOne(w => w.Address)
-                        .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Shipment>()
+            //            .HasMany(s => s.Parcels)
+            //            .WithOne(p => p.Shipment)
+            //            .OnDelete(DeleteBehavior.Restrict);
+
+
+            //modelBuilder.Entity<Warehouse>()
+            //            .HasOne(w => w.Address)
+            //            .WithOne(a => a.Warehouse)
+            //            .OnDelete(DeleteBehavior.Restrict);
+
+            //modelBuilder.Entity<Address>()
+            //            .HasOne(a => a.Warehouse)
+            //            .WithOne(w => w.Address)
+            //            .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
