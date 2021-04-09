@@ -1,7 +1,7 @@
-﻿using Deliverit.Models;
+﻿using Deliverit.Database.Seed;
+using Deliverit.Models;
 using DeliverIT.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Reflection;
 
 namespace DeliverIT.Database
@@ -32,7 +32,7 @@ namespace DeliverIT.Database
         {
             if (!optionsBuilder.IsConfigured)
             {
-                base.OnConfiguring(optionsBuilder); 
+                base.OnConfiguring(optionsBuilder);
                 optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS; Database=DeliveritDatabase; Trusted_Connection=True");
             }
         }
@@ -40,10 +40,18 @@ namespace DeliverIT.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Seed();
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); // Reflection
+        }
+    }
 
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            modelBuilder.Entity<Warehouse>()
+
+
+    /*
+     Just in case something goes wrong and we need to use the Cascade deletion restriction logic here:
+
+     modelBuilder.Entity<Warehouse>()
                         .HasMany(w => w.Parcels)
                         .WithOne(p => p.Warehouse)
                         .OnDelete(DeleteBehavior.Restrict);
@@ -85,6 +93,5 @@ namespace DeliverIT.Database
                         .HasOne(a => a.Warehouse)
                         .WithOne(w => w.Address)
                         .OnDelete(DeleteBehavior.Restrict);
-        }
-    }
+     */
 }
