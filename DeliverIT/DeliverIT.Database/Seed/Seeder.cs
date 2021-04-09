@@ -14,7 +14,7 @@ namespace Deliverit.Database.Seed
             {
                 new City()
                 {
-                    Id = new Guid(),
+                    Id = Guid.Parse("e99abf10-63e9-4212-9053-87cb1d80763e"),
                     Name = "Barcelona",
                     CountryId = Guid.Parse("2a84fe90-6605-4052-8a49-e7251af05754")
                 }
