@@ -18,7 +18,6 @@ namespace DeliverIT.Models
         public Guid CityId { get; set; }
         public City City { get; set; }
 
-       [ForeignKey("Warehouse")]
         public Guid WarehouseId { get; set; }
         public Warehouse Warehouse { get; set; }
 
