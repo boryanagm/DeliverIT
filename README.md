@@ -1,4 +1,4 @@
-<img src="https://i.ibb.co/YykdR9c/t121.png)" alt="logo" width="300px" style="margin-top: 40px;"/>
+<img src="https://i.ibb.co/YykdR9c/t121.png)" alt="logo" width="750px" style="margin-top: 40px;"/>
 
 # Teamwork Assignment <br><br> Freight Forwarding Management System
 
