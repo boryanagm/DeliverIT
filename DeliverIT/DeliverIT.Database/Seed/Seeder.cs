@@ -30,6 +30,13 @@ namespace Deliverit.Database.Seed
                    Id = Guid.Parse("7fdbb1a0-9f76-4b63-aab4-901c61591336"),
                    Name = "Paris",
                    CountryId = Guid.Parse("72ec653b-aeb1-42fc-bcd1-153f005b1cd4")
+                },
+
+                new City()
+                { 
+                   Id = Guid.Parse("8bf95d78-e5ac-495d-ab67-14b60f644b70"),
+                   Name = "Vilnius",
+                   CountryId = Guid.Parse("c4b3bb07-585f-412b-9f5f-f423928015d4")
                 }
             };
             modelBuilder.Entity<City>().HasData(cities);
@@ -52,6 +59,12 @@ namespace Deliverit.Database.Seed
                 { 
                    Id = Guid.Parse("72ec653b-aeb1-42fc-bcd1-153f005b1cd4"),
                    Name = "France"
+                },
+
+                new Country ()
+                { 
+                   Id = Guid.Parse("c4b3bb07-585f-412b-9f5f-f423928015d4"),
+                   Name = "Lithuania"
                 }
             };
             modelBuilder.Entity<Country>().HasData(countries);
