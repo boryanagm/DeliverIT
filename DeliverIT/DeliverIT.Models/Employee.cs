@@ -16,6 +16,9 @@ namespace DeliverIT.Models
         [Required]
         public string LastName { get; set; }
 
+        [EmailAddress(ErrorMessage = "Not a valid email address.")]
+        [Required]
+        public string Email { get; set; }
 
         [ForeignKey("Address")]
         public Guid AddressId { get; set; }

@@ -50,7 +50,7 @@ namespace Deliverit.Services
                 .FirstOrDefault(w => w.Id == id)
                 ?? throw new ArgumentNullException();
 
-            warehouseToUpdate.Address = warehouse.Address;
+            warehouseToUpdate.Address = warehouse.Address; // Or AddresId?
             warehouseToUpdate.ModifiedOn = DateTime.UtcNow;
 
             this.context.SaveChanges();
