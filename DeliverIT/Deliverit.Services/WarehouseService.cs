@@ -36,7 +36,10 @@ namespace Deliverit.Services
 
         public Warehouse Create(Warehouse warehouse)
         {
+            warehouse.CreatedOn = DateTime.UtcNow;
+
             this.context.Warehouses.Add(warehouse);
+            this.context.SaveChanges();
 
             return warehouse;
         }
@@ -47,7 +50,10 @@ namespace Deliverit.Services
                 .FirstOrDefault(w => w.Id == id)
                 ?? throw new ArgumentNullException();
 
-            warehouseToUpdate = warehouse; // Not sure
+            warehouseToUpdate.Address = warehouse.Address;
+            warehouseToUpdate.ModifiedOn = DateTime.UtcNow;
+
+            this.context.SaveChanges();
 
             return warehouse;
         }
@@ -59,7 +65,11 @@ namespace Deliverit.Services
 
             if (warehouse != null)
             {
+                warehouse.DeletedOn = DateTime.UtcNow;
+
                 this.context.Warehouses.Remove(warehouse);
+                this.context.SaveChanges();
+                // warehouse.IsDeleted = true; Use soft delete instead of the above one?
 
                 return true;
             }

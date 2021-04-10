@@ -52,7 +52,7 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public IActionResult Delete(Guid id) // Or Try/Catch?
         {
             var success = this.warehouseService.Delete(id);
 
