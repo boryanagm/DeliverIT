@@ -33,7 +33,7 @@ namespace Deliverit.Web.Controllers
         {
             var warehouseToUpdate = this.warehouseService.Create(warehouse);
 
-            return this.Created("post", warehouse);
+            return this.Created("post", warehouseToUpdate);
         }
 
         [HttpPut("{id}")]
