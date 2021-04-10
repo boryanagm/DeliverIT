@@ -77,20 +77,28 @@ namespace Deliverit.Services
             return false;
         }
 
-        //public Customer GetByEmail(string email)
-        //{
-        //    var customer = this.context.Customers
-        //        .FirstOrDefault(c => c.)
-        //}
+        public Customer GetByEmail(string email)
+        {
+            var customer = this.context.Customers
+                .FirstOrDefault(c => c.Email == email);
+
+            return customer;
+        }
 
         public Customer GetByFirstName(string firstName)
         {
-            throw new NotImplementedException();
+            var customer = this.context.Customers
+                .FirstOrDefault(c => c.FirstName == firstName);
+
+            return customer;
         }
 
         public Customer GetByLastName(string lastName)
         {
-            throw new NotImplementedException();
+            var customer = this.context.Customers
+                 .FirstOrDefault(c => c.LastName == lastName);
+
+            return customer;
         }
 
         public Customer GetByMultipleCriteria()
