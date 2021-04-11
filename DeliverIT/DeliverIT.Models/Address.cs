@@ -18,8 +18,9 @@ namespace DeliverIT.Models
         public Guid CityId { get; set; }
         public City City { get; set; }
 
-        public Guid WarehouseId { get; set; }
-        public Warehouse Warehouse { get; set; }
+        //public Guid WarehouseId { get; set; }
+        //public Warehouse Warehouse { get; set; }
+        public ICollection<Warehouse> Warehouses { get; set; }
 
         public ICollection<Customer> Customers { get; set; }
 

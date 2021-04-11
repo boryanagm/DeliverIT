@@ -12,6 +12,8 @@ namespace Deliverit.Database.DataConfigurations
             builder.HasOne(c => c.Address)
                    .WithMany(a => a.Customers)
                    .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasIndex(c => c.Email).IsUnique();
         }
     }
 

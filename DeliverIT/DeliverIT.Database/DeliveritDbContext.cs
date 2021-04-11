@@ -30,11 +30,12 @@ namespace DeliverIT.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                base.OnConfiguring(optionsBuilder);
-                optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS; Database=DeliveritDatabase; Trusted_Connection=True");
-            }
+            base.OnConfiguring(optionsBuilder);
+            //if (!optionsBuilder.IsConfigured)
+            //{
+            //    base.OnConfiguring(optionsBuilder);
+            //    optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS; Database=DeliveritDatabase; Trusted_Connection=True");
+            //}
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -51,7 +52,7 @@ namespace DeliverIT.Database
     /*
      Just in case something goes wrong and we need to use the Cascade deletion restriction logic here:
 
-     modelBuilder.Entity<Warehouse>()
+           modelBuilder.Entity<Warehouse>()
                         .HasMany(w => w.Parcels)
                         .WithOne(p => p.Warehouse)
                         .OnDelete(DeleteBehavior.Restrict);

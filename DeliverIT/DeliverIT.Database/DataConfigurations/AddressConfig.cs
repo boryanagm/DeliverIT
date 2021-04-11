@@ -13,7 +13,7 @@ namespace Deliverit.Database.DataConfigurations
                    .WithOne(c => c.Address)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(a => a.Warehouse)
+            builder.HasMany(a => a.Warehouses)
                    .WithOne(w => w.Address)
                    .OnDelete(DeleteBehavior.Restrict);
         }
