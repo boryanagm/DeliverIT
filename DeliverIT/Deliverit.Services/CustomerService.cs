@@ -29,7 +29,6 @@ namespace Deliverit.Services
         public IEnumerable<Customer> GetAll()
         {
             var customers = this.context.Customers;
-
             return customers;
         }
 
@@ -106,11 +105,22 @@ namespace Deliverit.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Parcel> GetIncomingParcels()
+        public IEnumerable<Parcel> GetIncomingParcels(string email)
         {
-            throw new NotImplementedException();
+            var customer = this.context.Customers
+                .FirstOrDefault(c => c.Email == email);
+
+            return customer.Parcels;
         }
 
-        
+        public Customer GetByKeyWord(string key)
+        {
+            var customer = this.context.Customers
+                .FirstOrDefault(c => c.FirstName == key 
+                || c.LastName == key 
+                || c.Email == key);
+
+            return customer;
+        }
     }
 }

@@ -30,7 +30,6 @@ namespace Deliverit.Services
         public IEnumerable<Warehouse> GetAll()
         {
             var warehouses = this.context.Warehouses;
-
             return warehouses;
         }
 

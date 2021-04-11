@@ -14,10 +14,10 @@ namespace Deliverit.Services.Contracts
         Customer GetByEmail(string email);
         Customer GetByFirstName(string firstName);
         Customer GetByLastName(string lastName);
-        IEnumerable<Parcel> GetIncomingParcels();
+        IEnumerable<Parcel> GetIncomingParcels(string email);
         Customer GetByMultipleCriteria();
 
         //  Search all fields from one word (e.g., “john” will search in the email, first and last name fields) (could)
-        //  Customer GetByKeyWord(string key);
+        Customer GetByKeyWord(string key);
     }
 }

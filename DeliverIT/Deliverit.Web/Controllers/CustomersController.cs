@@ -82,6 +82,17 @@ namespace Deliverit.Web.Controllers
             return this.Ok(this.customerService.GetByLastName(lastName));
         }
 
+        [HttpGet("{email}/parcels")]
+        public IActionResult GetIncomingParcels(string email)
+        {
+            return this.Ok(this.customerService.GetIncomingParcels(email));
+        }
+
+        [HttpGet("{key}/all")]
+        public IActionResult GetByKeyWord(string key)
+        {
+            return this.Ok(this.customerService.GetByKeyWord(key));
+        }
         // TODO: Implement "shoulds" and "coulds"
     }
 }

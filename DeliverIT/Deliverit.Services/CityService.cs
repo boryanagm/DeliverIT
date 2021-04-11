@@ -28,7 +28,6 @@ namespace Deliverit.Services
         public IEnumerable<City> GetAll()
         {
             var cities = this.context.Cities;
-
             return cities;
         }
     }
