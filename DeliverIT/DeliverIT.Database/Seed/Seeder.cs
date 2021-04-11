@@ -149,8 +149,7 @@ namespace Deliverit.Database.Seed
                    Id = Guid.Parse("36049406-10ba-499d-916b-063422046239"),
                    CreatedOn = DateTime.UtcNow,
                    StreetName = "Ramon Berenguer El Vell 1",
-                   CityId = Guid.Parse("e99abf10-63e9-4212-9053-87cb1d80763e"),
-                  // WarehouseId = Guid.Parse("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba")
+                   CityId = Guid.Parse("e99abf10-63e9-4212-9053-87cb1d80763e")
                 },
 
                 new Address()
@@ -158,8 +157,7 @@ namespace Deliverit.Database.Seed
                    Id = Guid.Parse("ac2fee3a-f76e-4d94-aa42-d85b4bb45299"),
                    CreatedOn = DateTime.UtcNow,
                    StreetName = "Zeughofstraße 20",
-                   CityId = Guid.Parse("e422b2de-f54d-4a4e-9259-0f3f4033f93d"),
-                 //  WarehouseId = Guid.Parse("988a4201-8c55-42fc-b2a6-e08d1abe6693")
+                   CityId = Guid.Parse("e422b2de-f54d-4a4e-9259-0f3f4033f93d")
                 },
 
                 new Address()
@@ -167,8 +165,7 @@ namespace Deliverit.Database.Seed
                    Id = Guid.Parse("b1347388-583d-4324-870a-e487e61ef483"),
                    CreatedOn = DateTime.UtcNow,
                    StreetName = "Rue La Boetie 7",
-                   CityId = Guid.Parse("7fdbb1a0-9f76-4b63-aab4-901c61591336"),
-                   //WarehouseId = Guid.Parse("b965dcea-5718-4616-a7e5-ba8f959b786e")
+                   CityId = Guid.Parse("7fdbb1a0-9f76-4b63-aab4-901c61591336")
                 },
 
                 new Address()
@@ -176,8 +173,23 @@ namespace Deliverit.Database.Seed
                    Id = Guid.Parse("97fa423a-a144-4d67-97f5-4211c2758dc5"),
                    CreatedOn = DateTime.UtcNow,
                    StreetName = "Liepkalnio 117",
-                   CityId = Guid.Parse("8bf95d78-e5ac-495d-ab67-14b60f644b70"),
-                  // WarehouseId = Guid.Parse("5b7050c1-a4d4-4d1b-9273-4912020c4fb9")
+                   CityId = Guid.Parse("8bf95d78-e5ac-495d-ab67-14b60f644b70")
+                },
+
+                new Address()
+                { 
+                   Id = Guid.Parse("5fd8c18f-6885-488e-af8c-ff06901a7d37"),
+                   CreatedOn = DateTime.UtcNow,
+                   StreetName = "Gran Via De Les Corts Catalanes 105",
+                   CityId = Guid.Parse("e99abf10-63e9-4212-9053-87cb1d80763e")
+                },
+
+                new Address()
+                { 
+                   Id = Guid.Parse("da703902-00bc-47da-b950-4fa730494d4e"),
+                   CreatedOn = DateTime.UtcNow,
+                   StreetName = "Passatge De Bocabella 11",
+                   CityId = Guid.Parse("e99abf10-63e9-4212-9053-87cb1d80763e")
                 }
             };
             modelBuilder.Entity<Address>().HasData(addresses);
@@ -197,20 +209,6 @@ namespace Deliverit.Database.Seed
                    CreatedOn = DateTime.UtcNow,
                    AddressId = Guid.Parse("ac2fee3a-f76e-4d94-aa42-d85b4bb45299")
                 }
-
-                //new Warehouse()
-                //{
-                //   Id = Guid.Parse("b965dcea-5718-4616-a7e5-ba8f959b786e"),
-                //   CreatedOn = DateTime.UtcNow,
-                //   AddressId = Guid.Parse("b1347388-583d-4324-870a-e487e61ef483")
-                //},
-
-                //new Warehouse()
-                //{
-                //   Id = Guid.Parse("5b7050c1-a4d4-4d1b-9273-4912020c4fb9"),
-                //   CreatedOn = DateTime.UtcNow,
-                //   AddressId = Guid.Parse("97fa423a-a144-4d67-97f5-4211c2758dc5")
-                //}
             };
             modelBuilder.Entity<Warehouse>().HasData(warehouses);
 
@@ -238,6 +236,29 @@ namespace Deliverit.Database.Seed
             };
             modelBuilder.Entity<Customer>().HasData(customers);
 
+            var employees = new List<Employee>()
+            { 
+                new Employee()
+                { 
+                   Id = Guid.Parse("d2c26c93-d589-4b05-850b-fbf21c59c84d"),
+                   CreatedOn = DateTime.UtcNow,
+                   FirstName = "Fermin",
+                   LastName = "Trujillo",
+                   Email = "fer.trujillo@gmail.com",
+                   AddressId = Guid.Parse("5fd8c18f-6885-488e-af8c-ff06901a7d37")
+                },
+
+                new Employee()
+                { 
+                   Id = Guid.Parse("facdefb9-19df-42b3-9d3d-6524076e152f"),
+                   CreatedOn = DateTime.UtcNow,
+                   FirstName = "Amador",
+                   LastName = "Rivas",
+                   Email = "a.rivas@gmail.com",
+                   AddressId = Guid.Parse("da703902-00bc-47da-b950-4fa730494d4e")
+                }
+            };
+            modelBuilder.Entity<Employee>().HasData(employees);
 
             // countries.First will give the country Id
         }
