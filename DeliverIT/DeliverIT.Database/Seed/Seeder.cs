@@ -270,7 +270,7 @@ namespace Deliverit.Database.Seed
                    CustomerId = Guid.Parse("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1"),
                    EmployeeId = Guid.Parse("d2c26c93-d589-4b05-850b-fbf21c59c84d"),
                    WarehouseId = Guid.Parse("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba"),
-                   ShipmentId = Guid.Parse("*****************************************************")
+                   ShipmentId = Guid.Parse("ce465c59-4866-4905-bdbd-943a26f59fdd")
                 },
 
                 new Parcel()
@@ -280,9 +280,35 @@ namespace Deliverit.Database.Seed
                    CustomerId = Guid.Parse("5adb06fe-fca4-4347-b1ea-118c55e17331"),
                    EmployeeId = Guid.Parse("facdefb9-19df-42b3-9d3d-6524076e152f"),
                    WarehouseId = Guid.Parse("988a4201-8c55-42fc-b2a6-e08d1abe6693"),
-                   ShipmentId = Guid.Parse("*****************************************************")
+                   ShipmentId = Guid.Parse("e2a2c29b-b7f4-458a-9cde-4a70717607c8")
                 }
             };
+            modelBuilder.Entity<Parcel>().HasData(parcels);
+
+            var shipments = new List<Shipment>()
+            {
+
+                new Shipment()
+                {
+                   Id = Guid.Parse("ce465c59-4866-4905-bdbd-943a26f59fdd"),
+                   CreatedOn = DateTime.UtcNow,
+                   DepartureDate = DateTime.UtcNow,
+                   ArrivalDate = DateTime.UtcNow.AddDays(7),
+                   StatusId = Guid.Parse("917f8117-d392-4f64-81fb-48415f80f77e"),
+                   WarehouseId = Guid.Parse("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba")
+                },
+
+                new Shipment()
+                { 
+                   Id = Guid.Parse("e2a2c29b-b7f4-458a-9cde-4a70717607c8"),
+                   CreatedOn = DateTime.UtcNow,
+                   DepartureDate = DateTime.UtcNow,
+                   ArrivalDate = DateTime.UtcNow.AddDays(5),
+                   StatusId = Guid.Parse("858ac364-d94f-414c-bbea-a0f5b8679b3d"),
+                   WarehouseId = Guid.Parse("988a4201-8c55-42fc-b2a6-e08d1abe6693")
+                }
+            };
+            modelBuilder.Entity<Shipment>().HasData(shipments);
             // countries.First will give the country Id
         }
     }
