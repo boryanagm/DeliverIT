@@ -150,7 +150,7 @@ namespace Deliverit.Database.Seed
                    CreatedOn = DateTime.UtcNow,
                    StreetName = "Ramon Berenguer El Vell 1",
                    CityId = Guid.Parse("e99abf10-63e9-4212-9053-87cb1d80763e"),
-                   WarehouseId = Guid.Parse("*************************************************")
+                   WarehouseId = Guid.Parse("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba")
                 },
 
                 new Address()
@@ -159,7 +159,7 @@ namespace Deliverit.Database.Seed
                    CreatedOn = DateTime.UtcNow,
                    StreetName = "Zeughofstraße 20",
                    CityId = Guid.Parse("e422b2de-f54d-4a4e-9259-0f3f4033f93d"),
-                   WarehouseId = Guid.Parse("*************************************************")
+                   WarehouseId = Guid.Parse("988a4201-8c55-42fc-b2a6-e08d1abe6693")
                 },
 
                 new Address()
@@ -168,7 +168,7 @@ namespace Deliverit.Database.Seed
                    CreatedOn = DateTime.UtcNow,
                    StreetName = "Rue La Boetie 7",
                    CityId = Guid.Parse("7fdbb1a0-9f76-4b63-aab4-901c61591336"),
-                   WarehouseId = Guid.Parse("*************************************************")
+                   WarehouseId = Guid.Parse("b965dcea-5718-4616-a7e5-ba8f959b786e")
                 },
 
                 new Address()
@@ -177,12 +177,42 @@ namespace Deliverit.Database.Seed
                    CreatedOn = DateTime.UtcNow,
                    StreetName = "Liepkalnio 117",
                    CityId = Guid.Parse("8bf95d78-e5ac-495d-ab67-14b60f644b70"),
-                   WarehouseId = Guid.Parse("*************************************************")
+                   WarehouseId = Guid.Parse("5b7050c1-a4d4-4d1b-9273-4912020c4fb9")
                 }
             };
             modelBuilder.Entity<Address>().HasData(addresses);
 
-           // var warehouses
+            var warehouses = new List<Warehouse>()
+            {
+                new Warehouse()
+                { 
+                   Id = Guid.Parse("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba"),
+                   CreatedOn = DateTime.UtcNow,
+                   AddressId = Guid.Parse("36049406-10ba-499d-916b-063422046239")
+                },
+
+                new Warehouse()
+                { 
+                   Id = Guid.Parse("988a4201-8c55-42fc-b2a6-e08d1abe6693"),
+                   CreatedOn = DateTime.UtcNow,
+                   AddressId = Guid.Parse("ac2fee3a-f76e-4d94-aa42-d85b4bb45299")
+                },
+
+                new Warehouse()
+                { 
+                   Id = Guid.Parse("b965dcea-5718-4616-a7e5-ba8f959b786e"),
+                   CreatedOn = DateTime.UtcNow,
+                   AddressId = Guid.Parse("b1347388-583d-4324-870a-e487e61ef483")
+                },
+
+                new Warehouse()
+                { 
+                   Id = Guid.Parse("5b7050c1-a4d4-4d1b-9273-4912020c4fb9"),
+                   CreatedOn = DateTime.UtcNow,
+                   AddressId = Guid.Parse("97fa423a-a144-4d67-97f5-4211c2758dc5")
+                }
+            };
+            modelBuilder.Entity<Warehouse>().HasData(warehouses);
             // countries.First will give the country Id
         }
     }
