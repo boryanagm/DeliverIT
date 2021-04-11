@@ -8,13 +8,17 @@ namespace Deliverit.Database.DataConfigurations
     {
         //public void Configure(EntityTypeBuilder<Country> builder)
         //{
-        //    builder.HasKey(c => c.Id);
-
-        //    builder.Property(c => c.Name)
-        //           .HasMaxLength(35)
-        //           .IsRequired();
-
-        //    // TODO: Should I describe the relation with Cities?
+        //    
         //}
     }
+
+    /*
+     Exercise with Fluent Api:
+
+            builder.HasKey(c => c.Id);
+
+            builder.Property(c => c.Name)
+                   .HasMaxLength(35)
+                   .IsRequired();
+     */
 }

@@ -1,0 +1,67 @@
+﻿using Deliverit.Services.Contracts;
+using DeliverIT.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
+
+namespace Deliverit.Web.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class WarehousesController : ControllerBase
+    {
+        private readonly IWarehouseService warehouseService;
+
+        public WarehousesController(IWarehouseService warehouseService)
+        {
+            this.warehouseService = warehouseService;
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(Guid id)
+        {
+            return this.Ok(this.warehouseService.Get(id));
+        }
+
+        [HttpGet("")]
+        public IActionResult GetAll()
+        {
+            return this.Ok(this.warehouseService.GetAll());
+        }
+
+        [HttpPost("")]
+        public IActionResult Post([FromBody] Warehouse warehouse) 
+        {
+            var warehouseToUpdate = this.warehouseService.Create(warehouse);
+
+            return this.Created("post", warehouse);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(Guid id, [FromBody] Warehouse warehouse)
+        {
+            try
+            {
+                var warehouseToUpdate = this.warehouseService.Update(id, warehouse);
+
+                return this.Ok(warehouse);
+            }
+            catch (ArgumentNullException)
+            {
+                return this.Conflict();
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            var success = this.warehouseService.Delete(id);
+
+            if (success)
+            {
+                return this.NoContent();
+            }
+
+            return this.NotFound();
+        }
+    }
+}
