@@ -102,7 +102,12 @@ namespace Deliverit.Services
 
         public Customer GetByMultipleCriteria()
         {
-            throw new NotImplementedException();
+            var results = this.context.Customers
+                .Where(c => Search.FirstName == null || c.FirstName.Contains(Search.FirstName) 
+                && Search.LastName == null || c.LastName.Contains(Search.LastName) 
+                && Search.Email == null || c.Email.Contains(Search.Email)).FirstOrDefault();
+
+            return results;
         }
 
         public IEnumerable<Parcel> GetIncomingParcels(string email)
@@ -116,8 +121,8 @@ namespace Deliverit.Services
         public Customer GetByKeyWord(string key)
         {
             var customer = this.context.Customers
-                .FirstOrDefault(c => c.FirstName == key 
-                || c.LastName == key 
+                .FirstOrDefault(c => c.FirstName == key
+                || c.LastName == key
                 || c.Email == key);
 
             return customer;
