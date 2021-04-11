@@ -1,4 +1,5 @@
 ﻿using Deliverit.Models;
+using DeliverIT.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -140,6 +141,48 @@ namespace Deliverit.Database.Seed
                 }
             };
             modelBuilder.Entity<Status>().HasData(statuses);
+
+            var addresses = new List<Address>()
+            {
+                new Address()
+                { 
+                   Id = Guid.Parse("36049406-10ba-499d-916b-063422046239"),
+                   CreatedOn = DateTime.UtcNow,
+                   StreetName = "Ramon Berenguer El Vell 1",
+                   CityId = Guid.Parse("e99abf10-63e9-4212-9053-87cb1d80763e"),
+                   WarehouseId = Guid.Parse("*************************************************")
+                },
+
+                new Address()
+                { 
+                   Id = Guid.Parse("ac2fee3a-f76e-4d94-aa42-d85b4bb45299"),
+                   CreatedOn = DateTime.UtcNow,
+                   StreetName = "Zeughofstraße 20",
+                   CityId = Guid.Parse("e422b2de-f54d-4a4e-9259-0f3f4033f93d"),
+                   WarehouseId = Guid.Parse("*************************************************")
+                },
+
+                new Address()
+                { 
+                   Id = Guid.Parse("b1347388-583d-4324-870a-e487e61ef483"),
+                   CreatedOn = DateTime.UtcNow,
+                   StreetName = "Rue La Boetie 7",
+                   CityId = Guid.Parse("7fdbb1a0-9f76-4b63-aab4-901c61591336"),
+                   WarehouseId = Guid.Parse("*************************************************")
+                },
+
+                new Address()
+                { 
+                   Id = Guid.Parse("97fa423a-a144-4d67-97f5-4211c2758dc5"),
+                   CreatedOn = DateTime.UtcNow,
+                   StreetName = "Liepkalnio 117",
+                   CityId = Guid.Parse("8bf95d78-e5ac-495d-ab67-14b60f644b70"),
+                   WarehouseId = Guid.Parse("*************************************************")
+                }
+            };
+            modelBuilder.Entity<Address>().HasData(addresses);
+
+           // var warehouses
             // countries.First will give the country Id
         }
     }
