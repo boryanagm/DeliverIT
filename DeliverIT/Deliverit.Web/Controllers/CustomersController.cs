@@ -64,19 +64,19 @@ namespace Deliverit.Web.Controllers
             return this.NotFound();
         }
 
-        [HttpGet("{email}")]
+        [HttpGet("{email}/email")]
         public IActionResult GetByEmail(string email)
         {
             return this.Ok(this.customerService.GetByEmail(email));
         }
 
-        [HttpGet("{firstName}")]
+        [HttpGet("{firstName}/firstname")]
         public IActionResult GetByFirstname(string firstName)
         {
             return this.Ok(this.customerService.GetByFirstName(firstName));
         }
 
-        [HttpGet("{lastName}")]
+        [HttpGet("{lastName}/lastname")]
         public IActionResult GetByLastName(string lastName)
         {
             return this.Ok(this.customerService.GetByLastName(lastName));

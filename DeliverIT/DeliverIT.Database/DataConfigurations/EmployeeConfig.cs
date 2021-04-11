@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Deliverit.Database.DataConfigurations
 {
-    public class EmployeeConfig// : IEntityTypeConfiguration<Employee>
+    public class EmployeeConfig : IEntityTypeConfiguration<Employee>
     {
-        //public void Configure(EntityTypeBuilder<Employee> builder)
-        //{
-            
-        //}
+        public void Configure(EntityTypeBuilder<Employee> builder)
+        {
+            builder.HasIndex(e => e.Email).IsUnique();
+        }
     }
 
     /*

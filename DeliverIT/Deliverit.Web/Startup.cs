@@ -25,6 +25,9 @@ namespace Deliverit.Web
             services.AddControllers();
 
             services.AddScoped<ICityService, CityService>();
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IWarehouseService, WarehouseService>();
+            //services.AddScoped<IEmployeeService, EmployeeService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

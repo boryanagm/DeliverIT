@@ -267,6 +267,7 @@ namespace Deliverit.Database.Seed
                    Id = Guid.Parse("198457ae-236c-4592-90af-3ca2302a8737"),
                    CreatedOn = DateTime.UtcNow,
                    Weight = 10,
+                   CategoryId = Guid.Parse("1db0c76c-ab76-4105-be89-3af983f6f137"),
                    CustomerId = Guid.Parse("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1"),
                    EmployeeId = Guid.Parse("d2c26c93-d589-4b05-850b-fbf21c59c84d"),
                    WarehouseId = Guid.Parse("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba"),
@@ -277,6 +278,8 @@ namespace Deliverit.Database.Seed
                 { 
                    Id = Guid.Parse("28ae32a1-10a4-4aef-b262-3baaa1102753"),
                    CreatedOn = DateTime.UtcNow,
+                   Weight = 5,
+                   CategoryId = Guid.Parse("72280df2-7d81-4ec6-936a-51e19aabf7ff"),
                    CustomerId = Guid.Parse("5adb06fe-fca4-4347-b1ea-118c55e17331"),
                    EmployeeId = Guid.Parse("facdefb9-19df-42b3-9d3d-6524076e152f"),
                    WarehouseId = Guid.Parse("988a4201-8c55-42fc-b2a6-e08d1abe6693"),
@@ -287,7 +290,6 @@ namespace Deliverit.Database.Seed
 
             var shipments = new List<Shipment>()
             {
-
                 new Shipment()
                 {
                    Id = Guid.Parse("ce465c59-4866-4905-bdbd-943a26f59fdd"),
@@ -309,6 +311,7 @@ namespace Deliverit.Database.Seed
                 }
             };
             modelBuilder.Entity<Shipment>().HasData(shipments);
+
             // countries.First will give the country Id
         }
     }
