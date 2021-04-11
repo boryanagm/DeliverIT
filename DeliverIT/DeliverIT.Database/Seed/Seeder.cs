@@ -108,6 +108,38 @@ namespace Deliverit.Database.Seed
                 }
             };
             modelBuilder.Entity<Category>().HasData(categories);
+
+            var statuses = new List<Status>()
+            {
+                new Status()
+                { 
+                   Id = Guid.Parse("917f8117-d392-4f64-81fb-48415f80f77e"),
+                   CreatedOn = DateTime.UtcNow,
+                   Name = "Preparing"
+                },
+
+                new Status()
+                { 
+                   Id = Guid.Parse("858ac364-d94f-414c-bbea-a0f5b8679b3d"),
+                   CreatedOn = DateTime.UtcNow,
+                   Name = "OnTheWay"
+                },
+
+                new Status()
+                { 
+                   Id = Guid.Parse("84568d3c-04df-47c3-9ad8-216b1d664166"),
+                   CreatedOn = DateTime.UtcNow,
+                   Name = "Completed"
+                },
+
+                new Status()
+                { 
+                   Id = Guid.Parse("b31754e2-82fc-4862-ad20-9331a87537eb"),
+                   CreatedOn = DateTime.UtcNow,
+                   Name = "Canceled"
+                }
+            };
+            modelBuilder.Entity<Status>().HasData(statuses);
             // countries.First will give the country Id
         }
     }
