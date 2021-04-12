@@ -65,10 +65,8 @@ namespace Deliverit.Services
             if (customer != null)
             {
                 customer.DeletedOn = DateTime.UtcNow;
-
-                this.context.Customers.Remove(customer);
+                customer.IsDeleted = true;          
                 this.context.SaveChanges();
-                // Or soft delete?
 
                 return true;
             }
