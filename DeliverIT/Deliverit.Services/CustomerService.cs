@@ -1,9 +1,11 @@
 ﻿using Deliverit.Services.Contracts;
+using Deliverit.Services.Models;
 using DeliverIT.Database;
 using DeliverIT.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Deliverit.Services
 {
@@ -98,22 +100,33 @@ namespace Deliverit.Services
             return customer;
         }
 
-        public Customer GetByMultipleCriteria()
+        public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)
         {
-            var results = this.context.Customers
-                .Where(c => Search.FirstName == null || c.FirstName.Contains(Search.FirstName) 
-                && Search.LastName == null || c.LastName.Contains(Search.LastName) 
-                && Search.Email == null || c.Email.Contains(Search.Email)).FirstOrDefault();
+            var searchResult = this.context.Customers
+                .Where(c => customerFilter.FirstName == null || c.FirstName.Contains(customerFilter.FirstName) 
+                && customerFilter.LastName == null || c.LastName.Contains(customerFilter.LastName) 
+                && customerFilter.Email == null || c.Email.Contains(customerFilter.Email))
+                .Select(c => new CustomerDTO 
+                {
+                   Id = c.Id,
+                   FirstName = c.FirstName,
+                   LastName = c.LastName, 
+                   Email = c.Email
+                })
+                .ToList();
 
-            return results;
+            return searchResult;
         }
 
-        public IEnumerable<Parcel> GetIncomingParcels(string email)
+        public List<ParcelDTO> GetIncomingParcels(Guid id) 
         {
-            var customer = this.context.Customers
-                .FirstOrDefault(c => c.Email == email);
+            List<ParcelDTO> dto = this.context.Customers
+                .Include(c => c.Parcels)
+                .FirstOrDefault(c => c.Id == id).Parcels
+                .Select(c => new ParcelDTO { Id = c.Id })
+                .ToList();
 
-            return customer.Parcels;
+            return dto;
         }
 
         public Customer GetByKeyWord(string key)
