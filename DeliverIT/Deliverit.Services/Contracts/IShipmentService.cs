@@ -11,6 +11,7 @@ namespace Deliverit.Services.Contracts
         IEnumerable<Shipment> GetAll();
         Shipment Create(Shipment shipment);
         Shipment Update(Guid id, Shipment shipment);
+        List<ICollection<Shipment>> ShipmentSearch(Warehouse warehouse);
         bool Delete(Guid id);
     }
 }

@@ -67,7 +67,8 @@ namespace Deliverit.Services
             }
             else
             {
-                this.context.Shipments.Remove(shipment);
+                shipment.IsDeleted = true;
+                shipment.DeletedOn = DateTime.UtcNow;
                 this.context.SaveChanges();
                 return true;
             }

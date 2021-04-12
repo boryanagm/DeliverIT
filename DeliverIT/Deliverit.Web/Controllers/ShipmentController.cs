@@ -32,7 +32,7 @@ namespace Deliverit.Web.Controllers
             return this.Ok(this.shipmentService.GetAll());
         }
 
-        [HttpPost("")]
+        [HttpPost("create/{shipment}")]
         public IActionResult Post([FromBody] Shipment shipment)
         {
             var shipmentToCreate = this.shipmentService.Create(shipment);
@@ -41,8 +41,8 @@ namespace Deliverit.Web.Controllers
         }
 
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id) 
+        [HttpDelete("delete/{id}")]
+        public IActionResult Delete(Guid id)
         {
             var success = this.shipmentService.Delete(id);
 
@@ -54,7 +54,7 @@ namespace Deliverit.Web.Controllers
             return this.NotFound();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update/{id}")]
         public IActionResult Put(Guid id, [FromBody] Shipment shipment)
         {
             try
@@ -67,6 +67,12 @@ namespace Deliverit.Web.Controllers
             {
                 return this.Conflict();
             }
+        }
+
+        [HttpGet("filter/{warehouse}")]
+        public IActionResult FilterShipments([FromBody] Warehouse warehouse)
+        {
+            return this.Ok(this.shipmentService.ShipmentSearch(warehouse));
         }
     }
 }
