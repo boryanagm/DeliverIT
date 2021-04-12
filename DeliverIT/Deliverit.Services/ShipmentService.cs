@@ -20,7 +20,7 @@ namespace Deliverit.Services
         public Shipment Get(Guid id)
         {
             var shipment = this.context.Shipments
-                .FirstOrDefault(w => w.Id == id)
+                .FirstOrDefault(s => s.Id == id)
                 ?? throw new ArgumentNullException();
 
             return shipment;
@@ -35,19 +35,31 @@ namespace Deliverit.Services
 
         public Shipment Update(Guid id, Shipment shipment)
         {
-            throw new NotImplementedException();
+            var shipmentToUpdate = this.context.Shipments
+                .FirstOrDefault(s => s.Id == id)
+                ?? throw new ArgumentNullException();
+
+            if (shipmentToUpdate.Status != shipment.Status)
+            {
+                shipmentToUpdate.Status = shipment.Status;
+                shipmentToUpdate.ModifiedOn = DateTime.UtcNow;
+                this.context.SaveChanges();
+            }
+
+            return shipment;
         }
 
         public Shipment Create(Shipment shipment)
         {
             this.context.Shipments.Add(shipment);
+            this.context.SaveChanges();
             return shipment;
         }
 
         public bool Delete(Guid id)
         {
             var shipment = this.context.Shipments
-              .FirstOrDefault(w => w.Id == id);
+              .FirstOrDefault(s => s.Id == id);
 
             if (shipment == null)
             {
@@ -56,9 +68,15 @@ namespace Deliverit.Services
             else
             {
                 this.context.Shipments.Remove(shipment);
+                this.context.SaveChanges();
                 return true;
             }
         }
-        
+
+        public List<ICollection<Shipment>> ShipmentSearch(Warehouse warehouse)
+        {
+            var shipments = this.context.Warehouses.Where(s => s.Id == warehouse.Id).Select(s => s.Shipments).ToList();
+            return shipments;
+        }
     }
 }
