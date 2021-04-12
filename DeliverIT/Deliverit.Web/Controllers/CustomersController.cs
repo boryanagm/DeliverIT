@@ -1,5 +1,4 @@
-﻿using Deliverit.Services;
-using Deliverit.Services.Contracts;
+﻿using Deliverit.Services.Contracts;
 using DeliverIT.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
