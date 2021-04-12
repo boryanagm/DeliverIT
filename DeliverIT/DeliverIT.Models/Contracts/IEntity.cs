@@ -9,9 +9,9 @@ namespace Deliverit.Models.Contracts
         public Guid Id { get; }
 
         public DateTime CreatedOn { get; }
-        public DateTime ModifiedOn { get; }
+        public DateTime? ModifiedOn { get; }
 
-        public bool IsDeleted { get; }
-        public DateTime DeletedOn { get; }
+        public bool? IsDeleted { get; }
+        public DateTime? DeletedOn { get; }
     }
 }

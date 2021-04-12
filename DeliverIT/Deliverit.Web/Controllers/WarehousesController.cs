@@ -33,7 +33,7 @@ namespace Deliverit.Web.Controllers
         {
             var warehouseToUpdate = this.warehouseService.Create(warehouse);
 
-            return this.Created("post", warehouse);
+            return this.Created("post", warehouseToUpdate);
         }
 
         [HttpPut("{id}")]
@@ -52,7 +52,7 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public IActionResult Delete(Guid id) // Or Try/Catch?
         {
             var success = this.warehouseService.Delete(id);
 

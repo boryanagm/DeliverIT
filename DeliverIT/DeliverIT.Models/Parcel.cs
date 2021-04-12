@@ -28,7 +28,7 @@ namespace DeliverIT.Models
         public Guid WarehouseId { get; set; }
         public Warehouse Warehouse { get; set; }
 
-        [ForeignKey("Shipment")]
+        [ForeignKey("Shipment")] // TODO: Make it not required?
         public Guid ShipmentId { get; set; }
         public Shipment Shipment { get; set; }
     }
