@@ -65,10 +65,8 @@ namespace Deliverit.Services
             if (warehouse != null)
             {
                 warehouse.DeletedOn = DateTime.UtcNow;
-
-                this.context.Warehouses.Remove(warehouse);
+                warehouse.IsDeleted = true;           
                 this.context.SaveChanges();
-                // warehouse.IsDeleted = true; Use soft delete instead of the above one?
 
                 return true;
             }
