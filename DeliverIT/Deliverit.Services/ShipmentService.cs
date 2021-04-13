@@ -74,9 +74,11 @@ namespace Deliverit.Services
             }
         }
 
-        public List<ICollection<Shipment>> ShipmentSearch(Warehouse warehouse)
+        public List<Shipment> ShipmentSearch(Warehouse warehouse)
         {
-            var shipments = this.context.Warehouses.Where(s => s.Id == warehouse.Id).Select(s => s.Shipments).ToList();
+            var shipments = this.context.Warehouses.
+                Where(s => s.Id == warehouse.Id).
+                SelectMany(s => s.Shipments).ToList();
             return shipments;
         }
     }
