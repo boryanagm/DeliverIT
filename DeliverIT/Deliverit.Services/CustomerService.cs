@@ -134,7 +134,6 @@ namespace Deliverit.Services
                 })
                 .ToList();
 
-           // var stringResult = String.Join("&", searchResult.ToArray());
             return searchResult;
         }
 

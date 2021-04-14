@@ -95,8 +95,8 @@ namespace Deliverit.Web.Controllers
             return this.Ok(this.customerService.GetByKeyWord(key));
         }
 
-        [HttpGet("{customFilter}/multiple")] // TODO: Not working
-        public IActionResult GetByMultipleCriteria(CustomerFilter customerFilter) // [System.Web.Http.FromUri] CustomerFilter customerFilter
+        [HttpGet("/multiple")] // TODO: Not working
+        public IActionResult GetByMultipleCriteria([FromQuery]CustomerFilter customerFilter) 
         {
             return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
         }
