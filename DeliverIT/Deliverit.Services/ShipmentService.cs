@@ -1,6 +1,7 @@
 ﻿using Deliverit.Services.Contracts;
 using DeliverIT.Database;
 using DeliverIT.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,11 +75,15 @@ namespace Deliverit.Services
             }
         }
 
-        public List<Shipment> ShipmentSearch(Warehouse warehouse)
+        public List<Shipment> ShipmentSearch(Guid Id)
         {
-            var shipments = this.context.Warehouses.
-                Where(s => s.Id == warehouse.Id).
-                SelectMany(s => s.Shipments).ToList();
+            var warehouse = this.context.Warehouses.FirstOrDefault(w => w.Id == Id);
+
+            var shipments = this.context.Warehouses
+                .Include(s => s.Shipments)
+                .Where(s => s.Id == warehouse.Id)
+                .SelectMany(s => s.Shipments).ToList();
+
             return shipments;
         }
     }

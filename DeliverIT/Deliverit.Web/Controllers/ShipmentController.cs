@@ -69,10 +69,10 @@ namespace Deliverit.Web.Controllers
             }
         }
 
-        [HttpGet("filter/{warehouse}")]
-        public IActionResult FilterShipments([FromBody] Warehouse warehouse)
+        [HttpGet("filter/")]
+        public IActionResult FilterShipments([FromQuery] Guid Id)
         {
-            return this.Ok(this.shipmentService.ShipmentSearch(warehouse));
+            return this.Ok(this.shipmentService.ShipmentSearch(Id));
         }
     }
 }
