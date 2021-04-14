@@ -82,10 +82,10 @@ namespace Deliverit.Web.Controllers
             return this.Ok(this.customerService.GetByLastName(lastName));
         }
 
-        [HttpGet("{email}/parcels")]
-        public IActionResult GetIncomingParcels(string email)
+        [HttpGet("{id}/parcels")]
+        public IActionResult GetIncomingParcels(Guid id)
         {
-            return this.Ok(this.customerService.GetIncomingParcels(email));
+            return this.Ok(this.customerService.GetIncomingParcels(id));
         }
 
         [HttpGet("{key}/all")]
@@ -93,6 +93,11 @@ namespace Deliverit.Web.Controllers
         {
             return this.Ok(this.customerService.GetByKeyWord(key));
         }
-        // TODO: Implement "shoulds" and "coulds"
+
+        //[HttpGet("{customFilter}")]
+        //public IActionResult GetByMultipleCriteria([FromBody]CustomerFilter customerFilter)
+        //{
+        //    return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
+        //}
     }
 }

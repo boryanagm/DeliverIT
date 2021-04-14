@@ -1,9 +1,11 @@
 ﻿using Deliverit.Services.Contracts;
+using Deliverit.Services.Models;
 using DeliverIT.Database;
 using DeliverIT.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Deliverit.Services
 {
@@ -65,10 +67,8 @@ namespace Deliverit.Services
             if (customer != null)
             {
                 customer.DeletedOn = DateTime.UtcNow;
-
-                this.context.Customers.Remove(customer);
+                customer.IsDeleted = true;          
                 this.context.SaveChanges();
-                // Or soft delete?
 
                 return true;
             }
@@ -100,24 +100,40 @@ namespace Deliverit.Services
             return customer;
         }
 
-        public Customer GetByMultipleCriteria()
+        public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)
         {
-            throw new NotImplementedException();
+            var searchResult = this.context.Customers
+                .Where(c => customerFilter.FirstName == null || c.FirstName.Contains(customerFilter.FirstName) 
+                && customerFilter.LastName == null || c.LastName.Contains(customerFilter.LastName) 
+                && customerFilter.Email == null || c.Email.Contains(customerFilter.Email))
+                .Select(c => new CustomerDTO 
+                {
+                   Id = c.Id,
+                   FirstName = c.FirstName,
+                   LastName = c.LastName, 
+                   Email = c.Email
+                })
+                .ToList();
+
+            return searchResult;
         }
 
-        public IEnumerable<Parcel> GetIncomingParcels(string email)
+        public List<ParcelDTO> GetIncomingParcels(Guid id) 
         {
-            var customer = this.context.Customers
-                .FirstOrDefault(c => c.Email == email);
+            List<ParcelDTO> dto = this.context.Customers
+                .Include(c => c.Parcels)
+                .FirstOrDefault(c => c.Id == id).Parcels
+                .Select(c => new ParcelDTO { Id = c.Id })
+                .ToList();
 
-            return customer.Parcels;
+            return dto;
         }
 
         public Customer GetByKeyWord(string key)
         {
             var customer = this.context.Customers
-                .FirstOrDefault(c => c.FirstName == key 
-                || c.LastName == key 
+                .FirstOrDefault(c => c.FirstName == key
+                || c.LastName == key
                 || c.Email == key);
 
             return customer;

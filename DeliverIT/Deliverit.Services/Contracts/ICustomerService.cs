@@ -1,4 +1,5 @@
-﻿using DeliverIT.Models;
+﻿using Deliverit.Services.Models;
+using DeliverIT.Models;
 using System;
 using System.Collections.Generic;
 
@@ -14,8 +15,8 @@ namespace Deliverit.Services.Contracts
         Customer GetByEmail(string email);
         Customer GetByFirstName(string firstName);
         Customer GetByLastName(string lastName);
-        IEnumerable<Parcel> GetIncomingParcels(string email);
-        Customer GetByMultipleCriteria();
+        List<ParcelDTO> GetIncomingParcels(Guid id); 
+        List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter);
 
         //  Search all fields from one word (e.g., “john” will search in the email, first and last name fields) (could)
         Customer GetByKeyWord(string key);
