@@ -15,7 +15,7 @@ namespace Deliverit.Models.Abstract
 
         public DateTime? ModifiedOn { get; set; }
 
-        public bool? IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
     }

@@ -100,7 +100,26 @@ namespace Deliverit.Services
             return customer;
         }
 
-        public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)
+        //public string CustomerFilterToString(CustomerFilter customerFilter)
+        //{
+        //    var searchResult = this.context.Customers
+        //           .Where(c => customerFilter.FirstName == null || c.FirstName.Contains(customerFilter.FirstName)
+        //           && customerFilter.LastName == null || c.LastName.Contains(customerFilter.LastName)
+        //           && customerFilter.Email == null || c.Email.Contains(customerFilter.Email))
+        //           .Select(c => new CustomerDTO
+        //           {
+        //               Id = c.Id,
+        //               FirstName = c.FirstName,
+        //               LastName = c.LastName,
+        //               Email = c.Email
+        //           })
+        //           .ToString();
+
+        //    var stringResult = String.Join("&", searchResult.ToArray());
+        //    return stringResult;
+        //}
+
+        public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)  
         {
             var searchResult = this.context.Customers
                 .Where(c => customerFilter.FirstName == null || c.FirstName.Contains(customerFilter.FirstName) 
@@ -115,6 +134,7 @@ namespace Deliverit.Services
                 })
                 .ToList();
 
+           // var stringResult = String.Join("&", searchResult.ToArray());
             return searchResult;
         }
 

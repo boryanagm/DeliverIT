@@ -1,4 +1,5 @@
-﻿using Deliverit.Services.Contracts;
+﻿using Deliverit.Services;
+using Deliverit.Services.Contracts;
 using DeliverIT.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -94,10 +95,10 @@ namespace Deliverit.Web.Controllers
             return this.Ok(this.customerService.GetByKeyWord(key));
         }
 
-        //[HttpGet("{customFilter}")]
-        //public IActionResult GetByMultipleCriteria([FromBody]CustomerFilter customerFilter)
-        //{
-        //    return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
-        //}
+        [HttpGet("{customFilter}/multiple")] // TODO: Not working
+        public IActionResult GetByMultipleCriteria(CustomerFilter customerFilter) // [System.Web.Http.FromUri] CustomerFilter customerFilter
+        {
+            return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
+        }
     }
 }

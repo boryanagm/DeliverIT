@@ -19,6 +19,7 @@ namespace Deliverit.Services
         public City Get(Guid id)
         {
             var city = this.context.Cities
+                .Where(c => c.IsDeleted == false)
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
 
@@ -27,7 +28,7 @@ namespace Deliverit.Services
 
         public IEnumerable<City> GetAll()
         {
-            var cities = this.context.Cities;
+            var cities = this.context.Cities; //.Where(c => c.IsDeleted == false)
             return cities;
         }
     }

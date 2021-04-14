@@ -14,6 +14,8 @@ namespace Deliverit.Database.DataConfigurations
                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasIndex(c => c.Email).IsUnique();
+
+            builder.HasQueryFilter(c => !c.IsDeleted);
         }
     }
 
