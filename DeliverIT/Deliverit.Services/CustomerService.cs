@@ -54,20 +54,17 @@ namespace Deliverit.Services
             return customer;
         }
 
-        public Customer Update(Guid id, string streetName, string city) // Guid id, Customer customer
+        public Customer Update(Guid id, string streetName, string city) 
         {
             var customerToUpdate = this.context.Customers
+                .Include(c => c.Address)
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
 
-            // customerToUpdate.FirstName = customer.FirstName;
-            // customerToUpdate.LastName = customer.LastName;
-            // customerToUpdate.AddressId = customer.AddressId; // Or Address?
-            // customer.ModifiedOn = DateTime.UtcNow;
+            var newCity = this.context.Cities.FirstOrDefault(c => c.Name == city);
+            var newAddress = new Address { Id = new Guid(), CreatedOn = DateTime.UtcNow, City = newCity, StreetName = streetName };
 
-            customerToUpdate.Address.StreetName = streetName;
-            customerToUpdate.Address.City = this.context.Cities
-                .FirstOrDefault(c => c.Name == city); // Throw exception if city doesn't exist?
+            customerToUpdate.Address = newAddress;
             this.context.SaveChanges();
 
             return customerToUpdate;
