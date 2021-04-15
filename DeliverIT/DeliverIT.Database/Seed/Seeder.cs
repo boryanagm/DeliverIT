@@ -116,28 +116,28 @@ namespace Deliverit.Database.Seed
                 {
                    Id = Guid.Parse("917f8117-d392-4f64-81fb-48415f80f77e"),
                    CreatedOn = DateTime.UtcNow,
-                   Name = "Preparing"
+                   Name = "preparing"
                 },
 
                 new Status()
                 {
                    Id = Guid.Parse("858ac364-d94f-414c-bbea-a0f5b8679b3d"),
                    CreatedOn = DateTime.UtcNow,
-                   Name = "OnTheWay"
+                   Name = "on The Way"
                 },
 
                 new Status()
                 {
                    Id = Guid.Parse("84568d3c-04df-47c3-9ad8-216b1d664166"),
                    CreatedOn = DateTime.UtcNow,
-                   Name = "Completed"
+                   Name = "completed"
                 },
 
                 new Status()
                 {
                    Id = Guid.Parse("b31754e2-82fc-4862-ad20-9331a87537eb"),
                    CreatedOn = DateTime.UtcNow,
-                   Name = "Canceled"
+                   Name = "preparing"
                 }
             };
             modelBuilder.Entity<Status>().HasData(statuses);

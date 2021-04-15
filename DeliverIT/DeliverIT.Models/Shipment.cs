@@ -11,19 +11,14 @@ namespace DeliverIT.Models
     {
         [DataType(DataType.Date)]
         public DateTime DepartureDate { get; set; }
-
         [DataType(DataType.Date)] 
         public DateTime ArrivalDate { get; set; }
-
-
         [ForeignKey("Status")]
         public Guid StatusId { get; set; }
         public Status Status { get; set; }
-
         [ForeignKey("Warehouse")]
         public Guid WarehouseId { get; set; }
         public Warehouse Warehouse { get; set; }
-
         public ICollection<Parcel> Parcels { get; set; } 
     }
 }

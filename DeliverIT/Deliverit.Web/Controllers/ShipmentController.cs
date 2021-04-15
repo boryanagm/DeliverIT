@@ -1,4 +1,5 @@
 ﻿using Deliverit.Services.Contracts;
+using Deliverit.Services.Models;
 using DeliverIT.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,8 +33,8 @@ namespace Deliverit.Web.Controllers
             return this.Ok(this.shipmentService.GetAll());
         }
 
-        [HttpPost("create/{shipment}")]
-        public IActionResult Post([FromBody] Shipment shipment)
+        [HttpPost("create/")]
+        public IActionResult Post([FromQuery] Shipment shipment)
         {
             var shipmentToCreate = this.shipmentService.Create(shipment);
 
@@ -55,13 +56,13 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public IActionResult Put(Guid id, [FromBody] Shipment shipment)
+        public IActionResult Put(Guid id, [FromQuery] ShipmentDTO shipment)
         {
             try
             {
                 var shipmentToUpdate = this.shipmentService.Update(id, shipment);
 
-                return this.Ok(shipment);
+                return this.Ok(shipmentToUpdate);
             }
             catch (ArgumentNullException)
             {

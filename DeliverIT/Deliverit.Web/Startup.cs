@@ -32,6 +32,7 @@ namespace Deliverit.Web
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger Configuration", Version = "v1" });
             });
+          
 
             services.AddScoped<ICityService, CityService>();
             services.AddScoped<ICountryService, CountryService>();
