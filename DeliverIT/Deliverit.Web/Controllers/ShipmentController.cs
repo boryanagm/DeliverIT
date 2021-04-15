@@ -34,7 +34,7 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpPost("create/")]
-        public IActionResult Post([FromQuery] Shipment shipment)
+        public IActionResult Post([FromQuery] CreateShipmentDTO shipment)
         {
             var shipmentToCreate = this.shipmentService.Create(shipment);
 
@@ -70,10 +70,15 @@ namespace Deliverit.Web.Controllers
             }
         }
 
-        [HttpGet("filter/")]
+        [HttpGet("filter/warehouse")]
         public IActionResult FilterShipments([FromQuery] Guid Id)
         {
-            return this.Ok(this.shipmentService.ShipmentSearch(Id));
+            return this.Ok(this.shipmentService.SearchByWarehouse(Id));
+        }
+        [HttpGet("filter/customer")]
+        public IActionResult FilterCustomers([FromQuery] Guid Id)
+        {
+            return this.Ok(this.shipmentService.SearchByCustomer(Id));
         }
     }
 }

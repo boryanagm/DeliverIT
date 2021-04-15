@@ -123,7 +123,7 @@ namespace Deliverit.Database.Seed
                 {
                    Id = Guid.Parse("858ac364-d94f-414c-bbea-a0f5b8679b3d"),
                    CreatedOn = DateTime.UtcNow,
-                   Name = "on The Way"
+                   Name = "on the way"
                 },
 
                 new Status()

@@ -26,6 +26,9 @@ namespace Deliverit.Services
                 .FirstOrDefault(s => s.Id == id)
                 ?? throw new ArgumentNullException();
 
+            if (shipment.IsDeleted == true)
+                throw new ArgumentException("A shipment with this ID doesn't exist.");
+
             var dto = new ShipmentDTO
             {
                 Id = shipment.Id,
@@ -33,6 +36,7 @@ namespace Deliverit.Services
                 DepartureDate = shipment.DepartureDate,
                 ArrivalDate = shipment.ArrivalDate
             };
+
             return dto;
         }
 
@@ -42,9 +46,9 @@ namespace Deliverit.Services
 
             foreach (var shipment in this.context.Shipments.Include(c => c.Status))
             {
-                if(shipment.IsDeleted==true)               
+                if (shipment.IsDeleted == true)
                     continue;
-                
+
                 var shipmentToDisplay = new ShipmentDTO
                 {
                     Id = shipment.Id,
@@ -60,13 +64,16 @@ namespace Deliverit.Services
         public ShipmentDTO Update(Guid id, ShipmentDTO shipment)
         {
             shipment.Status.ToLower();
-            if(shipment.Status != "preparing" && shipment.Status != "on the way" && shipment.Status != "completed")            
-                throw new ArgumentException("The status is incorrect");           
+            if (shipment.Status != "preparing" && shipment.Status != "on the way" && shipment.Status != "completed")
+                throw new ArgumentException("The status is incorrect");
 
             var shipmentToUpdate = this.context.Shipments
-                .Include(c=>c.Status)
+                .Include(c => c.Status)
                 .FirstOrDefault(s => s.Id == id)
                 ?? throw new ArgumentNullException();
+
+            if (shipmentToUpdate.IsDeleted == true)
+                throw new ArgumentException("A shipment with this ID doesn't exist.");
 
             if (shipmentToUpdate.Status.Name != shipment.Status)
             {
@@ -86,41 +93,111 @@ namespace Deliverit.Services
             return shipmentToDisplay;
         }
 
-        public Shipment Create(Shipment shipment)
+        public ShipmentDTO Create(CreateShipmentDTO shipment)
         {
-            this.context.Shipments.Add(shipment);
+            var warehouse = this.context.Warehouses
+                .FirstOrDefault(w => w.Id == shipment.WarehouseId);
+            var status = this.context.Status
+               .FirstOrDefault(w => w.Name == "preparing");
+
+            var newShipment = new Shipment
+            {
+                Status = status,
+                Warehouse = warehouse
+            };
+            this.context.Shipments.Add(newShipment);
             this.context.SaveChanges();
-            return shipment;
+
+            var shipmentToDisplay = new ShipmentDTO
+            {
+                Id = newShipment.Id,
+                Status = newShipment.Status.Name,
+                DepartureDate = newShipment.DepartureDate,
+                ArrivalDate = newShipment.ArrivalDate
+            };
+
+            return shipmentToDisplay;
         }
 
         public bool Delete(Guid id)
         {
             var shipment = this.context.Shipments
-              .FirstOrDefault(s => s.Id == id);
+                .FirstOrDefault(s => s.Id == id)
+                ?? throw new ArgumentNullException();
 
-            if (shipment == null)
+            if (shipment.IsDeleted == true)
             {
-                return false;
+                throw new ArgumentNullException("There is no shipment with this ID.");
             }
-            else
-            {
-                shipment.IsDeleted = true;
-                shipment.DeletedOn = DateTime.UtcNow;
-                this.context.SaveChanges();
-                return true;
-            }
+
+            shipment.IsDeleted = true;
+            shipment.DeletedOn = DateTime.UtcNow;
+            this.context.SaveChanges();
+            return true;
+
         }
 
-        public List<Shipment> ShipmentSearch(Guid Id)
+        public List<ShipmentDTO> SearchByWarehouse(Guid Id)
         {
-            var warehouse = this.context.Warehouses.FirstOrDefault(w => w.Id == Id);
+            var warehouse = this.context.Warehouses
+                .Include(w => w.Shipments)
+                .FirstOrDefault(w => w.Id == Id);
 
             var shipments = this.context.Warehouses
                 .Include(s => s.Shipments)
+                .ThenInclude(s=>s.Status)
                 .Where(s => s.Id == warehouse.Id)
                 .SelectMany(s => s.Shipments).ToList();
+            var shipmentsToDisplay = new List<ShipmentDTO>();
 
-            return shipments;
+            foreach (var shipment in shipments)
+            {
+                if (shipment.IsDeleted == true)
+                    continue;
+
+                var shipmentToDisplay = new ShipmentDTO
+                {
+                    Id = shipment.Id,
+                    Status = shipment.Status.Name,
+                    DepartureDate = shipment.DepartureDate,
+                    ArrivalDate = shipment.ArrivalDate
+                };
+                shipmentsToDisplay.Add(shipmentToDisplay);
+            }
+
+            return shipmentsToDisplay;
+        }
+        public List<ShipmentDTO> SearchByCustomer(Guid Id)
+        {
+            var customer = this.context.Customers
+                .FirstOrDefault(w => w.Id == Id);
+
+            var shipments = this.context.Parcels
+                .Where(s => s.CustomerId == customer.Id)
+                .Select(s => s.ShipmentId).ToList();
+            var shipmentsToDisplay = new List<ShipmentDTO>();
+
+            foreach (var member in shipments)
+            {
+                var shipment = this.context.Shipments
+                .Include(c => c.Status)
+                .FirstOrDefault(s => s.Id == member)
+                ?? throw new ArgumentNullException();
+
+                if (shipment.IsDeleted == true)
+                    continue;
+
+                var shipmentToDisplay = new ShipmentDTO
+                {
+                    Id = shipment.Id,
+                    Status = shipment.Status.Name,
+                    DepartureDate = shipment.DepartureDate,
+                    ArrivalDate = shipment.ArrivalDate
+                };
+                shipmentsToDisplay.Add(shipmentToDisplay);
+            }
+
+            return shipmentsToDisplay;
         }
     }
 }

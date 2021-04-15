@@ -10,9 +10,10 @@ namespace Deliverit.Services.Contracts
     {
         ShipmentDTO Get(Guid id);
         IEnumerable<ShipmentDTO> GetAll();
-        Shipment Create(Shipment shipment);
+        ShipmentDTO Create(CreateShipmentDTO shipment);
         ShipmentDTO Update(Guid id, ShipmentDTO shipment);
-        List<Shipment> ShipmentSearch(Guid Id);
+        List<ShipmentDTO> SearchByWarehouse(Guid Id);
+        List<ShipmentDTO> SearchByCustomer(Guid Id);
         bool Delete(Guid id);
     }
 }

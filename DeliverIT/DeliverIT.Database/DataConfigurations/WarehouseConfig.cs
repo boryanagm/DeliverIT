@@ -13,6 +13,9 @@ namespace Deliverit.Database.DataConfigurations
                    .WithOne(p => p.Warehouse)
                    .OnDelete(DeleteBehavior.Restrict);
 
+            builder.HasMany(s => s.Shipments)
+                .WithOne(w => w.Warehouse)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(w => w.Address)
                    .WithMany(a => a.Warehouses)
