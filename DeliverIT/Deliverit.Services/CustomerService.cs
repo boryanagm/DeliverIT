@@ -19,8 +19,18 @@ namespace Deliverit.Services
         }
 
 
-        public Customer Get(Guid id)
+        public Customer Get(Guid id) 
         {
+            //Customer customer = this.context.Customers
+            //    .Include(c => c.FirstName)
+            //    .Include(c => c.LastName)
+            //    .FirstOrDefault(c => c.Id == id);
+
+            //CustomerDTO dto = new CustomerDTO();
+            //dto.FirstName = customer.FirstName;
+            //dto.LastName = customer.LastName;
+
+            //return dto;
             var customer = this.context.Customers
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
@@ -44,20 +54,23 @@ namespace Deliverit.Services
             return customer;
         }
 
-        public Customer Update(Guid id, Customer customer)
+        public Customer Update(Guid id, string streetName, string city) // Guid id, Customer customer
         {
             var customerToUpdate = this.context.Customers
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
 
-            customerToUpdate.FirstName = customer.FirstName;
-            customerToUpdate.LastName = customer.LastName;
-            customerToUpdate.AddressId = customer.AddressId; // Or Address?
-            customer.ModifiedOn = DateTime.UtcNow;
+            // customerToUpdate.FirstName = customer.FirstName;
+            // customerToUpdate.LastName = customer.LastName;
+            // customerToUpdate.AddressId = customer.AddressId; // Or Address?
+            // customer.ModifiedOn = DateTime.UtcNow;
 
+            customerToUpdate.Address.StreetName = streetName;
+            customerToUpdate.Address.City = this.context.Cities
+                .FirstOrDefault(c => c.Name == city); // Throw exception if city doesn't exist?
             this.context.SaveChanges();
 
-            return customer;
+            return customerToUpdate;
         }
         public bool Delete(Guid id)
         {
@@ -99,25 +112,6 @@ namespace Deliverit.Services
 
             return customer;
         }
-
-        //public string CustomerFilterToString(CustomerFilter customerFilter)
-        //{
-        //    var searchResult = this.context.Customers
-        //           .Where(c => customerFilter.FirstName == null || c.FirstName.Contains(customerFilter.FirstName)
-        //           && customerFilter.LastName == null || c.LastName.Contains(customerFilter.LastName)
-        //           && customerFilter.Email == null || c.Email.Contains(customerFilter.Email))
-        //           .Select(c => new CustomerDTO
-        //           {
-        //               Id = c.Id,
-        //               FirstName = c.FirstName,
-        //               LastName = c.LastName,
-        //               Email = c.Email
-        //           })
-        //           .ToString();
-
-        //    var stringResult = String.Join("&", searchResult.ToArray());
-        //    return stringResult;
-        //}
 
         public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)  
         {

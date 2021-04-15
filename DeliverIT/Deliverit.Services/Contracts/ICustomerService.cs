@@ -10,7 +10,7 @@ namespace Deliverit.Services.Contracts
         Customer Get(Guid id);
         IEnumerable<Customer> GetAll();
         Customer Create(Customer customer);
-        Customer Update(Guid id, Customer customer);
+        Customer Update(Guid id, string streetName, string city); // Guid id, Customer customer
         bool Delete(Guid id);
         Customer GetByEmail(string email);
         Customer GetByFirstName(string firstName);
