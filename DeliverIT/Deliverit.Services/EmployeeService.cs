@@ -1,4 +1,5 @@
 ﻿using Deliverit.Services.Contracts;
+using Deliverit.Services.Models;
 using DeliverIT.Database;
 using DeliverIT.Models;
 using System;
@@ -16,19 +17,37 @@ namespace Deliverit.Services
         {
             this.context = context;
         }
-        public Employee Get(Guid id)
+        public EmployeeDTO Get(Guid id)
         {
-            var employee = this.context.Employees
-                .FirstOrDefault(e => e.Id == id)
-                ?? throw new ArgumentNullException();
+            //List<ParcelDTO> dto = this.context.Employees
+            //    .Include(c => c.Parcels)
+            //       .ThenInclude(p => p.Shipment)
+            //         .ThenInclude(s => s.Status)
+            //    .FirstOrDefault(c => c.Id == id).Parcels
+            //    .Select(c => new ParcelDTO { Id = c.Id })
+            //    .ToList();
 
-            return employee;
+            var dto = this.context.Employees
+              .Select(e => new EmployeeDTO
+              {
+                  Id = e.Id,
+                  FirstName = e.FirstName,
+                  LastName = e.LastName,
+                  Email = e.Email,
+                  Parcels = e.Parcels.Select(p => p.Id).ToList()
+              })
+              .FirstOrDefault(e => e.Id == id)
+              ?? throw new ArgumentNullException();
+
+            return dto;
         }
 
-        public IEnumerable<Employee> GetAll()
+        public IEnumerable<EmployeeDTO> GetAll()
         {
-            var employees = this.context.Employees;
-            return employees;
+            throw new NotImplementedException();
+
+            //var employees = this.context.Employees;
+            //return employees;
         }
         public Employee Create(Employee employee)
         {

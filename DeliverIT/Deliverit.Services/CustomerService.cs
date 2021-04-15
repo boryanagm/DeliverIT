@@ -103,8 +103,8 @@ namespace Deliverit.Services
         public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)  
         {
             var searchResult = this.context.Customers
-                .Where(c => c.FirstName.Contains(customerFilter.FirstName)
-                || c.LastName.Contains(customerFilter.LastName)
+                .Where(c => c.FirstName == customerFilter.FirstName
+                || c.LastName == customerFilter.LastName
                 || c.Email.Contains(customerFilter.Email))
                 .Select(c => new CustomerDTO 
                 {
@@ -118,7 +118,7 @@ namespace Deliverit.Services
             return searchResult;
         }
 
-        public List<ParcelDTO> GetIncomingParcels(Guid id) 
+        public List<ParcelDTO> GetIncomingParcels(Guid id) // TODO: Method to check past parcels!!!!!!!!!
         {
             List<ParcelDTO> dto = this.context.Customers
                 .Include(c => c.Parcels)

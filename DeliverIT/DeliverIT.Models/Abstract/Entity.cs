@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Deliverit.Models.Abstract
 {
-    public class Entity : IEntity
+    public abstract class Entity : IEntity
     {
         [Key]
         public Guid Id { get; set; }
