@@ -29,6 +29,12 @@ namespace Deliverit.Web.Controllers
             return this.Ok(this.customerService.GetAll());
         }
 
+        [HttpGet("/count")]
+        public IActionResult GetCount()
+        {
+            return this.Ok(this.customerService.GetCount());
+        }
+
         [HttpPost("")]
         public IActionResult Post([FromBody] Customer customer)
         {

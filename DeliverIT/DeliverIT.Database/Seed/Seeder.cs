@@ -137,7 +137,7 @@ namespace Deliverit.Database.Seed
                 {
                    Id = Guid.Parse("b31754e2-82fc-4862-ad20-9331a87537eb"),
                    CreatedOn = DateTime.UtcNow,
-                   Name = "preparing"
+                   Name = "canceled"
                 }
             };
             modelBuilder.Entity<Status>().HasData(statuses);

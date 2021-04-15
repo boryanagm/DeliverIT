@@ -7,8 +7,9 @@ namespace Deliverit.Services.Contracts
 {
     public interface ICustomerService
     {
-        Customer Get(Guid id);
-        IEnumerable<Customer> GetAll();
+        CustomerDTO Get(Guid id);
+        IEnumerable<CustomerDTO> GetAll();
+        int GetCount();
         Customer Create(Customer customer);
         Customer Update(Guid id, string streetName, string city); // Guid id, Customer customer
         bool Delete(Guid id);

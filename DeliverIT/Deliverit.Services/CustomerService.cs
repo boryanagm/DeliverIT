@@ -19,29 +19,43 @@ namespace Deliverit.Services
         }
 
 
-        public Customer Get(Guid id) 
+        public CustomerDTO Get(Guid id) 
         {
-            //Customer customer = this.context.Customers
-            //    .Include(c => c.FirstName)
-            //    .Include(c => c.LastName)
-            //    .FirstOrDefault(c => c.Id == id);
+            var dto = this.context.Customers
+               .Select(c => new CustomerDTO
+               {
+                   Id = c.Id,
+                   FirstName = c.FirstName,
+                   LastName = c.LastName,
+                   Email = c.Email
+               })
+               .FirstOrDefault(c => c.Id == id)
+               ?? throw new ArgumentNullException();
 
-            //CustomerDTO dto = new CustomerDTO();
-            //dto.FirstName = customer.FirstName;
-            //dto.LastName = customer.LastName;
-
-            //return dto;
-            var customer = this.context.Customers
-                .FirstOrDefault(c => c.Id == id)
-                ?? throw new ArgumentNullException();
-
-            return customer;
+            return dto;
         }
 
-        public IEnumerable<Customer> GetAll()
+        public IEnumerable<CustomerDTO> GetAll()
         {
-            var customers = this.context.Customers;
+            List<CustomerDTO> customers = new List<CustomerDTO>();
+
+            foreach (var customer in this.context.Customers)
+            {
+                var dto = new CustomerDTO
+                {
+                    Id = customer.Id,
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName,
+                    Email = customer.Email
+                };
+                customers.Add(dto);
+            }
             return customers;
+        }
+
+        public int GetCount()
+        {
+            return this.context.Customers.Count();
         }
 
         public Customer Create(Customer customer)
@@ -111,7 +125,7 @@ namespace Deliverit.Services
                    .ThenInclude(p => p.Shipment)
                      .ThenInclude(s => s.Status)
                 .FirstOrDefault(c => c.Id == id).Parcels
-                .Where(p => p.Shipment.Status.Name == "on The Way")
+                .Where(p => p.Shipment.Status.Name == "on The Way" || p.Shipment.Status.Name == "preparing")
                 .Select(c => new ParcelDTO { Id = c.Id })
                 .ToList();
 
