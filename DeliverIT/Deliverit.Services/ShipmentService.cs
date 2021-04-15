@@ -145,7 +145,7 @@ namespace Deliverit.Services
 
             var shipments = this.context.Warehouses
                 .Include(s => s.Shipments)
-                .ThenInclude(s=>s.Status)
+                .ThenInclude(s => s.Status)
                 .Where(s => s.Id == warehouse.Id)
                 .SelectMany(s => s.Shipments).ToList();
             var shipmentsToDisplay = new List<ShipmentDTO>();
