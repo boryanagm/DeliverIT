@@ -1,6 +1,8 @@
 ﻿using Deliverit.Models;
 using Deliverit.Services.Contracts;
+using Deliverit.Services.Models;
 using DeliverIT.Database;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,19 +18,36 @@ namespace Deliverit.Services
             this.context = context;
         }
 
-        public Country Get(Guid id)
+        public CountryDTO Get(Guid id)
         {
             var country = this.context.Countries
+                .Include(c=> c.Cities)
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
 
-            return country;
+            var dto = new CountryDTO
+            {
+                Id = country.Id,
+                Name = country.Name,
+                NumberOfCities = country.Cities.Count(),
+            };
+
+            return dto;
         }
 
-        public IEnumerable<Country> GetAll()
+        public IEnumerable<CountryDTO> GetAll()
         {
-            var countries = this.context.Countries;
-
+            List<CountryDTO> countries = new List<CountryDTO>();
+            foreach(var country in this.context.Countries.Include(c=>c.Cities))
+            {
+                CountryDTO countryToAdd = new CountryDTO
+                {
+                    Id = country.Id,
+                    Name = country.Name,
+                    NumberOfCities = country.Cities.Count()                 
+                };
+                countries.Add(countryToAdd);
+            }
             return countries;
         }
     }

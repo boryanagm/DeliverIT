@@ -1,4 +1,5 @@
 ﻿using Deliverit.Models;
+using Deliverit.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,7 +8,7 @@ namespace Deliverit.Services.Contracts
 {
     public interface ICountryService
     {
-        Country Get(Guid id);
-        IEnumerable<Country> GetAll();
+        CountryDTO Get(Guid id);
+        IEnumerable<CountryDTO> GetAll();
     }
 }
