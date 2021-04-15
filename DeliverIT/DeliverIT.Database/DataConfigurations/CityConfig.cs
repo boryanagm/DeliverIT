@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Deliverit.Database.DataConfigurations
 {
-    public class CityConfig// : IEntityTypeConfiguration<City>
+    public class CityConfig : IEntityTypeConfiguration<City>
     {
-        
-        //public void Configure(EntityTypeBuilder<City> builder)
-        //{
-        //    
-        //}
+        public void Configure(EntityTypeBuilder<City> builder)
+        {
+            builder.HasQueryFilter(c => !c.IsDeleted);
+        }
     }
 
     /*

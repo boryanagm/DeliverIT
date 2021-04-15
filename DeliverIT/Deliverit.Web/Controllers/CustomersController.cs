@@ -1,4 +1,5 @@
-﻿using Deliverit.Services.Contracts;
+﻿using Deliverit.Services;
+using Deliverit.Services.Contracts;
 using DeliverIT.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -37,13 +38,13 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id, [FromBody] Customer customer)
+        public IActionResult Put(Guid id, [FromHeader] string streetName, string city) // Guid id, [FromBody] Customer customer
         {
             try
             {
-                var customerToUpdate = this.customerService.Update(id, customer);
+                var customerToUpdate = this.customerService.Update(id, streetName, city);
 
-                return this.Ok(customer);
+                return this.Ok(customerToUpdate);
             }
             catch (ArgumentNullException)
             {
@@ -94,10 +95,10 @@ namespace Deliverit.Web.Controllers
             return this.Ok(this.customerService.GetByKeyWord(key));
         }
 
-        //[HttpGet("{customFilter}")]
-        //public IActionResult GetByMultipleCriteria([FromBody]CustomerFilter customerFilter)
-        //{
-        //    return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
-        //}
+        [HttpGet("/multiple")] // TODO: Not working
+        public IActionResult GetByMultipleCriteria([FromQuery]CustomerFilter customerFilter) 
+        {
+            return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
+        }
     }
 }

@@ -16,6 +16,8 @@ namespace Deliverit.Database.DataConfigurations
             builder.HasMany(a => a.Warehouses)
                    .WithOne(w => w.Address)
                    .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasQueryFilter(a => !a.IsDeleted);
         }
     }
 

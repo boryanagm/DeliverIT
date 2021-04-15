@@ -1,5 +1,6 @@
 ﻿using Deliverit.Database.Seed;
 using Deliverit.Models;
+using Deliverit.Models.Abstract;
 using DeliverIT.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;

@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Deliverit.Database.DataConfigurations
 {
-    public class CountryConfig// : IEntityTypeConfiguration<Country>
+    public class CountryConfig : IEntityTypeConfiguration<Country>
     {
-        //public void Configure(EntityTypeBuilder<Country> builder)
-        //{
-        //    
-        //}
+        public void Configure(EntityTypeBuilder<Country> builder)
+        {
+            builder.HasQueryFilter(c => !c.IsDeleted);
+        }
     }
 
     /*

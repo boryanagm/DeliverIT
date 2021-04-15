@@ -19,8 +19,18 @@ namespace Deliverit.Services
         }
 
 
-        public Customer Get(Guid id)
+        public Customer Get(Guid id) 
         {
+            //Customer customer = this.context.Customers
+            //    .Include(c => c.FirstName)
+            //    .Include(c => c.LastName)
+            //    .FirstOrDefault(c => c.Id == id);
+
+            //CustomerDTO dto = new CustomerDTO();
+            //dto.FirstName = customer.FirstName;
+            //dto.LastName = customer.LastName;
+
+            //return dto;
             var customer = this.context.Customers
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
@@ -44,20 +54,20 @@ namespace Deliverit.Services
             return customer;
         }
 
-        public Customer Update(Guid id, Customer customer)
+        public Customer Update(Guid id, string streetName, string city) 
         {
             var customerToUpdate = this.context.Customers
+                .Include(c => c.Address)
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
 
-            customerToUpdate.FirstName = customer.FirstName;
-            customerToUpdate.LastName = customer.LastName;
-            customerToUpdate.AddressId = customer.AddressId; // Or Address?
-            customer.ModifiedOn = DateTime.UtcNow;
+            var newCity = this.context.Cities.FirstOrDefault(c => c.Name == city);
+            var newAddress = new Address { Id = new Guid(), CreatedOn = DateTime.UtcNow, City = newCity, StreetName = streetName };
 
+            customerToUpdate.Address = newAddress;
             this.context.SaveChanges();
 
-            return customer;
+            return customerToUpdate;
         }
         public bool Delete(Guid id)
         {
@@ -100,7 +110,7 @@ namespace Deliverit.Services
             return customer;
         }
 
-        public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)
+        public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)  
         {
             var searchResult = this.context.Customers
                 .Where(c => customerFilter.FirstName == null || c.FirstName.Contains(customerFilter.FirstName) 

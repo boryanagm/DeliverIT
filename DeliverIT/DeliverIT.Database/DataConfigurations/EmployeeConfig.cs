@@ -10,6 +10,8 @@ namespace Deliverit.Database.DataConfigurations
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
             builder.HasIndex(e => e.Email).IsUnique();
+
+            builder.HasQueryFilter(e => !e.IsDeleted);
         }
     }
 
