@@ -37,10 +37,20 @@ namespace Deliverit.Services
 
         public IEnumerable<WarehouseDTO> GetAll()
         {
-            //var warehouses = this.context.Warehouses;
+            List<WarehouseDTO> warehouses = new List<WarehouseDTO>();
 
-            //return dto;
-            throw new NotImplementedException();
+            foreach (var warehouse in this.context.Warehouses.Include(w => w.Address).ThenInclude(a => a.City).ThenInclude(c => c.Country))
+            {
+                var dto = new WarehouseDTO
+                {
+                    Id = warehouse.Id,
+                    StreetName = warehouse.Address.StreetName,
+                    City = warehouse.Address.City.Name,
+                    Country = warehouse.Address.City.Country.Name
+                };
+                warehouses.Add(dto);
+            }
+            return warehouses;
         }
 
         public Warehouse Create(Warehouse warehouse)
