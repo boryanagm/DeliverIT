@@ -65,7 +65,28 @@ namespace Deliverit.Web.Controllers
             return this.NotFound();
         }
 
-        [HttpGet("{email}/email")]
+        [HttpGet("{id}/parcels")]
+        public IActionResult GetIncomingParcels(Guid id)
+        {
+            return this.Ok(this.customerService.GetIncomingParcels(id));
+        }
+
+        [HttpGet("{key}/all")]
+        public IActionResult GetByKeyWord(string key)
+        {
+            return this.Ok(this.customerService.GetByKeyWord(key));
+        }
+
+        [HttpGet("/multiple")] 
+        public IActionResult GetByMultipleCriteria([FromQuery]CustomerFilter customerFilter) 
+        {
+            return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
+        }
+    }
+}
+
+/*
+  [HttpGet("{email}/email")]
         public IActionResult GetByEmail(string email)
         {
             return this.Ok(this.customerService.GetByEmail(email));
@@ -82,23 +103,4 @@ namespace Deliverit.Web.Controllers
         {
             return this.Ok(this.customerService.GetByLastName(lastName));
         }
-
-        [HttpGet("{id}/parcels")]
-        public IActionResult GetIncomingParcels(Guid id)
-        {
-            return this.Ok(this.customerService.GetIncomingParcels(id));
-        }
-
-        [HttpGet("{key}/all")]
-        public IActionResult GetByKeyWord(string key)
-        {
-            return this.Ok(this.customerService.GetByKeyWord(key));
-        }
-
-        [HttpGet("/multiple")] // TODO: Not working
-        public IActionResult GetByMultipleCriteria([FromQuery]CustomerFilter customerFilter) 
-        {
-            return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
-        }
-    }
-}
+ */

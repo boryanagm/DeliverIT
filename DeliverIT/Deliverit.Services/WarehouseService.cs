@@ -1,6 +1,8 @@
 ﻿using Deliverit.Services.Contracts;
+using Deliverit.Services.Models;
 using DeliverIT.Database;
 using DeliverIT.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,20 +19,28 @@ namespace Deliverit.Services
             this.context = context;
         }
 
-
-        public Warehouse Get(Guid id)
+        public WarehouseDTO Get(Guid id)
         {
-            var warehouse = this.context.Warehouses
+            var dto = this.context.Warehouses
+                .Select(w => new WarehouseDTO
+                {
+                    Id = w.Id,
+                    StreetName = w.Address.StreetName,
+                    City = w.Address.City.Name,
+                    Country = w.Address.City.Country.Name
+                })
                 .FirstOrDefault(w => w.Id == id)
                 ?? throw new ArgumentNullException();
 
-            return warehouse;
+            return dto;
         }
 
-        public IEnumerable<Warehouse> GetAll()
+        public IEnumerable<WarehouseDTO> GetAll()
         {
-            var warehouses = this.context.Warehouses;
-            return warehouses;
+            //var warehouses = this.context.Warehouses;
+
+            //return dto;
+            throw new NotImplementedException();
         }
 
         public Warehouse Create(Warehouse warehouse)

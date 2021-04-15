@@ -86,7 +86,69 @@ namespace Deliverit.Services
             return false;
         }
 
-        public Customer GetByEmail(string email)
+        public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)  
+        {
+            var searchResult = this.context.Customers
+                .Where(c => c.FirstName.Contains(customerFilter.FirstName)
+                || c.LastName.Contains(customerFilter.LastName)
+                || c.Email.Contains(customerFilter.Email))
+                .Select(c => new CustomerDTO 
+                {
+                   Id = c.Id,
+                   FirstName = c.FirstName,
+                   LastName = c.LastName, 
+                   Email = c.Email
+                })
+                .ToList();
+
+            return searchResult;
+        }
+
+        public List<ParcelDTO> GetIncomingParcels(Guid id) 
+        {
+            List<ParcelDTO> dto = this.context.Customers
+                .Include(c => c.Parcels)
+                   .ThenInclude(p => p.Shipment)
+                     .ThenInclude(s => s.Status)
+                .FirstOrDefault(c => c.Id == id).Parcels
+                .Where(p => p.Shipment.Status.Name == "on The Way")
+                .Select(c => new ParcelDTO { Id = c.Id })
+                .ToList();
+
+            return dto;
+        }
+
+        public Customer GetByKeyWord(string key)
+        {
+            var customer = this.context.Customers
+                .FirstOrDefault(c => c.FirstName == key
+                || c.LastName == key
+                || c.Email == key);
+
+            return customer;
+        }
+    }
+}
+/*
+  public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)  
+        {
+            var searchResult = this.context.Customers
+                .Where(c => customerFilter.FirstName == null || c.FirstName.Contains(customerFilter.FirstName) 
+                && customerFilter.LastName == null || c.LastName.Contains(customerFilter.LastName) 
+                && customerFilter.Email == null || c.Email.Contains(customerFilter.Email))
+                .Select(c => new CustomerDTO 
+                {
+                   Id = c.Id,
+                   FirstName = c.FirstName,
+                   LastName = c.LastName, 
+                   Email = c.Email
+                })
+                .ToList();
+
+            return searchResult;
+        }
+
+ public Customer GetByEmail(string email)
         {
             var customer = this.context.Customers
                 .FirstOrDefault(c => c.Email == email);
@@ -109,44 +171,4 @@ namespace Deliverit.Services
 
             return customer;
         }
-
-        public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)  
-        {
-            var searchResult = this.context.Customers
-                .Where(c => customerFilter.FirstName == null || c.FirstName.Contains(customerFilter.FirstName) 
-                && customerFilter.LastName == null || c.LastName.Contains(customerFilter.LastName) 
-                && customerFilter.Email == null || c.Email.Contains(customerFilter.Email))
-                .Select(c => new CustomerDTO 
-                {
-                   Id = c.Id,
-                   FirstName = c.FirstName,
-                   LastName = c.LastName, 
-                   Email = c.Email
-                })
-                .ToList();
-
-            return searchResult;
-        }
-
-        public List<ParcelDTO> GetIncomingParcels(Guid id) 
-        {
-            List<ParcelDTO> dto = this.context.Customers
-                .Include(c => c.Parcels)
-                .FirstOrDefault(c => c.Id == id).Parcels
-                .Select(c => new ParcelDTO { Id = c.Id })
-                .ToList();
-
-            return dto;
-        }
-
-        public Customer GetByKeyWord(string key)
-        {
-            var customer = this.context.Customers
-                .FirstOrDefault(c => c.FirstName == key
-                || c.LastName == key
-                || c.Email == key);
-
-            return customer;
-        }
-    }
-}
+ */
