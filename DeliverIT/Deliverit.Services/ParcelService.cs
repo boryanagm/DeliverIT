@@ -72,7 +72,7 @@ namespace Deliverit.Services
 
             //            var warehouse = this.context.Warehouses
             //              .FirstOrDefault(w => w.Id == parcel.WarehouseId);
-            
+
             var customer = this.context.Customers
                 .FirstOrDefault(c => c.Id == parcel.CustomerId);
             var category = this.context.Category
@@ -84,7 +84,7 @@ namespace Deliverit.Services
                 Weight = parcel.Weight,
                 Category = category,
                 Employee = employee,
-                Customer = customer,             
+                Customer = customer,
                 Shipment = shipment
             };
             this.context.Parcels.Add(newParcel);
