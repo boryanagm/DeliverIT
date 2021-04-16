@@ -60,18 +60,19 @@ namespace Deliverit.Services
 
         public Customer Create(Customer customer)
         {
-            customer.CreatedOn = DateTime.UtcNow;
-
             this.context.Customers.Add(customer);
+            customer.CreatedOn = DateTime.UtcNow;
             this.context.SaveChanges();
 
             return customer;
         }
 
-        public Customer Update(Guid id, string streetName, string city) 
+        public CustomerDTO Update(Guid id, string streetName, string city) 
         {
             var customerToUpdate = this.context.Customers
                 .Include(c => c.Address)
+                  .ThenInclude(a => a.City)
+                    .ThenInclude(c => c.Country)
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
 
@@ -81,13 +82,24 @@ namespace Deliverit.Services
                 Id = new Guid(), 
                 CreatedOn = DateTime.UtcNow, 
                 City = newCity, 
-                StreetName = streetName 
+                StreetName = streetName
             };
 
             customerToUpdate.Address = newAddress;
             this.context.SaveChanges();
 
-            return customerToUpdate;
+            var dto = new CustomerDTO
+            { 
+               Id = customerToUpdate.Id,
+               FirstName = customerToUpdate.FirstName,
+               LastName = customerToUpdate.LastName,
+               Email = customerToUpdate.Email,
+               StreetName = customerToUpdate.Address.StreetName,
+               City = customerToUpdate.Address.City.Name,
+               Country = customerToUpdate.Address.City.Country.Name
+            };
+
+            return dto;
         }
         public bool Delete(Guid id)
         {
@@ -117,7 +129,10 @@ namespace Deliverit.Services
                    Id = c.Id,
                    FirstName = c.FirstName,
                    LastName = c.LastName, 
-                   Email = c.Email
+                   Email = c.Email,
+                   StreetName = c.Address.StreetName,
+                   City = c.Address.City.Name,
+                   Country = c.Address.City.Country.Name
                 })
                 .ToList();
 
@@ -138,14 +153,28 @@ namespace Deliverit.Services
             return dto;
         }
 
-        public Customer GetByKeyWord(string key)
+        public CustomerDTO GetByKeyWord(string key)
         {
             var customer = this.context.Customers
+                .Include(c => c.Address)
+                  .ThenInclude(a => a.City)
+                    .ThenInclude(c => c.Country)
                 .FirstOrDefault(c => c.FirstName == key
                 || c.LastName == key
                 || c.Email == key);
 
-            return customer;
+            var dto = new CustomerDTO
+            { 
+               Id = customer.Id,
+               FirstName = customer.FirstName,
+               LastName = customer.LastName,
+               Email = customer.Email,
+               StreetName = customer.Address.StreetName,
+               City = customer.Address.City.Name,
+               Country = customer.Address.City.Country.Name
+            };
+
+            return dto;
         }
     }
 }

@@ -26,6 +26,9 @@ namespace Deliverit.Services
                   FirstName = e.FirstName,
                   LastName = e.LastName,
                   Email = e.Email,
+                  StreetName = e.Address.StreetName,
+                  City = e.Address.City.Name,
+                  Country = e.Address.City.Country.Name,
                   Parcels = e.Parcels.Select(p => p.Id).ToList()
               })
               .FirstOrDefault(e => e.Id == id)
@@ -38,7 +41,11 @@ namespace Deliverit.Services
         {
             List<EmployeeDTO> employees = new List<EmployeeDTO>();
 
-            foreach (var employee in this.context.Employees.Include(e => e.Parcels))
+            foreach (var employee in this.context.Employees
+                .Include(e => e.Parcels)
+                .Include(e => e.Address)
+                  .ThenInclude(a => a.City)
+                    .ThenInclude(c => c.Country))
             {
                 var dto = new EmployeeDTO
                 {
@@ -46,35 +53,60 @@ namespace Deliverit.Services
                     FirstName = employee.FirstName,
                     LastName = employee.LastName,
                     Email = employee.Email,
+                    StreetName = employee.Address.StreetName,
+                    City = employee.Address.City.Name,
+                    Country = employee.Address.City.Country.Name,
                     Parcels = employee.Parcels.Select(p => p.Id).ToList()
                 };
                 employees.Add(dto);
             }
+
             return employees;
         }
         public Employee Create(Employee employee)
         {
-            employee.CreatedOn = DateTime.UtcNow;
-
             this.context.Employees.Add(employee);
+            employee.CreatedOn = DateTime.UtcNow;
             this.context.SaveChanges();
 
             return employee;
         }
        
-        public Employee Update(Guid id, string streetName, string city)
+        public EmployeeDTO Update(Guid id, string streetName, string city)
         {
             var employeeToUpdate = this.context.Employees
+               .Include(e => e.Parcels)
+               .Include(e => e.Address)
+                 .ThenInclude(a => a.City)
+                   .ThenInclude(c => c.Country)
                .FirstOrDefault(e => e.Id == id)
                ?? throw new ArgumentNullException();
 
-            employeeToUpdate.Address.StreetName = streetName;
-            employeeToUpdate.Address.City = this.context.Cities
-                .FirstOrDefault(c => c.Name == city); // Throw exception if city doesn't exist?
+            var newCity = this.context.Cities.FirstOrDefault(c => c.Name == city);
+            var newAddress = new Address
+            {
+                Id = new Guid(),
+                CreatedOn = DateTime.UtcNow,
+                City = newCity,
+                StreetName = streetName
+            };
 
+            employeeToUpdate.Address = newAddress;
             this.context.SaveChanges();
 
-            return employeeToUpdate;
+            var dto = new EmployeeDTO
+            {
+                Id = employeeToUpdate.Id,
+                FirstName = employeeToUpdate.FirstName,
+                LastName = employeeToUpdate.LastName,
+                Email = employeeToUpdate.Email,
+                StreetName = employeeToUpdate.Address.StreetName,
+                City = employeeToUpdate.Address.City.Name,
+                Country = employeeToUpdate.Address.City.Country.Name,
+                Parcels = employeeToUpdate.Parcels.Select(p => p.Id).ToList()
+            };
+
+            return dto;
         }
         public bool Delete(Guid id)
         {

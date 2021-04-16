@@ -54,8 +54,8 @@ namespace Deliverit.Services
 
         public Warehouse Create(Warehouse warehouse)
         {
-            warehouse.CreatedOn = DateTime.UtcNow;
             this.context.Warehouses.Add(warehouse);
+            warehouse.CreatedOn = DateTime.UtcNow;
             this.context.SaveChanges();
 
             //var dto = new WarehouseDTO

@@ -1,5 +1,4 @@
-﻿using Deliverit.Models;
-using Deliverit.Services.Contracts;
+﻿using Deliverit.Services.Contracts;
 using Deliverit.Services.Models;
 using DeliverIT.Database;
 using System;
@@ -20,7 +19,7 @@ namespace Deliverit.Services
         public CityDTO Get(Guid id)
         {
             var city = this.context.Cities
-                .Where(c => c.IsDeleted == false) // Is that necessary?
+                .Where(c => c.IsDeleted == false) 
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
 

@@ -11,10 +11,10 @@ namespace Deliverit.Services.Contracts
         IEnumerable<CustomerDTO> GetAll();
         int GetCount();
         Customer Create(Customer customer);
-        Customer Update(Guid id, string streetName, string city); // Guid id, Customer customer
+        CustomerDTO Update(Guid id, string streetName, string city); // Guid id, Customer customer
         bool Delete(Guid id);
         List<ParcelDTO> GetIncomingParcels(Guid id);
         List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter);  
-        Customer GetByKeyWord(string key);
+        CustomerDTO GetByKeyWord(string key);
     }
 }
