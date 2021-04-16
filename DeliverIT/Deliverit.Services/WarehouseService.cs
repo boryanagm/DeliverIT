@@ -55,25 +55,50 @@ namespace Deliverit.Services
         public Warehouse Create(Warehouse warehouse)
         {
             warehouse.CreatedOn = DateTime.UtcNow;
-
             this.context.Warehouses.Add(warehouse);
             this.context.SaveChanges();
+
+            //var dto = new WarehouseDTO
+            //{ 
+            //   Id = warehouse.Id,
+            //   StreetName = warehouse.Address.StreetName,
+            //   City = warehouse.Address.City.Name,
+            //   Country = warehouse.Address.City.Country.Name
+            //};
 
             return warehouse;
         }
 
-        public Warehouse Update(Guid id, Warehouse warehouse)
+        public WarehouseDTO Update(Guid id, string streetName, string city)
         {
             var warehouseToUpdate = this.context.Warehouses
+                .Include(w => w.Address)
+                  .ThenInclude(a => a.City)
+                    .ThenInclude(c => c.Country)
                 .FirstOrDefault(w => w.Id == id)
                 ?? throw new ArgumentNullException();
 
-            warehouseToUpdate.Address = warehouse.Address; // Or AddresId?
-            warehouseToUpdate.ModifiedOn = DateTime.UtcNow;
+            var newCity = this.context.Cities.FirstOrDefault(c => c.Name == city);
+            var newAddress = new Address
+            {
+                Id = new Guid(),
+                CreatedOn = DateTime.UtcNow,
+                City = newCity,
+                StreetName = streetName
+            };
 
+            warehouseToUpdate.Address = newAddress;
+            warehouseToUpdate.ModifiedOn = DateTime.UtcNow;
             this.context.SaveChanges();
 
-            return warehouse;
+            var dto = new WarehouseDTO
+            { 
+               Id = warehouseToUpdate.Id,
+               StreetName = warehouseToUpdate.Address.StreetName,
+               City = warehouseToUpdate.Address.City.Name,
+               Country = warehouseToUpdate.Address.City.Country.Name
+            };
+            return dto;
         }
 
         public bool Delete(Guid id)

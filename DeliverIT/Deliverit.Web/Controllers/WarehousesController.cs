@@ -29,7 +29,7 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpPost("")]
-        public IActionResult Post([FromBody] Warehouse warehouse) 
+        public IActionResult Post([FromQuery] Warehouse warehouse) 
         {
             var warehouseToUpdate = this.warehouseService.Create(warehouse);
 
@@ -37,13 +37,13 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id, [FromBody] Warehouse warehouse)
+        public IActionResult Put(Guid id, string streetName, string city)
         {
             try
             {
-                var warehouseToUpdate = this.warehouseService.Update(id, warehouse);
+                var warehouseToUpdate = this.warehouseService.Update(id, streetName, city);
 
-                return this.Ok(warehouse);
+                return this.Ok(warehouseToUpdate);
             }
             catch (ArgumentNullException)
             {

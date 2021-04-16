@@ -36,7 +36,7 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpPost("")]
-        public IActionResult Post([FromBody] Customer customer)
+        public IActionResult Post([FromQuery] Customer customer)
         {
             var customerToUpdate = this.customerService.Create(customer);
 

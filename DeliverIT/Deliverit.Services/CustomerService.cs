@@ -76,7 +76,13 @@ namespace Deliverit.Services
                 ?? throw new ArgumentNullException();
 
             var newCity = this.context.Cities.FirstOrDefault(c => c.Name == city);
-            var newAddress = new Address { Id = new Guid(), CreatedOn = DateTime.UtcNow, City = newCity, StreetName = streetName };
+            var newAddress = new Address 
+            { 
+                Id = new Guid(), 
+                CreatedOn = DateTime.UtcNow, 
+                City = newCity, 
+                StreetName = streetName 
+            };
 
             customerToUpdate.Address = newAddress;
             this.context.SaveChanges();
@@ -125,7 +131,7 @@ namespace Deliverit.Services
                    .ThenInclude(p => p.Shipment)
                      .ThenInclude(s => s.Status)
                 .FirstOrDefault(c => c.Id == id).Parcels
-                .Where(p => p.Shipment.Status.Name == "on The Way" || p.Shipment.Status.Name == "preparing")
+                .Where(p => p.Shipment.Status.Name == "on the way" || p.Shipment.Status.Name == "preparing")
                 .Select(c => new ParcelDTO { Id = c.Id })
                 .ToList();
 

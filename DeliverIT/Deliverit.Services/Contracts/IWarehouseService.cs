@@ -10,7 +10,7 @@ namespace Deliverit.Services.Contracts
         WarehouseDTO Get(Guid id);
         IEnumerable<WarehouseDTO> GetAll();
         Warehouse Create(Warehouse warehouse);
-        Warehouse Update(Guid id, Warehouse warehouse);
+        WarehouseDTO Update(Guid id, string streetName, string city);
         bool Delete(Guid id);
     }
 }
