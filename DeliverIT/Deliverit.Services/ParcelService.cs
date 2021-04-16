@@ -1,6 +1,7 @@
 ﻿using Deliverit.Services.Contracts;
 using Deliverit.Services.Models;
 using DeliverIT.Database;
+using DeliverIT.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -61,9 +62,43 @@ namespace Deliverit.Services
             return parcels;
         }
 
-        public ParcelDTO Create(CreateShipmentDTO shipment)
+        public ParcelDTO Create(CreateParcelDTO parcel)
         {
-            throw new NotImplementedException();
+            var shipment = this.context.Shipments
+                .Include(s => s.Status)
+                .FirstOrDefault(s => s.Id == parcel.ShipmentId);
+            //if (shipment.Status.Name != "preparing")
+            //  throw new ArgumentException("The shipment's status should be on Preparing when creating a parcel.");
+
+            //            var warehouse = this.context.Warehouses
+            //              .FirstOrDefault(w => w.Id == parcel.WarehouseId);
+            
+            var customer = this.context.Customers
+                .FirstOrDefault(c => c.Id == parcel.CustomerId);
+            var category = this.context.Category
+                .FirstOrDefault(c => c.Name == parcel.CategoryName);
+            var employee = this.context.Employees
+                .FirstOrDefault(c => c.Id == parcel.EmployeeId);
+            var newParcel = new Parcel
+            {
+                Weight = parcel.Weight,
+                Category = category,
+                Employee = employee,
+                Customer = customer,             
+                Shipment = shipment
+            };
+            this.context.Parcels.Add(newParcel);
+            this.context.SaveChanges();
+
+            var parcelToDisplay = new ParcelDTO
+            {
+                Id = newParcel.Id,
+                Weight = newParcel.Weight,
+                Category = newParcel.Category.Name,
+                CustomerName = newParcel.Customer.FirstName + " " + newParcel.Customer.LastName,
+            };
+
+            return parcelToDisplay;
         }
 
         public ParcelDTO Update(Guid id, ParcelDTO shipment)

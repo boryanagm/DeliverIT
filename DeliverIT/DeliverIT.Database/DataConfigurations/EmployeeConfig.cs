@@ -9,6 +9,10 @@ namespace Deliverit.Database.DataConfigurations
     {
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
+            builder.HasMany(s => s.Parcels)
+                   .WithOne(p => p.Employee)
+                   .OnDelete(DeleteBehavior.Restrict);
+
             builder.HasIndex(e => e.Email).IsUnique();
 
             builder.HasQueryFilter(e => !e.IsDeleted);

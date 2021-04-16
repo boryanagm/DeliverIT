@@ -9,8 +9,8 @@ namespace Deliverit.Database.DataConfigurations
     {
         public void Configure(EntityTypeBuilder<Parcel> builder)
         {
-            builder.HasOne(p => p.Warehouse)
-                   .WithMany(w => w.Parcels)
+            builder.HasOne(e => e.Employee)
+                   .WithMany(p => p.Parcels)
                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(p => p.Shipment)

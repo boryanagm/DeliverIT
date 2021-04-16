@@ -74,9 +74,19 @@ namespace Deliverit.Services
 
             if (shipmentToUpdate.IsDeleted == true)
                 throw new ArgumentException("A shipment with this ID doesn't exist.");
+            if (shipmentToUpdate.Status.Name == "completed")
+                throw new ArgumentException("A shipment that has a completed status can't be updated.");
+            if (shipmentToUpdate.Status.Name == "on the way" && shipment.Status == "preparing")
+                throw new ArgumentException("A shipment that is on the way can't be reverted to preparing.");
+            if (shipmentToUpdate.Status.Name == "preparing" && shipment.Status == "completed")
+                throw new ArgumentException("A shipment must first be on the way before being completed.");
 
             if (shipmentToUpdate.Status.Name != shipment.Status)
             {
+                if(shipmentToUpdate.Status.Name == "preparing")               
+                    shipmentToUpdate.DepartureDate = DateTime.UtcNow;
+                if (shipmentToUpdate.Status.Name == "on the way")
+                    shipmentToUpdate.ArrivalDate = DateTime.UtcNow;
                 shipmentToUpdate.Status.Name = shipment.Status;
                 shipmentToUpdate.ModifiedOn = DateTime.UtcNow;
                 this.context.SaveChanges();

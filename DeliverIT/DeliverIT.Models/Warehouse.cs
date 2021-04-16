@@ -14,6 +14,5 @@ namespace DeliverIT.Models
 
         public ICollection<Shipment> Shipments { get; set; }
 
-        public ICollection<Parcel> Parcels { get; set; } 
     }
 }

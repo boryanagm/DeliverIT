@@ -31,5 +31,12 @@ namespace Deliverit.Web.Controllers
         {
             return this.Ok(this.parcelService.GetAll());
         }
+        [HttpPost("create/")]
+        public IActionResult Post([FromQuery] CreateParcelDTO parcel)
+        {
+            var parcelToCreate = this.parcelService.Create(parcel);
+
+            return this.Created("post", parcelToCreate);
+        }
     }
 }
