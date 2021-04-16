@@ -71,10 +71,16 @@ namespace Deliverit.Web.Controllers
             return this.NotFound();
         }
 
-        [HttpGet("{id}/parcels")]
+        [HttpGet("{id}/incoming")]
         public IActionResult GetIncomingParcels(Guid id)
         {
             return this.Ok(this.customerService.GetIncomingParcels(id));
+        }
+
+        [HttpGet("{id}/past")]
+        public IActionResult GetPastParcels(Guid id)
+        {
+            return this.Ok(this.customerService.GetPastParcels(id));
         }
 
         [HttpGet("{key}/all")]

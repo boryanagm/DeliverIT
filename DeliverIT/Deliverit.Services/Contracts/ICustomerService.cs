@@ -14,6 +14,7 @@ namespace Deliverit.Services.Contracts
         CustomerDTO Update(Guid id, string streetName, string city); // Guid id, Customer customer
         bool Delete(Guid id);
         List<ParcelDTO> GetIncomingParcels(Guid id);
+        List<ParcelDTO> GetPastParcels(Guid id);
         List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter);  
         CustomerDTO GetByKeyWord(string key);
     }

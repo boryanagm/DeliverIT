@@ -306,7 +306,7 @@ namespace Deliverit.Database.Seed
                    CreatedOn = DateTime.UtcNow,
                    DepartureDate = DateTime.UtcNow,
                    ArrivalDate = DateTime.UtcNow.AddDays(5),
-                   StatusId = Guid.Parse("858ac364-d94f-414c-bbea-a0f5b8679b3d"),
+                   StatusId = Guid.Parse("84568d3c-04df-47c3-9ad8-216b1d664166"),
                    WarehouseId = Guid.Parse("988a4201-8c55-42fc-b2a6-e08d1abe6693")
                 }
             };

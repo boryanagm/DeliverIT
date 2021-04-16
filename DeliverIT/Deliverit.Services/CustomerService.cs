@@ -139,7 +139,7 @@ namespace Deliverit.Services
             return searchResult;
         }
 
-        public List<ParcelDTO> GetIncomingParcels(Guid id) // TODO: Method to check past parcels!!!!!!!!!
+        public List<ParcelDTO> GetIncomingParcels(Guid id) 
         {
             List<ParcelDTO> dto = this.context.Customers
                 .Include(c => c.Parcels)
@@ -147,7 +147,21 @@ namespace Deliverit.Services
                      .ThenInclude(s => s.Status)
                 .FirstOrDefault(c => c.Id == id).Parcels
                 .Where(p => p.Shipment.Status.Name == "on the way" || p.Shipment.Status.Name == "preparing")
-                .Select(c => new ParcelDTO { Id = c.Id })
+                .Select(p => new ParcelDTO { Id = p.Id })
+                .ToList();
+
+            return dto;
+        }
+
+        public List<ParcelDTO> GetPastParcels(Guid id)  
+        {
+            List<ParcelDTO> dto = this.context.Customers
+                .Include(c => c.Parcels)
+                   .ThenInclude(p => p.Shipment)
+                     .ThenInclude(s => s.Status)
+                .FirstOrDefault(c => c.Id == id).Parcels
+                .Where(p => p.Shipment.Status.Name == "completed" || p.Shipment.Status.Name == "canceled")
+                .Select(p => new ParcelDTO { Id = p.Id })
                 .ToList();
 
             return dto;
