@@ -7,6 +7,7 @@ namespace Deliverit.Services.Contracts
 {
     public interface ICustomerService
     {
+        Customer GetByCustomerEmail(string customerEmail);
         CustomerDTO Get(Guid id);
         IEnumerable<CustomerDTO> GetAll();
         int GetCount();

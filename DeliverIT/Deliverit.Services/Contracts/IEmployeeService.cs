@@ -7,6 +7,7 @@ namespace Deliverit.Services.Contracts
 {
     public interface IEmployeeService
     {
+        Employee GetByEmployeeEmail(string employeeEmail);
         EmployeeDTO Get(Guid id);
         IEnumerable<EmployeeDTO> GetAll();
         Employee Create(Employee employee);

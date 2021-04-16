@@ -18,6 +18,13 @@ namespace Deliverit.Services
             this.context = context;
         }
 
+        public Customer GetByCustomerEmail(string customerEmail)
+        {
+           return this.context.Customers
+                .FirstOrDefault(c => c.Email == customerEmail)
+                ?? throw new ArgumentNullException();
+        }
+
         public CustomerDTO Get(Guid id) 
         {
             var dto = this.context.Customers
