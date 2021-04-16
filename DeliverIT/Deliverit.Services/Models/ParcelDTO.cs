@@ -7,6 +7,9 @@ namespace Deliverit.Services.Models
 {
     public class ParcelDTO
     {
-         public Guid Id { get; set; }
+        public Guid Id { get; set; }
+        public int Weight { get; set; }
+        public string Category { get; set; }
+        public string CustomerName { get; set; }
     }
 }

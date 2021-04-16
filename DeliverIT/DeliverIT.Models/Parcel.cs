@@ -11,7 +11,7 @@ namespace DeliverIT.Models
         [Range(1, 100, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         [Required]
         public int Weight { get; set; }
-
+    
         [ForeignKey("Category")]
         public Guid CategoryId { get; set; }
         public Category Category { get; set; }

@@ -39,6 +39,7 @@ namespace Deliverit.Web
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IWarehouseService, WarehouseService>();
             services.AddScoped<IShipmentService, ShipmentService>();
+            services.AddScoped<IParcelService, ParcelService>();
             //services.AddScoped<IEmployeeService, EmployeeService>();
         }
 

@@ -268,7 +268,7 @@ namespace Deliverit.Database.Seed
                    CreatedOn = DateTime.UtcNow,
                    Weight = 10,
                    CategoryId = Guid.Parse("1db0c76c-ab76-4105-be89-3af983f6f137"),
-                   CustomerId = Guid.Parse("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1"),
+                   CustomerId = Guid.Parse("5adb06fe-fca4-4347-b1ea-118c55e17331"),
                    EmployeeId = Guid.Parse("d2c26c93-d589-4b05-850b-fbf21c59c84d"),
                    WarehouseId = Guid.Parse("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba"),
                    ShipmentId = Guid.Parse("ce465c59-4866-4905-bdbd-943a26f59fdd")
