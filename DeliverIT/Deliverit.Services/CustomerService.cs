@@ -18,7 +18,6 @@ namespace Deliverit.Services
             this.context = context;
         }
 
-
         public CustomerDTO Get(Guid id) 
         {
             var dto = this.context.Customers
