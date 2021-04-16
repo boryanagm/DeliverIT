@@ -83,7 +83,7 @@ namespace Deliverit.Services
 
             if (shipmentToUpdate.Status.Name != shipment.Status)
             {
-                if(shipmentToUpdate.Status.Name == "preparing")               
+                if (shipmentToUpdate.Status.Name == "preparing")
                     shipmentToUpdate.DepartureDate = DateTime.UtcNow;
                 if (shipmentToUpdate.Status.Name == "on the way")
                     shipmentToUpdate.ArrivalDate = DateTime.UtcNow;
