@@ -26,17 +26,34 @@ namespace Deliverit.Web.Controllers
         {
             return this.Ok(this.parcelService.Get(id));
         }
+
         [HttpGet("")]
         public IActionResult GetAll()
         {
             return this.Ok(this.parcelService.GetAll());
         }
+
         [HttpPost("create/")]
         public IActionResult Post([FromQuery] CreateParcelDTO parcel)
         {
             var parcelToCreate = this.parcelService.Create(parcel);
 
             return this.Created("post", parcelToCreate);
+        }
+
+        [HttpPut("update/{id}")]
+        public IActionResult Put(Guid id, [FromQuery] UpdateParcelDTO parcel)
+        {
+            try
+            {
+                var parcelToUpdate = this.parcelService.Update(id, parcel);
+
+                return this.Ok(parcelToUpdate);
+            }
+            catch (ArgumentNullException)
+            {
+                return this.Conflict();
+            }
         }
     }
 }

@@ -67,11 +67,6 @@ namespace Deliverit.Services
             var shipment = this.context.Shipments
                 .Include(s => s.Status)
                 .FirstOrDefault(s => s.Id == parcel.ShipmentId);
-            //if (shipment.Status.Name != "preparing")
-            //  throw new ArgumentException("The shipment's status should be on Preparing when creating a parcel.");
-
-            //            var warehouse = this.context.Warehouses
-            //              .FirstOrDefault(w => w.Id == parcel.WarehouseId);
 
             var customer = this.context.Customers
                 .FirstOrDefault(c => c.Id == parcel.CustomerId);
@@ -101,9 +96,50 @@ namespace Deliverit.Services
             return parcelToDisplay;
         }
 
-        public ParcelDTO Update(Guid id, ParcelDTO shipment)
+        public ParcelDTO Update(Guid id, UpdateParcelDTO parcel)
         {
-            throw new NotImplementedException();
+            var parcelToUpdate = this.context.Parcels
+                .Include(p => p.Category)
+                .Include(p => p.Customer)
+                .FirstOrDefault(s => s.Id == id)
+                ?? throw new ArgumentNullException();
+
+            if (parcel.CustomerId != null)
+            {
+                var customer = this.context.Customers
+                .FirstOrDefault(s => s.Id == parcel.CustomerId)
+                ?? throw new ArgumentNullException();
+                parcelToUpdate.Customer = customer;
+            }
+
+            if (parcel.CategoryId != null)
+            {
+                var category = this.context.Category
+                .FirstOrDefault(s => s.Id == parcel.CategoryId)
+                ?? throw new ArgumentNullException();
+                parcelToUpdate.Category = category;
+            }
+
+            if (parcel.ShipmentId != null)
+            {
+                var shipment = this.context.Shipments
+                .FirstOrDefault(s => s.Id == parcel.ShipmentId)
+                ?? throw new ArgumentNullException();
+                parcelToUpdate.Shipment = shipment;
+            }
+
+            if (parcel.Weight > 0)
+                parcelToUpdate.Weight = parcel.Weight;
+
+            var parcelToDisplay = new ParcelDTO
+            {
+                Id = parcelToUpdate.Id,
+                Weight = parcelToUpdate.Weight,
+                Category = parcelToUpdate.Category.Name,
+                CustomerName = parcelToUpdate.Customer.FirstName + " " + parcelToUpdate.Customer.LastName,
+            };
+
+            return parcelToDisplay;
         }
     }
 }

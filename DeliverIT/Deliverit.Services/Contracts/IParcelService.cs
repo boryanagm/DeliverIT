@@ -10,6 +10,6 @@ namespace Deliverit.Services.Contracts
         ParcelDTO Get(Guid id);
         IEnumerable<ParcelDTO> GetAll();
         ParcelDTO Create(CreateParcelDTO parcel);
-        ParcelDTO Update(Guid id, ParcelDTO shipment);
+        ParcelDTO Update(Guid id, UpdateParcelDTO parcel);
     }
 }
