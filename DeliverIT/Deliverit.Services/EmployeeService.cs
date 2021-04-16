@@ -2,6 +2,7 @@
 using Deliverit.Services.Models;
 using DeliverIT.Database;
 using DeliverIT.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,16 +18,8 @@ namespace Deliverit.Services
         {
             this.context = context;
         }
-        public EmployeeDTO Get(Guid id)
+        public EmployeeDTO Get(Guid id) 
         {
-            //List<ParcelDTO> dto = this.context.Employees
-            //    .Include(c => c.Parcels)
-            //       .ThenInclude(p => p.Shipment)
-            //         .ThenInclude(s => s.Status)
-            //    .FirstOrDefault(c => c.Id == id).Parcels
-            //    .Select(c => new ParcelDTO { Id = c.Id })
-            //    .ToList();
-
             var dto = this.context.Employees
               .Select(e => new EmployeeDTO
               {
@@ -44,10 +37,21 @@ namespace Deliverit.Services
 
         public IEnumerable<EmployeeDTO> GetAll()
         {
-            throw new NotImplementedException();
+            List<EmployeeDTO> employees = new List<EmployeeDTO>();
 
-            //var employees = this.context.Employees;
-            //return employees;
+            foreach (var employee in this.context.Employees.Include(e => e.Parcels))
+            {
+                var dto = new EmployeeDTO
+                {
+                    Id = employee.Id,
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
+                    Email = employee.Email,
+                    Parcels = employee.Parcels.Select(p => p.Id).ToList()
+                };
+                employees.Add(dto);
+            }
+            return employees;
         }
         public Employee Create(Employee employee)
         {
