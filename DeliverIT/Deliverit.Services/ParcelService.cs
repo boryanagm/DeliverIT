@@ -141,5 +141,80 @@ namespace Deliverit.Services
 
             return parcelToDisplay;
         }
+
+        public List<ParcelDTO> SearchByEmail(string email)
+        {
+            var customers = this.context.Customers
+                .Include(c => c.Parcels)
+                .ThenInclude(c => c.Category)
+                .Where(s => s.Email.Contains(email))
+                .ToList();
+
+            List<ParcelDTO> parcelsToDisplay = new List<ParcelDTO>();
+            foreach (var customer in customers)
+            {
+                foreach (var parcel in customer.Parcels)
+                {
+                    var parcelToDisplay = new ParcelDTO
+                    {
+                        Id = parcel.Id,
+                        Weight = parcel.Weight,
+                        Category = parcel.Category.Name,
+                        CustomerName = parcel.Customer.FirstName + " " + parcel.Customer.LastName,
+                    };
+                    parcelsToDisplay.Add(parcelToDisplay);
+                }
+            }
+            return parcelsToDisplay;
+        }
+
+        public List<ParcelDTO> SearchByName(string firstname, string lastname)
+        {
+            List<Customer> customers = new List<Customer>();
+
+            if (firstname != null && lastname == null)
+            {
+                 customers = this.context.Customers
+                    .Include(c => c.Parcels)
+                    .ThenInclude(c => c.Category)
+                    .Where(s => s.FirstName == firstname)
+                    .ToList();
+            }
+
+            else if(firstname == null && lastname != null)
+            {
+                 customers = this.context.Customers
+                    .Include(c => c.Parcels)
+                    .ThenInclude(c => c.Category)
+                    .Where(s => s.LastName == lastname)
+                    .ToList();    
+            }
+
+            else
+            {
+                 customers = this.context.Customers
+                   .Include(c => c.Parcels)
+                   .ThenInclude(c => c.Category)
+                   .Where(s => s.LastName == lastname && s.FirstName == firstname)
+                   .ToList();
+            }
+
+            List<ParcelDTO> parcelsToDisplay = new List<ParcelDTO>();
+            foreach (var customer in customers)
+            {
+                foreach (var parcel in customer.Parcels)
+                {
+                    var parcelToDisplay = new ParcelDTO
+                    {
+                        Id = parcel.Id,
+                        Weight = parcel.Weight,
+                        Category = parcel.Category.Name,
+                        CustomerName = parcel.Customer.FirstName + " " + parcel.Customer.LastName,
+                    };
+                    parcelsToDisplay.Add(parcelToDisplay);
+                }
+            }
+            return parcelsToDisplay;
+        }
     }
 }

@@ -55,5 +55,17 @@ namespace Deliverit.Web.Controllers
                 return this.Conflict();
             }
         }
+
+        [HttpGet("filter/email")]
+        public IActionResult SearchByEmail([FromQuery] string email)
+        {
+            return this.Ok(this.parcelService.SearchByEmail(email));
+        }
+
+        [HttpGet("filter/name")]
+        public IActionResult SearchByName([FromQuery] string firstname, string lastname)
+        {
+            return this.Ok(this.parcelService.SearchByName(firstname, lastname));
+        }
     }
 }

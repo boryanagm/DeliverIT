@@ -11,5 +11,7 @@ namespace Deliverit.Services.Contracts
         IEnumerable<ParcelDTO> GetAll();
         ParcelDTO Create(CreateParcelDTO parcel);
         ParcelDTO Update(Guid id, UpdateParcelDTO parcel);
+        List<ParcelDTO> SearchByEmail(string email);
+        List<ParcelDTO> SearchByName(string firstname, string lastname);
     }
 }

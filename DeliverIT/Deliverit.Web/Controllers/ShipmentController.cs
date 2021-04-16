@@ -75,6 +75,7 @@ namespace Deliverit.Web.Controllers
         {
             return this.Ok(this.shipmentService.SearchByWarehouse(Id));
         }
+
         [HttpGet("filter/customer")]
         public IActionResult FilterCustomers([FromQuery] Guid Id)
         {

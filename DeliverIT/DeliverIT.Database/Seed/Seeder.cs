@@ -268,9 +268,8 @@ namespace Deliverit.Database.Seed
                    CreatedOn = DateTime.UtcNow,
                    Weight = 10,
                    CategoryId = Guid.Parse("1db0c76c-ab76-4105-be89-3af983f6f137"),
-                   CustomerId = Guid.Parse("5adb06fe-fca4-4347-b1ea-118c55e17331"),
-                   EmployeeId = Guid.Parse("d2c26c93-d589-4b05-850b-fbf21c59c84d"),
-                 //  WarehouseId = Guid.Parse("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba"),
+                   CustomerId = Guid.Parse("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1"),
+                   EmployeeId = Guid.Parse("d2c26c93-d589-4b05-850b-fbf21c59c84d"),                
                    ShipmentId = Guid.Parse("ce465c59-4866-4905-bdbd-943a26f59fdd")
                 },
 
@@ -281,8 +280,7 @@ namespace Deliverit.Database.Seed
                    Weight = 5,
                    CategoryId = Guid.Parse("72280df2-7d81-4ec6-936a-51e19aabf7ff"),
                    CustomerId = Guid.Parse("5adb06fe-fca4-4347-b1ea-118c55e17331"),
-                   EmployeeId = Guid.Parse("facdefb9-19df-42b3-9d3d-6524076e152f"),
-                  // WarehouseId = Guid.Parse("988a4201-8c55-42fc-b2a6-e08d1abe6693"),
+                   EmployeeId = Guid.Parse("facdefb9-19df-42b3-9d3d-6524076e152f"),              
                    ShipmentId = Guid.Parse("e2a2c29b-b7f4-458a-9cde-4a70717607c8")
                 }
             };
