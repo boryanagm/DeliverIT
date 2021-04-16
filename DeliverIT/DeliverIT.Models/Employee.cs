@@ -1,4 +1,5 @@
 ﻿using Deliverit.Models.Abstract;
+using Deliverit.Models.Authentication;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -23,7 +24,7 @@ namespace DeliverIT.Models
         [ForeignKey("Address")]
         public Guid AddressId { get; set; }
         public Address Address { get; set; }
-
         public ICollection<Parcel> Parcels { get; set; }
+        public ICollection<EmployeeRole> Roles { get; set; }
     }
 }
