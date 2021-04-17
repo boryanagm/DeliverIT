@@ -1,4 +1,5 @@
 ﻿using Deliverit.Models;
+using Deliverit.Models.Authentication;
 using DeliverIT.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -137,7 +138,7 @@ namespace Deliverit.Database.Seed
                 {
                    Id = Guid.Parse("b31754e2-82fc-4862-ad20-9331a87537eb"),
                    CreatedOn = DateTime.UtcNow,
-                   Name = "preparing"
+                   Name = "canceled"
                 }
             };
             modelBuilder.Entity<Status>().HasData(statuses);
@@ -238,13 +239,22 @@ namespace Deliverit.Database.Seed
 
             var employees = new List<Employee>()
             { 
+                new Employee() // Admin
+                { 
+                   Id = Guid.Parse("e9a6b4e2-073b-4ebc-a248-a8d71d426174"),
+                   CreatedOn = DateTime.UtcNow,
+                   FirstName = "Antonio",
+                   LastName = "Recio",
+                   Email = "admin@deliverit.com",
+                   AddressId = Guid.Parse("da703902-00bc-47da-b950-4fa730494d4e")
+                },
                 new Employee()
                 { 
                    Id = Guid.Parse("d2c26c93-d589-4b05-850b-fbf21c59c84d"),
                    CreatedOn = DateTime.UtcNow,
                    FirstName = "Fermin",
                    LastName = "Trujillo",
-                   Email = "fer.trujillo@gmail.com",
+                   Email = "fer.trujillo@deliverit.com",
                    AddressId = Guid.Parse("5fd8c18f-6885-488e-af8c-ff06901a7d37")
                 },
 
@@ -254,11 +264,76 @@ namespace Deliverit.Database.Seed
                    CreatedOn = DateTime.UtcNow,
                    FirstName = "Amador",
                    LastName = "Rivas",
-                   Email = "a.rivas@gmail.com",
+                   Email = "a.rivas@deliverit.com",
                    AddressId = Guid.Parse("da703902-00bc-47da-b950-4fa730494d4e")
                 }
             };
             modelBuilder.Entity<Employee>().HasData(employees);
+
+            var roles = new List<Role>()
+            {
+               new Role()
+               {
+                  Id = Guid.Parse("02424b1b-8544-427e-b7bc-e868c8196f40"),
+                  Name = "Admin"
+               },
+
+               new Role()
+               { 
+                  Id = Guid.Parse("275a10a1-e965-460e-a965-e1fe2453e916"),
+                  Name = "Employee"
+               },
+
+               new Role()
+               { 
+                  Id = Guid.Parse("2d598edd-793a-4324-ac29-c505a5c790a5"),
+                  Name = "Customer"
+               }
+            };
+            modelBuilder.Entity<Role>().HasData(roles);
+
+            var employeeRoles = new List<EmployeeRole>()
+            { 
+               new EmployeeRole()
+               { 
+                  Id = Guid.Parse("4abd3404-5295-4b7c-be0f-e6cd01ea4ba8"),
+                  RoleId = Guid.Parse("02424b1b-8544-427e-b7bc-e868c8196f40"),     // Admin
+                  EmployeeId = Guid.Parse("e9a6b4e2-073b-4ebc-a248-a8d71d426174")
+               },
+
+               new EmployeeRole()
+               { 
+                  Id = Guid.Parse("48bdf2fc-0090-489e-a7bb-027e37ad204e"),
+                  RoleId = Guid.Parse("275a10a1-e965-460e-a965-e1fe2453e916"),     // Employee
+                  EmployeeId = Guid.Parse("d2c26c93-d589-4b05-850b-fbf21c59c84d")
+               },
+
+               new EmployeeRole()
+               { 
+                  Id = Guid.Parse("dbce65ef-242f-44a7-982d-fd144014cd4d"),
+                  RoleId = Guid.Parse("275a10a1-e965-460e-a965-e1fe2453e916"),     // Employee
+                  EmployeeId = Guid.Parse("facdefb9-19df-42b3-9d3d-6524076e152f")
+               }
+            };
+            modelBuilder.Entity<EmployeeRole>().HasData(employeeRoles);
+
+            var customerRoles = new List<CustomerRole>()
+            {
+               new CustomerRole()
+               { 
+                  Id = Guid.Parse("e90608c8-9382-401c-ac2a-51b2c2c4528a"),         // Customer
+                  RoleId = Guid.Parse("2d598edd-793a-4324-ac29-c505a5c790a5"),
+                  CustomerId = Guid.Parse("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1")
+               },
+
+               new CustomerRole()
+               { 
+                  Id = Guid.Parse("8a631bc5-1bed-4555-8359-fc9815a84bc8"),         // Customer
+                  RoleId = Guid.Parse("2d598edd-793a-4324-ac29-c505a5c790a5"),
+                  CustomerId = Guid.Parse("5adb06fe-fca4-4347-b1ea-118c55e17331")
+               }
+            };
+            modelBuilder.Entity<CustomerRole>().HasData(customerRoles);
 
             var parcels = new List<Parcel>()
             { 
@@ -304,13 +379,11 @@ namespace Deliverit.Database.Seed
                    CreatedOn = DateTime.UtcNow,
                    DepartureDate = DateTime.UtcNow,
                    ArrivalDate = DateTime.UtcNow.AddDays(5),
-                   StatusId = Guid.Parse("858ac364-d94f-414c-bbea-a0f5b8679b3d"),
+                   StatusId = Guid.Parse("84568d3c-04df-47c3-9ad8-216b1d664166"),
                    WarehouseId = Guid.Parse("988a4201-8c55-42fc-b2a6-e08d1abe6693")
                 }
             };
             modelBuilder.Entity<Shipment>().HasData(shipments);
-
-            // countries.First will give the country Id
         }
     }
 }

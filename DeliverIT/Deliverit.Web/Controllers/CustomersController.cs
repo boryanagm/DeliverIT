@@ -29,8 +29,14 @@ namespace Deliverit.Web.Controllers
             return this.Ok(this.customerService.GetAll());
         }
 
+        [HttpGet("/count")]
+        public IActionResult GetCount()
+        {
+            return this.Ok(this.customerService.GetCount());
+        }
+
         [HttpPost("")]
-        public IActionResult Post([FromBody] Customer customer)
+        public IActionResult Post([FromQuery] Customer customer)
         {
             var customerToUpdate = this.customerService.Create(customer);
 
@@ -65,7 +71,34 @@ namespace Deliverit.Web.Controllers
             return this.NotFound();
         }
 
-        [HttpGet("{email}/email")]
+        [HttpGet("{id}/incoming")]
+        public IActionResult GetIncomingParcels(Guid id)
+        {
+            return this.Ok(this.customerService.GetIncomingParcels(id));
+        }
+
+        [HttpGet("{id}/past")]
+        public IActionResult GetPastParcels(Guid id)
+        {
+            return this.Ok(this.customerService.GetPastParcels(id));
+        }
+
+        [HttpGet("{key}/all")]
+        public IActionResult GetByKeyWord(string key)
+        {
+            return this.Ok(this.customerService.GetByKeyWord(key));
+        }
+
+        [HttpGet("/multiple")] 
+        public IActionResult GetByMultipleCriteria([FromQuery]CustomerFilter customerFilter) 
+        {
+            return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
+        }
+    }
+}
+
+/*
+  [HttpGet("{email}/email")]
         public IActionResult GetByEmail(string email)
         {
             return this.Ok(this.customerService.GetByEmail(email));
@@ -82,23 +115,4 @@ namespace Deliverit.Web.Controllers
         {
             return this.Ok(this.customerService.GetByLastName(lastName));
         }
-
-        [HttpGet("{id}/parcels")]
-        public IActionResult GetIncomingParcels(Guid id)
-        {
-            return this.Ok(this.customerService.GetIncomingParcels(id));
-        }
-
-        [HttpGet("{key}/all")]
-        public IActionResult GetByKeyWord(string key)
-        {
-            return this.Ok(this.customerService.GetByKeyWord(key));
-        }
-
-        [HttpGet("/multiple")] // TODO: Not working
-        public IActionResult GetByMultipleCriteria([FromQuery]CustomerFilter customerFilter) 
-        {
-            return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
-        }
-    }
-}
+ */

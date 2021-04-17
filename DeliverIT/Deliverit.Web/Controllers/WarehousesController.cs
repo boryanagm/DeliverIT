@@ -1,4 +1,5 @@
 ﻿using Deliverit.Services.Contracts;
+using Deliverit.Web.Helpers;
 using DeliverIT.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,10 +11,12 @@ namespace Deliverit.Web.Controllers
     public class WarehousesController : ControllerBase
     {
         private readonly IWarehouseService warehouseService;
+        private readonly IAuthEmployeeHelper authEmployeeHelper;
 
-        public WarehousesController(IWarehouseService warehouseService)
+        public WarehousesController(IWarehouseService warehouseService, IAuthEmployeeHelper authEmployeeHelper) 
         {
             this.warehouseService = warehouseService;
+            this.authEmployeeHelper = authEmployeeHelper;
         }
 
         [HttpGet("{id}")]
@@ -29,21 +32,26 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpPost("")]
-        public IActionResult Post([FromBody] Warehouse warehouse) 
+        public IActionResult Post([FromHeader] string authorizationEmail, [FromBody] Warehouse warehouse) 
         {
+            var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+            //if (employee.Roles)
+            //{
+
+            //}
             var warehouseToUpdate = this.warehouseService.Create(warehouse);
 
             return this.Created("post", warehouseToUpdate);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id, [FromBody] Warehouse warehouse)
+        public IActionResult Put(Guid id, string streetName, string city)
         {
             try
             {
-                var warehouseToUpdate = this.warehouseService.Update(id, warehouse);
+                var warehouseToUpdate = this.warehouseService.Update(id, streetName, city);
 
-                return this.Ok(warehouse);
+                return this.Ok(warehouseToUpdate);
             }
             catch (ArgumentNullException)
             {
@@ -51,7 +59,7 @@ namespace Deliverit.Web.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")] // admin only
         public IActionResult Delete(Guid id) // Or Try/Catch?
         {
             var success = this.warehouseService.Delete(id);

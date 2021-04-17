@@ -1,4 +1,5 @@
 ﻿using Deliverit.Services.Contracts;
+using Deliverit.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -9,10 +10,12 @@ namespace Deliverit.Web.Controllers
     public class CitiesController : ControllerBase
     {
         private readonly ICityService cityService;
+        private readonly IAuthEmployeeHelper autHelper;
 
-        public CitiesController(ICityService cityService)
+        public CitiesController(ICityService cityService, IAuthEmployeeHelper autHelper)
         {
             this.cityService = cityService;
+            this.autHelper = autHelper;
         }
 
         [HttpGet("{id}")]

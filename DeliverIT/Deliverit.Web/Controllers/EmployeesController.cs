@@ -32,7 +32,7 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpPost("")]
-        public IActionResult Post([FromBody] Employee employee)
+        public IActionResult Post([FromQuery] Employee employee)
         {
             var employeeToUpdate = this.employeeService.Create(employee);
 

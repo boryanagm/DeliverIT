@@ -4,14 +4,16 @@ using DeliverIT.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Deliverit.Database.Migrations
 {
     [DbContext(typeof(DeliveritDbContext))]
-    partial class DeliveritDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210417160155_AddCustomerAndEmployeeRoles")]
+    partial class AddCustomerAndEmployeeRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
