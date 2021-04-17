@@ -2,9 +2,8 @@
 
 namespace Deliverit.Web.Helpers
 {
-    public interface IAuthHelper
+    public interface IAuthEmployeeHelper
     {
-        Customer TryGetCustomer(string authorizationHeader);
         Employee TryGetEmployee(string authorizationHeader);
     }
 }

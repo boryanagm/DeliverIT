@@ -1,5 +1,6 @@
 using Deliverit.Services;
 using Deliverit.Services.Contracts;
+using Deliverit.Web.Helpers;
 using DeliverIT.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,6 +41,8 @@ namespace Deliverit.Web
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IWarehouseService, WarehouseService>();
             services.AddScoped<IShipmentService, ShipmentService>();
+            services.AddScoped<IAuthCustomerHelper, AuthCustomerHelper>();
+            services.AddScoped<IAuthEmployeeHelper, AuthEmployeeHelper>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,4 +1,5 @@
 ﻿using Deliverit.Services.Contracts;
+using Deliverit.Web.Helpers;
 using DeliverIT.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,10 +11,12 @@ namespace Deliverit.Web.Controllers
     public class WarehousesController : ControllerBase
     {
         private readonly IWarehouseService warehouseService;
+        private readonly IAuthCustomerHelper autHelper;
 
-        public WarehousesController(IWarehouseService warehouseService)
+        public WarehousesController(IWarehouseService warehouseService, IAuthCustomerHelper authHelper) 
         {
             this.warehouseService = warehouseService;
+            this.autHelper = authHelper;
         }
 
         [HttpGet("{id}")]
@@ -29,7 +32,7 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpPost("")]
-        public IActionResult Post([FromQuery] Warehouse warehouse) 
+        public IActionResult Post([FromHeader] string authorization, [FromQuery] Warehouse warehouse) 
         {
             var warehouseToUpdate = this.warehouseService.Create(warehouse);
 
