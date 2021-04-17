@@ -297,21 +297,21 @@ namespace Deliverit.Database.Seed
                new EmployeeRole()
                { 
                   Id = Guid.Parse("4abd3404-5295-4b7c-be0f-e6cd01ea4ba8"),
-                  RoleId = Guid.Parse("02424b1b-8544-427e-b7bc-e868c8196f40"), // Admin
+                  RoleId = Guid.Parse("02424b1b-8544-427e-b7bc-e868c8196f40"),     // Admin
                   EmployeeId = Guid.Parse("e9a6b4e2-073b-4ebc-a248-a8d71d426174")
                },
 
                new EmployeeRole()
                { 
                   Id = Guid.Parse("48bdf2fc-0090-489e-a7bb-027e37ad204e"),
-                  RoleId = Guid.Parse("275a10a1-e965-460e-a965-e1fe2453e916"), // Employee
+                  RoleId = Guid.Parse("275a10a1-e965-460e-a965-e1fe2453e916"),     // Employee
                   EmployeeId = Guid.Parse("d2c26c93-d589-4b05-850b-fbf21c59c84d")
                },
 
                new EmployeeRole()
                { 
                   Id = Guid.Parse("dbce65ef-242f-44a7-982d-fd144014cd4d"),
-                  RoleId = Guid.Parse("275a10a1-e965-460e-a965-e1fe2453e916"), // Employee
+                  RoleId = Guid.Parse("275a10a1-e965-460e-a965-e1fe2453e916"),     // Employee
                   EmployeeId = Guid.Parse("facdefb9-19df-42b3-9d3d-6524076e152f")
                }
             };
@@ -321,14 +321,14 @@ namespace Deliverit.Database.Seed
             {
                new CustomerRole()
                { 
-                  Id = Guid.Parse("e90608c8-9382-401c-ac2a-51b2c2c4528a"),
+                  Id = Guid.Parse("e90608c8-9382-401c-ac2a-51b2c2c4528a"),         // Customer
                   RoleId = Guid.Parse("2d598edd-793a-4324-ac29-c505a5c790a5"),
                   CustomerId = Guid.Parse("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1")
                },
 
                new CustomerRole()
                { 
-                  Id = Guid.Parse("8a631bc5-1bed-4555-8359-fc9815a84bc8"),
+                  Id = Guid.Parse("8a631bc5-1bed-4555-8359-fc9815a84bc8"),         // Customer
                   RoleId = Guid.Parse("2d598edd-793a-4324-ac29-c505a5c790a5"),
                   CustomerId = Guid.Parse("5adb06fe-fca4-4347-b1ea-118c55e17331")
                }
