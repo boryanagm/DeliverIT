@@ -174,29 +174,29 @@ namespace Deliverit.Services
 
             if (firstname != null && lastname == null)
             {
-                 customers = this.context.Customers
-                    .Include(c => c.Parcels)
-                    .ThenInclude(c => c.Category)
-                    .Where(s => s.FirstName == firstname)
-                    .ToList();
+                customers = this.context.Customers
+                   .Include(c => c.Parcels)
+                   .ThenInclude(c => c.Category)
+                   .Where(s => s.FirstName == firstname)
+                   .ToList();
             }
 
-            else if(firstname == null && lastname != null)
+            else if (firstname == null && lastname != null)
             {
-                 customers = this.context.Customers
-                    .Include(c => c.Parcels)
-                    .ThenInclude(c => c.Category)
-                    .Where(s => s.LastName == lastname)
-                    .ToList();    
+                customers = this.context.Customers
+                   .Include(c => c.Parcels)
+                   .ThenInclude(c => c.Category)
+                   .Where(s => s.LastName == lastname)
+                   .ToList();
             }
 
             else
             {
-                 customers = this.context.Customers
-                   .Include(c => c.Parcels)
-                   .ThenInclude(c => c.Category)
-                   .Where(s => s.LastName == lastname && s.FirstName == firstname)
-                   .ToList();
+                customers = this.context.Customers
+                  .Include(c => c.Parcels)
+                  .ThenInclude(c => c.Category)
+                  .Where(s => s.LastName == lastname && s.FirstName == firstname)
+                  .ToList();
             }
 
             List<ParcelDTO> parcelsToDisplay = new List<ParcelDTO>();
@@ -214,6 +214,64 @@ namespace Deliverit.Services
                     parcelsToDisplay.Add(parcelToDisplay);
                 }
             }
+            return parcelsToDisplay;
+        }
+        public List<ParcelDTO> FindIncomingParcels(Guid Id)
+        {
+            var customer = this.context.Customers
+               .Include(c => c.Parcels)
+               .ThenInclude(c => c.Shipment)
+               .ThenInclude(c => c.Status)
+               .Include(c => c.Parcels)
+               .ThenInclude(c => c.Category)
+               .FirstOrDefault(s => s.Id == Id)
+               ?? throw new ArgumentNullException();
+
+            List<ParcelDTO> parcelsToDisplay = new List<ParcelDTO>();
+            foreach (var parcel in customer.Parcels)
+            {
+                if (parcel.Shipment.Status.Name == "on the way")
+                {
+                    var parcelToDisplay = new ParcelDTO
+                    {
+                        Id = parcel.Id,
+                        Weight = parcel.Weight,
+                        Category = parcel.Category.Name,
+                        CustomerName = parcel.Customer.FirstName + " " + parcel.Customer.LastName,
+                    };
+                    parcelsToDisplay.Add(parcelToDisplay);
+                }
+            }
+
+            return parcelsToDisplay;
+        }
+
+        public List<ParcelDTO> GetByWarehouse(Guid id)
+        {
+            var parcels = this.context.Parcels
+                .Include(p => p.Shipment)
+                .ThenInclude(p => p.Warehouse)
+                .Include(p=>p.Category)
+                .Include(p=>p.Customer)
+                .Where(p => p.Shipment.Warehouse.Id == id)
+                .ToList();
+
+            List<ParcelDTO> parcelsToDisplay = new List<ParcelDTO>();
+            foreach (var parcel in parcels)
+            {
+                if (parcel.IsDeleted == true)
+                    continue;
+
+                var parcelToDisplay = new ParcelDTO
+                {
+                    Id = parcel.Id,
+                    Weight = parcel.Weight,
+                    Category = parcel.Category.Name,
+                    CustomerName = parcel.Customer.FirstName + " " + parcel.Customer.LastName,
+                };
+                parcelsToDisplay.Add(parcelToDisplay);
+            }
+
             return parcelsToDisplay;
         }
     }

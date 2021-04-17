@@ -13,5 +13,7 @@ namespace Deliverit.Services.Contracts
         ParcelDTO Update(Guid id, UpdateParcelDTO parcel);
         List<ParcelDTO> SearchByEmail(string email);
         List<ParcelDTO> SearchByName(string firstname, string lastname);
+        List<ParcelDTO> FindIncomingParcels(Guid Id);
+        List<ParcelDTO> GetByWarehouse(Guid Id);
     }
 }

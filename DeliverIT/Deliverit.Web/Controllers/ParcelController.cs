@@ -67,5 +67,19 @@ namespace Deliverit.Web.Controllers
         {
             return this.Ok(this.parcelService.SearchByName(firstname, lastname));
         }
+
+        [HttpGet("filter/incoming")]
+        public IActionResult SearchByIncomingShippment([FromQuery] Guid Id)
+        {
+            return this.Ok(this.parcelService.FindIncomingParcels(Id));
+        }
+
+        [HttpGet("filter/warehouse")]
+        public IActionResult GetByWarehouse([FromQuery] Guid Id)
+        {
+            return this.Ok(this.parcelService.GetByWarehouse(Id));
+        }
+
+
     }
 }
