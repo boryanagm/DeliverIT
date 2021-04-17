@@ -53,6 +53,7 @@ namespace Deliverit.Services
                     Name = country.Name,
                     NumberOfCities = country.Cities.Count()                 
                 };
+
                 countries.Add(countryToAdd);
             }
             return countries;

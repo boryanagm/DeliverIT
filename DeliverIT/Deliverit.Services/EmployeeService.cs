@@ -64,6 +64,7 @@ namespace Deliverit.Services
                     Country = employee.Address.City.Country.Name,
                     Parcels = employee.Parcels.Select(p => p.Id).ToList()
                 };
+
                 employees.Add(dto);
             }
 
@@ -98,6 +99,7 @@ namespace Deliverit.Services
             };
 
             employeeToUpdate.Address = newAddress;
+            employeeToUpdate.ModifiedOn = DateTime.UtcNow;
             this.context.SaveChanges();
 
             var dto = new EmployeeDTO

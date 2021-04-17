@@ -54,7 +54,7 @@ namespace Deliverit.Web.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")] // admin only
         public IActionResult Delete(Guid id) // Or Try/Catch?
         {
             var success = this.warehouseService.Delete(id);

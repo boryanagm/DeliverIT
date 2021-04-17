@@ -19,7 +19,7 @@ namespace Deliverit.Services
         public CityDTO Get(Guid id)
         {
             var city = this.context.Cities
-                .Where(c => c.IsDeleted == false) 
+               // .Where(c => c.IsDeleted == false) 
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
 
@@ -42,6 +42,7 @@ namespace Deliverit.Services
                     Id = city.Id,
                     Name = city.Name,
                 };
+
                 cities.Add(dto);
             }
             return cities;

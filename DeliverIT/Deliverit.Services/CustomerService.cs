@@ -92,6 +92,7 @@ namespace Deliverit.Services
             };
 
             customerToUpdate.Address = newAddress;
+            customerToUpdate.ModifiedOn = DateTime.UtcNow;
             this.context.SaveChanges();
 
             var dto = new CustomerDTO

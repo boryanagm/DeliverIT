@@ -58,14 +58,6 @@ namespace Deliverit.Services
             warehouse.CreatedOn = DateTime.UtcNow;
             this.context.SaveChanges();
 
-            //var dto = new WarehouseDTO
-            //{ 
-            //   Id = warehouse.Id,
-            //   StreetName = warehouse.Address.StreetName,
-            //   City = warehouse.Address.City.Name,
-            //   Country = warehouse.Address.City.Country.Name
-            //};
-
             return warehouse;
         }
 
