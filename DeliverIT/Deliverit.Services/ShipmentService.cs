@@ -144,7 +144,6 @@ namespace Deliverit.Services
             shipment.DeletedOn = DateTime.UtcNow;
             this.context.SaveChanges();
             return true;
-
         }
 
         public List<ShipmentDTO> SearchByWarehouse(Guid Id)

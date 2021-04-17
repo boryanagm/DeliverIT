@@ -89,6 +89,11 @@ namespace Deliverit.Web.Controllers
         {
             return this.Ok(this.parcelService.GetByWeight(weight));
         }
+        [HttpGet("filter/category")]
+        public IActionResult GetByCategory([FromQuery] string category)
+        {
+            return this.Ok(this.parcelService.GetByCategory(category));
+        }
 
     }
 }
