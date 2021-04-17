@@ -301,5 +301,32 @@ namespace Deliverit.Services
 
             return parcelsToDisplay;
         }
+
+        public List<ParcelDTO> GetByWeight(int weight)
+        {
+            var parcels = this.context.Parcels
+                .Include(p => p.Category)
+                .Include(p => p.Customer)
+                .Where(p => p.Weight == weight)
+                .ToList();
+
+            List<ParcelDTO> parcelsToDisplay = new List<ParcelDTO>();
+            foreach (var parcel in parcels)
+            {
+                if (parcel.IsDeleted == true)
+                    continue;
+
+                var parcelToDisplay = new ParcelDTO
+                {
+                    Id = parcel.Id,
+                    Weight = parcel.Weight,
+                    Category = parcel.Category.Name,
+                    CustomerName = parcel.Customer.FirstName + " " + parcel.Customer.LastName,
+                };
+                parcelsToDisplay.Add(parcelToDisplay);
+            }
+
+            return parcelsToDisplay;
+        }
     }
 }

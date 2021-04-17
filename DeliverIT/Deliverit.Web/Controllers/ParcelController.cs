@@ -84,8 +84,11 @@ namespace Deliverit.Web.Controllers
         {
             return this.Ok(this.parcelService.GetByCustomer(Id));
         }
-
-
+        [HttpGet("filter/weight")]
+        public IActionResult GetByWeight([FromQuery] int weight)
+        {
+            return this.Ok(this.parcelService.GetByWeight(weight));
+        }
 
     }
 }

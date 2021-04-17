@@ -16,5 +16,6 @@ namespace Deliverit.Services.Contracts
         List<ParcelDTO> FindIncomingParcels(Guid Id);
         List<ParcelDTO> GetByWarehouse(Guid Id);
         List<ParcelDTO> GetByCustomer(Guid id);
+        List<ParcelDTO> GetByWeight(int weight);
     }
 }
