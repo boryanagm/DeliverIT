@@ -22,5 +22,18 @@ namespace Deliverit.Web.Helpers
                 throw new ArgumentException("Invalid email");
             }
         }
+
+        //public bool IsAdmin(string authorizationHeader)
+        //{
+        //    try
+        //    {
+
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
     }
 }

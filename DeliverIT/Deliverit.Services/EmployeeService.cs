@@ -20,9 +20,10 @@ namespace Deliverit.Services
         public Employee GetByEmployeeEmail(string employeeEmail)
         {
             return this.context.Employees
-                 .FirstOrDefault(c => c.Email == employeeEmail)
+                 .FirstOrDefault(e => e.Email == employeeEmail)
                  ?? throw new ArgumentNullException();
         }
+
         public EmployeeDTO Get(Guid id) 
         {
             var dto = this.context.Employees

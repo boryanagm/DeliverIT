@@ -11,12 +11,12 @@ namespace Deliverit.Web.Controllers
     public class WarehousesController : ControllerBase
     {
         private readonly IWarehouseService warehouseService;
-        private readonly IAuthCustomerHelper autHelper;
+        private readonly IAuthEmployeeHelper authEmployeeHelper;
 
-        public WarehousesController(IWarehouseService warehouseService, IAuthCustomerHelper authHelper) 
+        public WarehousesController(IWarehouseService warehouseService, IAuthEmployeeHelper authEmployeeHelper) 
         {
             this.warehouseService = warehouseService;
-            this.autHelper = authHelper;
+            this.authEmployeeHelper = authEmployeeHelper;
         }
 
         [HttpGet("{id}")]
@@ -32,8 +32,13 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpPost("")]
-        public IActionResult Post([FromHeader] string authorization, [FromQuery] Warehouse warehouse) 
+        public IActionResult Post([FromHeader] string authorizationEmail, [FromBody] Warehouse warehouse) 
         {
+            var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+            //if (employee.Roles)
+            //{
+
+            //}
             var warehouseToUpdate = this.warehouseService.Create(warehouse);
 
             return this.Created("post", warehouseToUpdate);
