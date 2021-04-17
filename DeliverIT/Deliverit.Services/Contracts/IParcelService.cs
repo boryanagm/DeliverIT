@@ -11,6 +11,7 @@ namespace Deliverit.Services.Contracts
         IEnumerable<ParcelDTO> GetAll();
         ParcelDTO Create(CreateParcelDTO parcel);
         ParcelDTO Update(Guid id, UpdateParcelDTO parcel);
+        bool Delete(Guid Id);
         List<ParcelDTO> SearchByEmail(string email);
         List<ParcelDTO> SearchByName(string firstname, string lastname);
         List<ParcelDTO> FindIncomingParcels(Guid Id);

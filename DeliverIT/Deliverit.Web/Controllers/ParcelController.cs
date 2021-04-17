@@ -56,6 +56,19 @@ namespace Deliverit.Web.Controllers
             }
         }
 
+        [HttpDelete("delete/{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            var success = this.parcelService.Delete(id);
+
+            if (success)
+            {
+                return this.NoContent();
+            }
+
+            return this.NotFound();
+        }
+
         [HttpGet("filter/email")]
         public IActionResult SearchByEmail([FromQuery] string email)
         {

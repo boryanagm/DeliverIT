@@ -141,6 +141,22 @@ namespace Deliverit.Services
 
             return parcelToDisplay;
         }
+        public bool Delete(Guid id)
+        {
+            var parcel = this.context.Parcels
+                .FirstOrDefault(s => s.Id == id)
+                ?? throw new ArgumentNullException();
+
+            if (parcel.IsDeleted == true)
+            {
+                throw new ArgumentNullException("There is no shipment with this ID.");
+            }
+
+            parcel.IsDeleted = true;
+            parcel.DeletedOn = DateTime.UtcNow;
+            this.context.SaveChanges();
+            return true;
+        }
 
         public List<ParcelDTO> SearchByEmail(string email)
         {
