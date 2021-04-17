@@ -80,7 +80,8 @@ namespace Deliverit.Services
                 Category = category,
                 Employee = employee,
                 Customer = customer,
-                Shipment = shipment
+                Shipment = shipment,
+                CreatedOn = DateTime.UtcNow
             };
             this.context.Parcels.Add(newParcel);
             this.context.SaveChanges();
@@ -91,6 +92,7 @@ namespace Deliverit.Services
                 Weight = newParcel.Weight,
                 Category = newParcel.Category.Name,
                 CustomerName = newParcel.Customer.FirstName + " " + newParcel.Customer.LastName,
+
             };
 
             return parcelToDisplay;

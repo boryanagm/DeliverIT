@@ -113,7 +113,8 @@ namespace Deliverit.Services
             var newShipment = new Shipment
             {
                 Status = status,
-                Warehouse = warehouse
+                Warehouse = warehouse,
+                CreatedOn = DateTime.UtcNow
             };
             this.context.Shipments.Add(newShipment);
             this.context.SaveChanges();
