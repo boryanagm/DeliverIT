@@ -61,27 +61,20 @@ namespace Deliverit.Services
             return warehouse;
         }
 
-        public WarehouseDTO Update(Guid id, string streetName, string city)
+        public WarehouseDTO Update(Guid id, Guid addressId)
         {
             var warehouseToUpdate = this.context.Warehouses
-                .Include(w => w.Address)
-                  .ThenInclude(a => a.City)
-                    .ThenInclude(c => c.Country)
                 .FirstOrDefault(w => w.Id == id)
                 ?? throw new ArgumentNullException();
-
-            var newCity = this.context.Cities.FirstOrDefault(c => c.Name == city);
-            var newAddress = new Address
-            {
-                Id = new Guid(),
-                CreatedOn = DateTime.UtcNow,
-                City = newCity,
-                StreetName = streetName
-            };
-
-            warehouseToUpdate.Address = newAddress;
+           
             warehouseToUpdate.ModifiedOn = DateTime.UtcNow;
+            warehouseToUpdate.AddressId = addressId;
             this.context.SaveChanges();
+
+            warehouseToUpdate.Address = this.context.Addresses
+                .Include(a => a.City)
+                   .ThenInclude(c => c.Country)
+                .FirstOrDefault(a => a.Id == addressId);
 
             var dto = new WarehouseDTO
             { 

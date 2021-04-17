@@ -20,13 +20,13 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
+        public IActionResult Get(Guid id) // public part
         {
             return this.Ok(this.warehouseService.Get(id));
         }
 
         [HttpGet("")]
-        public IActionResult GetAll()
+        public IActionResult GetAll() // public part
         {
             return this.Ok(this.warehouseService.GetAll());
         }
@@ -35,21 +35,18 @@ namespace Deliverit.Web.Controllers
         public IActionResult Post([FromHeader] string authorizationEmail, [FromBody] Warehouse warehouse) 
         {
             var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
-            //if (employee.Roles)
-            //{
-
-            //}
             var warehouseToUpdate = this.warehouseService.Create(warehouse);
 
             return this.Created("post", warehouseToUpdate);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id, string streetName, string city)
+        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) // change later for employee
         {
             try
             {
-                var warehouseToUpdate = this.warehouseService.Update(id, streetName, city);
+                var admin = this.authEmployeeHelper.TryGetAdmin(authorizationEmail);
+                var warehouseToUpdate = this.warehouseService.Update(id, addressId);
 
                 return this.Ok(warehouseToUpdate);
             }
@@ -60,7 +57,7 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpDelete("{id}")] // admin only
-        public IActionResult Delete(Guid id) // Or Try/Catch?
+        public IActionResult Delete(Guid id) 
         {
             var success = this.warehouseService.Delete(id);
 

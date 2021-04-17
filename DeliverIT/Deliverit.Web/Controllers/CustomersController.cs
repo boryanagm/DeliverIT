@@ -35,12 +35,12 @@ namespace Deliverit.Web.Controllers
             return this.Ok(this.customerService.GetCount());
         }
 
-        [HttpPost("")]
-        public IActionResult Post([FromQuery] Customer customer)
+        [HttpPost("")] 
+        public IActionResult Post([FromBody] Customer customer) // public part
         {
-            var customerToUpdate = this.customerService.Create(customer);
+            var newCustomer = this.customerService.Create(customer);
 
-            return this.Created("post", customerToUpdate);
+            return this.Created("post", newCustomer);
         }
 
         [HttpPut("{id}")]

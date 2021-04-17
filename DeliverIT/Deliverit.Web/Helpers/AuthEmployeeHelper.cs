@@ -23,17 +23,16 @@ namespace Deliverit.Web.Helpers
             }
         }
 
-        //public bool IsAdmin(string authorizationHeader)
-        //{
-        //    try
-        //    {
-
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
+        public Employee TryGetAdmin(string authorizationHeader)
+        {
+            try
+            {
+                return this.employeeService.GetByAdminEmail(authorizationHeader);
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException("Invalid email");
+            }
+        }
     }
 }

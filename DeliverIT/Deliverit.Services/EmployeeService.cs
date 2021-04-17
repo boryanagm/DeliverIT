@@ -24,6 +24,18 @@ namespace Deliverit.Services
                  ?? throw new ArgumentNullException();
         }
 
+        public Employee GetByAdminEmail(string adminEmail)
+        {
+            var employeeRole = this.context.Employees
+                  .Include(e => e.Roles)
+                     .ThenInclude(r => r.Role)
+                  .FirstOrDefault(e => e.Email == adminEmail && e.Roles.Any(r => r.Role.Name == "Admin")) //
+                  ?? throw new ArgumentNullException();
+
+           // var employee = employeeRole.Employee;
+            return employeeRole;
+        }
+
         public EmployeeDTO Get(Guid id) 
         {
             var dto = this.context.Employees

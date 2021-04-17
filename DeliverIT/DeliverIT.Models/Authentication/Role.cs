@@ -11,6 +11,5 @@ namespace Deliverit.Models.Authentication
         public string Name { get; set; }
         public ICollection<CustomerRole> CustomerRoles { get; set; }
         public ICollection<EmployeeRole> EmployeeRoles { get; set; }
-
     }
 }
