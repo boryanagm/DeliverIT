@@ -15,5 +15,6 @@ namespace Deliverit.Services.Contracts
         List<ParcelDTO> SearchByName(string firstname, string lastname);
         List<ParcelDTO> FindIncomingParcels(Guid Id);
         List<ParcelDTO> GetByWarehouse(Guid Id);
+        List<ParcelDTO> GetByCustomer(Guid id);
     }
 }

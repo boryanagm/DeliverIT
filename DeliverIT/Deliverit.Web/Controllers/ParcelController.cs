@@ -79,6 +79,12 @@ namespace Deliverit.Web.Controllers
         {
             return this.Ok(this.parcelService.GetByWarehouse(Id));
         }
+        [HttpGet("filter/customer")]
+        public IActionResult GetByCustomer([FromQuery] Guid Id)
+        {
+            return this.Ok(this.parcelService.GetByCustomer(Id));
+        }
+
 
 
     }
