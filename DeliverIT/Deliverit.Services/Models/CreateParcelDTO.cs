@@ -4,6 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace Deliverit.Services.Models
 {
+    /// <summary>
+    /// Class CreateCityDTO.
+    /// A data transfer object mapping out a Parcel to be created.
+    /// </summary>
     public class CreateParcelDTO
     {
         public int Weight { get; set; }

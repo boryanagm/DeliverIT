@@ -5,6 +5,10 @@ using System.Linq.Expressions;
 
 namespace Deliverit.Services.Mappers
 {
+    /// <summary>
+    /// Class CustomerMapper.
+    /// Helps map out a CustomerDTO.
+    /// </summary>
     public static class CustomerMapper
     {
         public static Expression<Func<Customer, CustomerDTO>> DTOSelector = c =>

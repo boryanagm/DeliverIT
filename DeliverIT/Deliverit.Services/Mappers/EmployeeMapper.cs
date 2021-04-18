@@ -6,6 +6,10 @@ using System.Linq.Expressions;
 
 namespace Deliverit.Services.Extension_Methods
 {
+    /// <summary>
+    /// Class EmployeeMapper.
+    /// Helps map out a EmployeeDTO.
+    /// </summary>
     public static class EmployeeMapper
     {
         public static Expression<Func<Employee, EmployeeDTO>> DTOSelector = e =>

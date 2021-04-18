@@ -2,6 +2,10 @@
 
 namespace Deliverit.Services.Models
 {
+    /// <summary>
+    /// Class ParcelDTO.
+    /// A data transfer object mapping out a Parcel to show.
+    /// </summary>
     public class ParcelDTO
     {
         public Guid Id { get; set; }

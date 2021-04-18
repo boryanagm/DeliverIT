@@ -4,6 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace Deliverit.Services.Models
 {
+    /// <summary>
+    /// Class ShipmentDTO.
+    /// A data transfer object mapping out a Shipment to show.
+    /// </summary>
     public class ShipmentDTO
     {
         [JsonIgnore]

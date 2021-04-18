@@ -4,6 +4,10 @@ using System.Text;
 
 namespace Deliverit.Services.Models
 {
+    /// <summary>
+    /// Class EmployeeDTO.
+    /// A data transfer object mapping out a Employee to show.
+    /// </summary>
     public class EmployeeDTO
     {
         public Guid Id { get; set; }

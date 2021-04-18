@@ -2,6 +2,10 @@
 
 namespace Deliverit.Services.Models
 {
+    /// <summary>
+    /// Class CustomerDTO.
+    /// A data transfer object mapping out a Customer to show.
+    /// </summary>
     public class CustomerDTO
     {
         public Guid Id { get; set; }
