@@ -20,7 +20,15 @@ namespace Deliverit.Web.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
-            return this.Ok(this.customerService.Get(id));
+            try
+            {
+                return this.Ok(this.customerService.Get(id));
+            }
+
+            catch (Exception)
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet("")]
@@ -96,7 +104,7 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpGet("/multiple")] // TODO: Not working
-        public IActionResult GetByMultipleCriteria([FromQuery]CustomerFilter customerFilter) 
+        public IActionResult GetByMultipleCriteria([FromQuery] CustomerFilter customerFilter)
         {
             return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
         }

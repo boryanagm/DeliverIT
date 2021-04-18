@@ -18,7 +18,14 @@ namespace Deliverit.Web.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
-            return this.Ok(this.cityService.Get(id));
+            try
+            {
+                return this.Ok(this.cityService.Get(id));
+            }
+            catch(Exception)
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet("")]
