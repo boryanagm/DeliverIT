@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Deliverit.Models.Authentication;
+using Deliverit.Services.Mappers;
 
 namespace Deliverit.Services
 {
@@ -29,16 +30,7 @@ namespace Deliverit.Services
         public CustomerDTO Get(Guid id) 
         {
             var dto = this.context.Customers
-               .Select(c => new CustomerDTO
-               {
-                   Id = c.Id,
-                   FirstName = c.FirstName,
-                   LastName = c.LastName,
-                   Email = c.Email,
-                   StreetName = c.Address.StreetName,
-                   City = c.Address.City.Name,
-                   Country = c.Address.City.Country.Name
-               })
+               .Select(CustomerMapper.DTOSelector)
                .FirstOrDefault(c => c.Id == id)
                ?? throw new ArgumentNullException();
 
@@ -54,16 +46,7 @@ namespace Deliverit.Services
                    .ThenInclude(a => a.City)
                       .ThenInclude(c => c.Country))
             {
-                var dto = new CustomerDTO
-                {
-                    Id = customer.Id,
-                    FirstName = customer.FirstName,
-                    LastName = customer.LastName,
-                    Email = customer.Email,
-                    StreetName = customer.Address.StreetName,
-                    City = customer.Address.City.Name,
-                    Country = customer.Address.City.Country.Name
-                };
+                var dto = CustomerMapper.DTOSelector.Compile().Invoke(customer);
                 customers.Add(dto);
             }
             return customers;
@@ -89,16 +72,7 @@ namespace Deliverit.Services
             this.context.SaveChanges();
 
             var dto = this.context.Customers
-               .Select(c => new CustomerDTO
-               {
-                   Id = c.Id,
-                   FirstName = c.FirstName,
-                   LastName = c.LastName,
-                   Email = c.Email,
-                   StreetName = c.Address.StreetName,
-                   City = c.Address.City.Name,
-                   Country = c.Address.City.Country.Name
-               })
+               .Select(CustomerMapper.DTOSelector)
                .FirstOrDefault(c => c.Id == customer.Id)
                ?? throw new ArgumentNullException();
 
@@ -120,16 +94,7 @@ namespace Deliverit.Services
                   .ThenInclude(c => c.Country)
                .FirstOrDefault(a => a.Id == addressId);
 
-            var dto = new CustomerDTO
-            { 
-               Id = customerToUpdate.Id,
-               FirstName = customerToUpdate.FirstName,
-               LastName = customerToUpdate.LastName,
-               Email = customerToUpdate.Email,
-               StreetName = customerToUpdate.Address.StreetName,
-               City = customerToUpdate.Address.City.Name,
-               Country = customerToUpdate.Address.City.Country.Name
-            };
+            var dto = CustomerMapper.DTOSelector.Compile().Invoke(customerToUpdate);
 
             return dto;
         }
@@ -156,16 +121,7 @@ namespace Deliverit.Services
                 .Where(c => c.FirstName == customerFilter.FirstName
                 || c.LastName == customerFilter.LastName
                 || c.Email.Contains(customerFilter.Email))
-                .Select(c => new CustomerDTO 
-                {
-                   Id = c.Id,
-                   FirstName = c.FirstName,
-                   LastName = c.LastName, 
-                   Email = c.Email,
-                   StreetName = c.Address.StreetName,
-                   City = c.Address.City.Name,
-                   Country = c.Address.City.Country.Name
-                })
+                .Select(CustomerMapper.DTOSelector)
                 .ToList();
 
             return searchResult;
@@ -227,16 +183,7 @@ namespace Deliverit.Services
                 || c.LastName == key
                 || c.Email == key);
 
-            var dto = new CustomerDTO
-            { 
-               Id = customer.Id,
-               FirstName = customer.FirstName,
-               LastName = customer.LastName,
-               Email = customer.Email,
-               StreetName = customer.Address.StreetName,
-               City = customer.Address.City.Name,
-               Country = customer.Address.City.Country.Name
-            };
+            var dto = CustomerMapper.DTOSelector.Compile().Invoke(customer);
 
             return dto;
         }
