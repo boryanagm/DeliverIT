@@ -12,7 +12,8 @@ namespace Deliverit.Services.Contracts
         EmployeeDTO Get(Guid id);
         IEnumerable<EmployeeDTO> GetAll();
         Employee Create(Employee employee);
-        EmployeeDTO Update(Guid id, string streetName, string city);
+        EmployeeDTO Update(Guid id, Guid addressId);
         bool Delete(Guid id);
+        Employee Restore(Guid id);
     }
 }

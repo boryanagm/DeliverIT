@@ -26,7 +26,7 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpGet("")]
-        public IActionResult GetAll() // public part
+        public IActionResult GetAll()     // public part
         {
             return this.Ok(this.warehouseService.GetAll());
         }

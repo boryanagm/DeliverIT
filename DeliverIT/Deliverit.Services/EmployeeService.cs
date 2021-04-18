@@ -29,14 +29,14 @@ namespace Deliverit.Services
             var employeeRole = this.context.Employees
                   .Include(e => e.Roles)
                      .ThenInclude(r => r.Role)
-                  .FirstOrDefault(e => e.Email == adminEmail && e.Roles.Any(r => r.Role.Name == "Admin")) //
+                  .FirstOrDefault(e => e.Email == adminEmail && e.Roles.Any(r => r.Role.Name == "Admin"))
                   ?? throw new ArgumentNullException();
 
-           // var employee = employeeRole.Employee;
+            // var employee = employeeRole.Employee;
             return employeeRole;
         }
 
-        public EmployeeDTO Get(Guid id) 
+        public EmployeeDTO Get(Guid id)
         {
             var dto = this.context.Employees
               .Select(e => new EmployeeDTO
@@ -91,29 +91,22 @@ namespace Deliverit.Services
 
             return employee;
         }
-       
-        public EmployeeDTO Update(Guid id, string streetName, string city)
+
+        public EmployeeDTO Update(Guid id, Guid addressId)
         {
             var employeeToUpdate = this.context.Employees
                .Include(e => e.Parcels)
-               .Include(e => e.Address)
-                 .ThenInclude(a => a.City)
-                   .ThenInclude(c => c.Country)
                .FirstOrDefault(e => e.Id == id)
                ?? throw new ArgumentNullException();
 
-            var newCity = this.context.Cities.FirstOrDefault(c => c.Name == city);
-            var newAddress = new Address
-            {
-                Id = new Guid(),
-                CreatedOn = DateTime.UtcNow,
-                City = newCity,
-                StreetName = streetName
-            };
-
-            employeeToUpdate.Address = newAddress;
             employeeToUpdate.ModifiedOn = DateTime.UtcNow;
+            employeeToUpdate.AddressId = addressId;
             this.context.SaveChanges();
+
+            employeeToUpdate.Address = this.context.Addresses
+               .Include(a => a.City)
+                  .ThenInclude(c => c.Country)
+               .FirstOrDefault(a => a.Id == addressId);
 
             var dto = new EmployeeDTO
             {
@@ -144,6 +137,17 @@ namespace Deliverit.Services
             }
 
             return false;
+        }
+
+        public Employee Restore(Guid id) // Not working
+        {
+            var employeeToRestore = this.context.Employees
+                .IgnoreQueryFilters()
+                .FirstOrDefault(e => e.Id == id); //  && e.IsDeleted == true
+
+            employeeToRestore.IsDeleted = false;
+
+            return employeeToRestore;
         }
     }
 }

@@ -248,6 +248,7 @@ namespace Deliverit.Database.Seed
                    Email = "admin@deliverit.com",
                    AddressId = Guid.Parse("da703902-00bc-47da-b950-4fa730494d4e")
                 },
+
                 new Employee()
                 { 
                    Id = Guid.Parse("d2c26c93-d589-4b05-850b-fbf21c59c84d"),
