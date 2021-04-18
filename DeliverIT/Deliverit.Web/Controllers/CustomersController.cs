@@ -54,7 +54,7 @@ namespace Deliverit.Web.Controllers
             return this.Ok(this.customerService.GetCount());
         }
 
-        [HttpPost("")] 
+        [HttpPost("")]
         public IActionResult Post([FromBody] Customer customer) // public part
         {
             var newCustomer = this.customerService.Create(customer);
@@ -79,16 +79,26 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id) // Or Try/Catch?
+        public IActionResult Delete([FromHeader] string authorizationEmail, Guid id) // TODO: The customer should also be able to delete his/her profile
         {
-            var success = this.customerService.Delete(id);
-
-            if (success)
+            try
             {
-                return this.NoContent();
-            }
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                var success = this.customerService.Delete(id);
 
-            return this.NotFound();
+                if (success)
+                {
+                    return this.NoContent();
+                }
+                else
+                {
+                    return this.NotFound();
+                }
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
         }
 
         [HttpGet("{id}/incoming")]
@@ -109,8 +119,8 @@ namespace Deliverit.Web.Controllers
             return this.Ok(this.customerService.GetByKeyWord(key));
         }
 
-        [HttpGet("/multiple")] 
-        public IActionResult GetByMultipleCriteria([FromQuery]CustomerFilter customerFilter) 
+        [HttpGet("/multiple")]
+        public IActionResult GetByMultipleCriteria([FromQuery] CustomerFilter customerFilter)
         {
             return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
         }
