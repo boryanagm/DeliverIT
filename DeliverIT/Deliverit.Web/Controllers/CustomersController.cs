@@ -1,5 +1,6 @@
 ﻿using Deliverit.Services;
 using Deliverit.Services.Contracts;
+using Deliverit.Web.Helpers;
 using DeliverIT.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,16 +12,26 @@ namespace Deliverit.Web.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService customerService;
+        private readonly IAuthEmployeeHelper authEmployeeHelper;
 
-        public CustomersController(ICustomerService customerService)
+        public CustomersController(ICustomerService customerService, IAuthEmployeeHelper authEmployeeHelper)
         {
             this.customerService = customerService;
+            this.authEmployeeHelper = authEmployeeHelper;
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
+        [HttpGet("{id}")] // TODO: If there's time, make it accessible only for the customer under that ID
+        public IActionResult Get([FromHeader] string authorizationEmail, Guid id)
         {
-            return this.Ok(this.customerService.Get(id));
+            try
+            {
+                var admin = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                return this.Ok(this.customerService.Get(id));
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
         }
 
         [HttpGet("")]
