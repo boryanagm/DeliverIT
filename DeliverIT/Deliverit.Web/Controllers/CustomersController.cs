@@ -13,19 +13,27 @@ namespace Deliverit.Web.Controllers
     {
         private readonly ICustomerService customerService;
         private readonly IAuthEmployeeHelper authEmployeeHelper;
+        private readonly IAuthCustomerHelper authCustomerHelper;
 
-        public CustomersController(ICustomerService customerService, IAuthEmployeeHelper authEmployeeHelper)
+        public CustomersController(ICustomerService customerService, IAuthEmployeeHelper authEmployeeHelper, IAuthCustomerHelper authCustomerHelper)
         {
             this.customerService = customerService;
             this.authEmployeeHelper = authEmployeeHelper;
+            this.authCustomerHelper = authCustomerHelper;
         }
 
-        [HttpGet("{id}")] // TODO: If there's time, make it accessible only for the customer under that ID
+        [HttpGet("{id}")] 
         public IActionResult Get([FromHeader] string authorizationEmail, Guid id)
         {
             try
             {
-                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                var customer = this.authCustomerHelper.TryGetCustomer(authorizationEmail);
+
+                if (customer.Id != id)
+                {
+                    return this.Forbid();
+                }
+
                 return this.Ok(this.customerService.Get(id));
             }
             catch (Exception)
@@ -101,16 +109,45 @@ namespace Deliverit.Web.Controllers
             }
         }
 
-        [HttpGet("{id}/incoming")]                // TODO: Make it visible only for the customer under that ID
-        public IActionResult GetIncomingParcels(Guid id)
+        [HttpGet("{id}/incoming")]                
+        public IActionResult GetIncomingParcels([FromHeader] string authorizationEmail, Guid id)
         {
-            return this.Ok(this.customerService.GetIncomingParcels(id));
+            try
+            {
+                var customer = this.authCustomerHelper.TryGetCustomer(authorizationEmail);
+
+                if (customer.Id != id)
+                {
+                    return this.Forbid();
+                }
+
+                return this.Ok(this.customerService.GetIncomingParcels(id));
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
         }
 
-        [HttpGet("{id}/past")]                    // TODO: Make it visible only for the customer under that ID
-        public IActionResult GetPastParcels(Guid id)
+        [HttpGet("{id}/past")]                    
+        public IActionResult GetPastParcels([FromHeader] string authorizationEmail, Guid id)
         {
-            return this.Ok(this.customerService.GetPastParcels(id));
+            try
+            {
+                var customer = this.authCustomerHelper.TryGetCustomer(authorizationEmail);
+
+                if (customer.Id != id)
+                {
+                    return this.Forbid();
+                }
+
+                return this.Ok(this.customerService.GetPastParcels(id));
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
+            
         }
 
         [HttpGet("{key}/all")]
