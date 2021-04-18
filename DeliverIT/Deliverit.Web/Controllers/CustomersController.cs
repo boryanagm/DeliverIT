@@ -1,5 +1,6 @@
 ﻿using Deliverit.Services;
 using Deliverit.Services.Contracts;
+using Deliverit.Web.Helpers;
 using DeliverIT.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,19 +12,35 @@ namespace Deliverit.Web.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService customerService;
+        private readonly IAuthEmployeeHelper authEmployeeHelper;
+        private readonly IAuthCustomerHelper authCustomerHelper;
 
-        public CustomersController(ICustomerService customerService)
+        public CustomersController(ICustomerService customerService, IAuthEmployeeHelper authEmployeeHelper, IAuthCustomerHelper authCustomerHelper)
         {
             this.customerService = customerService;
+            this.authEmployeeHelper = authEmployeeHelper;
+            this.authCustomerHelper = authCustomerHelper;
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
+        [HttpGet("{id}")] 
+        public IActionResult Get([FromHeader] string authorizationEmail, Guid id)
         {
             try
             {
+                var customer = this.authCustomerHelper.TryGetCustomer(authorizationEmail);
+
+                if (customer.Id != id)
+                {
+                    return this.Forbid();
+                }
+
                 return this.Ok(this.customerService.Get(id));
             }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
+        }
 
             catch (Exception)
             {
@@ -32,25 +49,40 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpGet("")]
-        public IActionResult GetAll()
-        {
-            return this.Ok(this.customerService.GetAll());
-        }
-
-        [HttpPost("")]
-        public IActionResult Post([FromBody] Customer customer)
-        {
-            var customerToUpdate = this.customerService.Create(customer);
-
-            return this.Created("post", customerToUpdate);
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult Put(Guid id, [FromHeader] string streetName, string city) // Guid id, [FromBody] Customer customer
+        public IActionResult GetAll([FromHeader] string authorizationEmail)
         {
             try
             {
-                var customerToUpdate = this.customerService.Update(id, streetName, city);
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                return this.Ok(this.customerService.GetAll());
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
+        }
+
+        [HttpGet("/count")]
+        public IActionResult GetCount()
+        {
+            return this.Ok(this.customerService.GetCount());
+        }
+
+        [HttpPost("")]
+        public IActionResult Post([FromBody] Customer customer) // public part
+        {
+            var newCustomer = this.customerService.Create(customer);
+
+            return this.Created("post", newCustomer);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) // TODO: The customer should be able to create new address and update it
+        {
+            try
+            {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                var customerToUpdate = this.customerService.Update(id, addressId);
 
                 return this.Ok(customerToUpdate);
             }
@@ -61,19 +93,101 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id) // Or Try/Catch?
+        public IActionResult Delete([FromHeader] string authorizationEmail, Guid id)             // TODO: The customer should also be able to delete his/her profile
         {
-            var success = this.customerService.Delete(id);
-
-            if (success)
+            try
             {
-                return this.NoContent();
-            }
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                var success = this.customerService.Delete(id);
 
-            return this.NotFound();
+                if (success)
+                {
+                    return this.NoContent();
+                }
+                else
+                {
+                    return this.NotFound();
+                }
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
         }
 
-        [HttpGet("{email}/email")]
+        [HttpGet("{id}/incoming")]                
+        public IActionResult GetIncomingParcels([FromHeader] string authorizationEmail, Guid id)
+        {
+            try
+            {
+                var customer = this.authCustomerHelper.TryGetCustomer(authorizationEmail);
+
+                if (customer.Id != id)
+                {
+                    return this.Forbid();
+                }
+
+                return this.Ok(this.customerService.GetIncomingParcels(id));
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
+        }
+
+        [HttpGet("{id}/past")]                    
+        public IActionResult GetPastParcels([FromHeader] string authorizationEmail, Guid id)
+        {
+            try
+            {
+                var customer = this.authCustomerHelper.TryGetCustomer(authorizationEmail);
+
+                if (customer.Id != id)
+                {
+                    return this.Forbid();
+                }
+
+                return this.Ok(this.customerService.GetPastParcels(id));
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
+            
+        }
+
+        [HttpGet("{key}/all")]
+        public IActionResult GetByKeyWord([FromHeader] string authorizationEmail, string key)
+        {
+            try
+            {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                return this.Ok(this.customerService.GetByKeyWord(key));
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
+        }
+
+        [HttpGet("/multiple")]
+        public IActionResult GetByMultipleCriteria([FromHeader] string authorizationEmail, [FromQuery] CustomerFilter customerFilter)
+        {
+            try
+            {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
+        }
+    }
+}
+
+/*
+  [HttpGet("{email}/email")]
         public IActionResult GetByEmail(string email)
         {
             return this.Ok(this.customerService.GetByEmail(email));
@@ -90,23 +204,4 @@ namespace Deliverit.Web.Controllers
         {
             return this.Ok(this.customerService.GetByLastName(lastName));
         }
-
-        [HttpGet("{id}/parcels")]
-        public IActionResult GetIncomingParcels(Guid id)
-        {
-            return this.Ok(this.customerService.GetIncomingParcels(id));
-        }
-
-        [HttpGet("{key}/all")]
-        public IActionResult GetByKeyWord(string key)
-        {
-            return this.Ok(this.customerService.GetByKeyWord(key));
-        }
-
-        [HttpGet("/multiple")] // TODO: Not working
-        public IActionResult GetByMultipleCriteria([FromQuery] CustomerFilter customerFilter)
-        {
-            return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
-        }
-    }
-}
+ */

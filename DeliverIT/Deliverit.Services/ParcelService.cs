@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Deliverit.Services
 {
@@ -35,7 +34,8 @@ namespace Deliverit.Services
                 Id = parcel.Id,
                 Weight = parcel.Weight,
                 Category = parcel.Category.Name,
-                CustomerName = parcel.Customer.FirstName + " " + parcel.Customer.LastName,
+                CustomerFirstName = parcel.Customer.FirstName,
+                CustomerLastName = parcel.Customer.LastName
             };
 
             return dto;
@@ -55,7 +55,8 @@ namespace Deliverit.Services
                     Id = parcel.Id,
                     Weight = parcel.Weight,
                     Category = parcel.Category.Name,
-                    CustomerName = parcel.Customer.FirstName + " " + parcel.Customer.LastName,
+                    CustomerFirstName = parcel.Customer.FirstName,
+                    CustomerLastName = parcel.Customer.LastName
                 };
                 parcels.Add(parcelToDisplay);
             }
@@ -91,8 +92,8 @@ namespace Deliverit.Services
                 Id = newParcel.Id,
                 Weight = newParcel.Weight,
                 Category = newParcel.Category.Name,
-                CustomerName = newParcel.Customer.FirstName + " " + newParcel.Customer.LastName,
-
+                CustomerFirstName = newParcel.Customer.FirstName,
+                CustomerLastName = newParcel.Customer.LastName
             };
 
             return parcelToDisplay;
@@ -138,7 +139,8 @@ namespace Deliverit.Services
                 Id = parcelToUpdate.Id,
                 Weight = parcelToUpdate.Weight,
                 Category = parcelToUpdate.Category.Name,
-                CustomerName = parcelToUpdate.Customer.FirstName + " " + parcelToUpdate.Customer.LastName,
+                CustomerFirstName = parcelToUpdate.Customer.FirstName,
+                CustomerLastName = parcelToUpdate.Customer.LastName
             };
 
             return parcelToDisplay;
@@ -178,7 +180,8 @@ namespace Deliverit.Services
                         Id = parcel.Id,
                         Weight = parcel.Weight,
                         Category = parcel.Category.Name,
-                        CustomerName = parcel.Customer.FirstName + " " + parcel.Customer.LastName,
+                        CustomerFirstName = parcel.Customer.FirstName,
+                        CustomerLastName = parcel.Customer.LastName
                     };
                     parcelsToDisplay.Add(parcelToDisplay);
                 }
@@ -227,7 +230,8 @@ namespace Deliverit.Services
                         Id = parcel.Id,
                         Weight = parcel.Weight,
                         Category = parcel.Category.Name,
-                        CustomerName = parcel.Customer.FirstName + " " + parcel.Customer.LastName,
+                        CustomerFirstName = parcel.Customer.FirstName,
+                        CustomerLastName = parcel.Customer.LastName
                     };
                     parcelsToDisplay.Add(parcelToDisplay);
                 }
@@ -256,7 +260,8 @@ namespace Deliverit.Services
                         Id = parcel.Id,
                         Weight = parcel.Weight,
                         Category = parcel.Category.Name,
-                        CustomerName = parcel.Customer.FirstName + " " + parcel.Customer.LastName,
+                        CustomerFirstName = parcel.Customer.FirstName,
+                        CustomerLastName = parcel.Customer.LastName
                     };
                     parcelsToDisplay.Add(parcelToDisplay);
                 }
@@ -286,7 +291,8 @@ namespace Deliverit.Services
                     Id = parcel.Id,
                     Weight = parcel.Weight,
                     Category = parcel.Category.Name,
-                    CustomerName = parcel.Customer.FirstName + " " + parcel.Customer.LastName,
+                    CustomerFirstName = parcel.Customer.FirstName,
+                    CustomerLastName = parcel.Customer.LastName
                 };
                 parcelsToDisplay.Add(parcelToDisplay);
             }
@@ -313,7 +319,8 @@ namespace Deliverit.Services
                     Id = parcel.Id,
                     Weight = parcel.Weight,
                     Category = parcel.Category.Name,
-                    CustomerName = parcel.Customer.FirstName + " " + parcel.Customer.LastName,
+                    CustomerFirstName = parcel.Customer.FirstName,
+                    CustomerLastName = parcel.Customer.LastName
                 };
                 parcelsToDisplay.Add(parcelToDisplay);
             }
@@ -340,7 +347,8 @@ namespace Deliverit.Services
                     Id = parcel.Id,
                     Weight = parcel.Weight,
                     Category = parcel.Category.Name,
-                    CustomerName = parcel.Customer.FirstName + " " + parcel.Customer.LastName,
+                    CustomerFirstName = parcel.Customer.FirstName,
+                    CustomerLastName = parcel.Customer.LastName
                 };
                 parcelsToDisplay.Add(parcelToDisplay);
             }
@@ -367,7 +375,8 @@ namespace Deliverit.Services
                     Id = parcel.Id,
                     Weight = parcel.Weight,
                     Category = parcel.Category.Name,
-                    CustomerName = parcel.Customer.FirstName + " " + parcel.Customer.LastName,
+                    CustomerFirstName = parcel.Customer.FirstName,
+                    CustomerLastName = parcel.Customer.LastName
                 };
                 parcelsToDisplay.Add(parcelToDisplay);
             }

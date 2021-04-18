@@ -1,10 +1,12 @@
 ﻿using Deliverit.Services.Contracts;
+using Deliverit.Services.Mappers;
+using Deliverit.Services.Models;
 using DeliverIT.Database;
 using DeliverIT.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Deliverit.Services
 {
@@ -17,44 +19,64 @@ namespace Deliverit.Services
             this.context = context;
         }
 
-
-        public Warehouse Get(Guid id)
+        public WarehouseDTO Get(Guid id)
         {
-            var warehouse = this.context.Warehouses
+            var dto = this.context.Warehouses
+                .Select(WarehouseMapper.DTOSelector)
                 .FirstOrDefault(w => w.Id == id)
                 ?? throw new ArgumentNullException();
 
-            return warehouse;
+            return dto;
         }
 
-        public IEnumerable<Warehouse> GetAll()
+        public IEnumerable<WarehouseDTO> GetAll()
         {
-            var warehouses = this.context.Warehouses;
+            List<WarehouseDTO> warehouses = new List<WarehouseDTO>();
+
+            foreach (var warehouse in this.context.Warehouses
+                .Include(w => w.Address)
+                   .ThenInclude(a => a.City)
+                      .ThenInclude(c => c.Country))
+            {
+                var dto = WarehouseMapper.DTOSelector.Compile().Invoke(warehouse);
+                warehouses.Add(dto);
+            }
             return warehouses;
         }
 
-        public Warehouse Create(Warehouse warehouse)
+        public WarehouseDTO Create(Warehouse warehouse)
         {
+            this.context.Warehouses.Add(warehouse);
             warehouse.CreatedOn = DateTime.UtcNow;
 
-            this.context.Warehouses.Add(warehouse);
             this.context.SaveChanges();
 
-            return warehouse;
+            var dto = this.context.Warehouses
+                 .Select(WarehouseMapper.DTOSelector)
+                 .FirstOrDefault(w => w.Id == warehouse.Id)
+                 ?? throw new ArgumentNullException();
+
+            return dto;
         }
 
-        public Warehouse Update(Guid id, Warehouse warehouse)
+        public WarehouseDTO Update(Guid id, Guid addressId)
         {
             var warehouseToUpdate = this.context.Warehouses
                 .FirstOrDefault(w => w.Id == id)
                 ?? throw new ArgumentNullException();
-
-            warehouseToUpdate.Address = warehouse.Address; // Or AddresId?
+           
             warehouseToUpdate.ModifiedOn = DateTime.UtcNow;
-
+            warehouseToUpdate.AddressId = addressId;
             this.context.SaveChanges();
 
-            return warehouse;
+            warehouseToUpdate.Address = this.context.Addresses
+                .Include(a => a.City)
+                   .ThenInclude(c => c.Country)
+                .FirstOrDefault(a => a.Id == addressId);
+
+            var dto = WarehouseMapper.DTOSelector.Compile().Invoke(warehouseToUpdate);
+
+            return dto;
         }
 
         public bool Delete(Guid id)

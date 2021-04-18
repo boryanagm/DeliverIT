@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Deliverit.Models.Authentication;
+using Deliverit.Services.Mappers;
 
 namespace Deliverit.Services
 {
@@ -18,56 +20,83 @@ namespace Deliverit.Services
             this.context = context;
         }
 
-
-        public Customer Get(Guid id) 
+        public Customer GetByCustomerEmail(string customerEmail)
         {
-            //Customer customer = this.context.Customers
-            //    .Include(c => c.FirstName)
-            //    .Include(c => c.LastName)
-            //    .FirstOrDefault(c => c.Id == id);
-
-            //CustomerDTO dto = new CustomerDTO();
-            //dto.FirstName = customer.FirstName;
-            //dto.LastName = customer.LastName;
-
-            //return dto;
-            var customer = this.context.Customers
-                .FirstOrDefault(c => c.Id == id)
+           return this.context.Customers
+                .FirstOrDefault(c => c.Email == customerEmail)
                 ?? throw new ArgumentNullException();
-
-            return customer;
         }
 
-        public IEnumerable<Customer> GetAll()
+        public CustomerDTO Get(Guid id) 
         {
-            var customers = this.context.Customers;
+            var dto = this.context.Customers
+               .Select(CustomerMapper.DTOSelector)
+               .FirstOrDefault(c => c.Id == id)
+               ?? throw new ArgumentNullException();
+
+            return dto;
+        }
+
+        public IEnumerable<CustomerDTO> GetAll()
+        {
+            List<CustomerDTO> customers = new List<CustomerDTO>();
+
+            foreach (var customer in this.context.Customers
+                .Include(c => c.Address)
+                   .ThenInclude(a => a.City)
+                      .ThenInclude(c => c.Country))
+            {
+                var dto = CustomerMapper.DTOSelector.Compile().Invoke(customer);
+                customers.Add(dto);
+            }
             return customers;
         }
 
-        public Customer Create(Customer customer)
+        public int GetCount()
         {
-            customer.CreatedOn = DateTime.UtcNow;
-
-            this.context.Customers.Add(customer);
-            this.context.SaveChanges();
-
-            return customer;
+            return this.context.Customers.Count();
         }
 
-        public Customer Update(Guid id, string streetName, string city) 
+        public CustomerDTO Create(Customer customer)
+        {
+            this.context.Customers.Add(customer);
+            customer.CreatedOn = DateTime.UtcNow;
+
+            var customerRole = new CustomerRole()
+            { 
+               Id = Guid.NewGuid(),
+               RoleId = Guid.Parse("2d598edd-793a-4324-ac29-c505a5c790a5"),
+               CustomerId = customer.Id
+            };
+
+            this.context.SaveChanges();
+
+            var dto = this.context.Customers
+               .Select(CustomerMapper.DTOSelector)
+               .FirstOrDefault(c => c.Id == customer.Id)
+               ?? throw new ArgumentNullException();
+
+            return dto;
+        }
+
+        public CustomerDTO Update(Guid id, Guid addressId) 
         {
             var customerToUpdate = this.context.Customers
-                .Include(c => c.Address)
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
 
-            var newCity = this.context.Cities.FirstOrDefault(c => c.Name == city);
-            var newAddress = new Address { Id = new Guid(), CreatedOn = DateTime.UtcNow, City = newCity, StreetName = streetName };
-
-            customerToUpdate.Address = newAddress;
+            customerToUpdate.ModifiedOn = DateTime.UtcNow;
+            customerToUpdate.AddressId = addressId;
             this.context.SaveChanges();
 
-            return customerToUpdate;
+            customerToUpdate.Address = this.context.Addresses
+               .Include(a => a.City)
+                  .ThenInclude(c => c.Country)
+               .FirstOrDefault(a => a.Id == addressId);
+
+            var dto = CustomerMapper.DTOSelector.Compile().Invoke(customerToUpdate);
+
+            return dto;
         }
         public bool Delete(Guid id)
         {
@@ -86,7 +115,100 @@ namespace Deliverit.Services
             return false;
         }
 
-        public Customer GetByEmail(string email)
+        public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)  
+        {
+            var searchResult = this.context.Customers
+                .Where(c => c.FirstName == customerFilter.FirstName
+                || c.LastName == customerFilter.LastName
+                || c.Email.Contains(customerFilter.Email))
+                .Select(CustomerMapper.DTOSelector)
+                .ToList();
+
+            return searchResult;
+        }
+
+        public List<ParcelDTO> GetIncomingParcels(Guid id) 
+        {
+            List<ParcelDTO> dto = this.context.Customers
+                .Include(c => c.Parcels)
+                   .ThenInclude(p => p.Shipment)
+                     .ThenInclude(s => s.Status)
+                .Include(c => c.Parcels)
+                     .ThenInclude(c => c.Category)
+                .FirstOrDefault(c => c.Id == id).Parcels
+                .Where(p => p.Shipment.Status.Name == "on the way" || p.Shipment.Status.Name == "preparing")
+                .Select(p => new ParcelDTO 
+                {
+                    Id = p.Id,
+                    Weight = p.Weight,
+                    Category = p.Category.Name,
+                    CustomerFirstName = p.Customer.FirstName,
+                    CustomerLastName = p.Customer.LastName
+                })
+                .ToList();
+
+            return dto;
+        }
+
+        public List<ParcelDTO> GetPastParcels(Guid id)  
+        {
+            List<ParcelDTO> dto = this.context.Customers
+                .Include(c => c.Parcels)
+                   .ThenInclude(p => p.Shipment)
+                     .ThenInclude(s => s.Status)
+                .Include(c => c.Parcels)
+                     .ThenInclude(c => c.Category)
+                .FirstOrDefault(c => c.Id == id).Parcels
+                .Where(p => p.Shipment.Status.Name == "completed" || p.Shipment.Status.Name == "canceled")
+                 .Select(p => new ParcelDTO
+                 {
+                     Id = p.Id,
+                     Weight = p.Weight,
+                     Category = p.Category.Name,
+                     CustomerFirstName = p.Customer.FirstName,
+                     CustomerLastName = p.Customer.LastName
+                 })
+                .ToList();
+
+            return dto;
+        }
+
+        public CustomerDTO GetByKeyWord(string key)
+        {
+            var customer = this.context.Customers
+                .Include(c => c.Address)
+                  .ThenInclude(a => a.City)
+                    .ThenInclude(c => c.Country)
+                .FirstOrDefault(c => c.FirstName == key
+                || c.LastName == key
+                || c.Email == key);
+
+            var dto = CustomerMapper.DTOSelector.Compile().Invoke(customer);
+
+            return dto;
+        }
+    }
+}
+/*
+  public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)  
+        {
+            var searchResult = this.context.Customers
+                .Where(c => customerFilter.FirstName == null || c.FirstName.Contains(customerFilter.FirstName) 
+                && customerFilter.LastName == null || c.LastName.Contains(customerFilter.LastName) 
+                && customerFilter.Email == null || c.Email.Contains(customerFilter.Email))
+                .Select(c => new CustomerDTO 
+                {
+                   Id = c.Id,
+                   FirstName = c.FirstName,
+                   LastName = c.LastName, 
+                   Email = c.Email
+                })
+                .ToList();
+
+            return searchResult;
+        }
+
+ public Customer GetByEmail(string email)
         {
             var customer = this.context.Customers
                 .FirstOrDefault(c => c.Email == email);
@@ -109,44 +231,4 @@ namespace Deliverit.Services
 
             return customer;
         }
-
-        public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)  
-        {
-            var searchResult = this.context.Customers
-                .Where(c => customerFilter.FirstName == null || c.FirstName.Contains(customerFilter.FirstName) 
-                && customerFilter.LastName == null || c.LastName.Contains(customerFilter.LastName) 
-                && customerFilter.Email == null || c.Email.Contains(customerFilter.Email))
-                .Select(c => new CustomerDTO 
-                {
-                   Id = c.Id,
-                   FirstName = c.FirstName,
-                   LastName = c.LastName, 
-                   Email = c.Email
-                })
-                .ToList();
-
-            return searchResult;
-        }
-
-        public List<ParcelDTO> GetIncomingParcels(Guid id) 
-        {
-            List<ParcelDTO> dto = this.context.Customers
-                .Include(c => c.Parcels)
-                .FirstOrDefault(c => c.Id == id).Parcels
-                .Select(c => new ParcelDTO { Id = c.Id })
-                .ToList();
-
-            return dto;
-        }
-
-        public Customer GetByKeyWord(string key)
-        {
-            var customer = this.context.Customers
-                .FirstOrDefault(c => c.FirstName == key
-                || c.LastName == key
-                || c.Email == key);
-
-            return customer;
-        }
-    }
-}
+ */

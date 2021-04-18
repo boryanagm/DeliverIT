@@ -1,5 +1,4 @@
-﻿using Deliverit.Models;
-using Deliverit.Services.Contracts;
+﻿using Deliverit.Services.Contracts;
 using Deliverit.Services.Models;
 using DeliverIT.Database;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +52,7 @@ namespace Deliverit.Services
                     Name = country.Name,
                     NumberOfCities = country.Cities.Count()                 
                 };
+
                 countries.Add(countryToAdd);
             }
             return countries;

@@ -1,4 +1,5 @@
 ﻿using Deliverit.Services.Contracts;
+using Deliverit.Web.Helpers;
 using DeliverIT.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,40 +11,44 @@ namespace Deliverit.Web.Controllers
     public class WarehousesController : ControllerBase
     {
         private readonly IWarehouseService warehouseService;
+        private readonly IAuthEmployeeHelper authEmployeeHelper;
 
-        public WarehousesController(IWarehouseService warehouseService)
+        public WarehousesController(IWarehouseService warehouseService, IAuthEmployeeHelper authEmployeeHelper) 
         {
             this.warehouseService = warehouseService;
+            this.authEmployeeHelper = authEmployeeHelper;
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
+        public IActionResult Get(Guid id) // public part
         {
             return this.Ok(this.warehouseService.Get(id));
         }
 
         [HttpGet("")]
-        public IActionResult GetAll()
+        public IActionResult GetAll()     // public part
         {
             return this.Ok(this.warehouseService.GetAll());
         }
 
         [HttpPost("")]
-        public IActionResult Post([FromBody] Warehouse warehouse) 
+        public IActionResult Post([FromHeader] string authorizationEmail, [FromBody] Warehouse warehouse) 
         {
+            var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
             var warehouseToUpdate = this.warehouseService.Create(warehouse);
 
             return this.Created("post", warehouseToUpdate);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id, [FromBody] Warehouse warehouse)
+        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) 
         {
             try
             {
-                var warehouseToUpdate = this.warehouseService.Update(id, warehouse);
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                var warehouseToUpdate = this.warehouseService.Update(id, addressId);
 
-                return this.Ok(warehouse);
+                return this.Ok(warehouseToUpdate);
             }
             catch (ArgumentNullException)
             {
@@ -51,17 +56,27 @@ namespace Deliverit.Web.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id) // Or Try/Catch?
+        [HttpDelete("{id}")] // admin only
+        public IActionResult Delete([FromHeader] string authorizationEmail, Guid id) 
         {
-            var success = this.warehouseService.Delete(id);
-
-            if (success)
+            try
             {
-                return this.NoContent();
-            }
+                var admin = this.authEmployeeHelper.TryGetAdmin(authorizationEmail);
+                var success = this.warehouseService.Delete(id);
 
-            return this.NotFound();
+                if (success)
+                {
+                    return this.NoContent();
+                }
+                else
+                {
+                    return this.NotFound();
+                }
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using Deliverit.Models;
-using Deliverit.Services.Contracts;
+﻿using Deliverit.Services.Contracts;
+using Deliverit.Services.Models;
 using DeliverIT.Database;
 using System;
 using System.Collections.Generic;
@@ -16,22 +16,20 @@ namespace Deliverit.Services
             this.context = context;
         }
 
-        /// <summary>Gets the specified identifier.</summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>City.</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public City Get(Guid id)
         {
             var city = this.context.Cities
-                .Where(c => c.IsDeleted == false)
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
 
-            return city;
+            CityDTO dto = new CityDTO();
+
+            dto.Id = city.Id;
+            dto.Name = city.Name;
+
+            return dto;
         }
 
-        /// <summary>Gets all.</summary>
-        /// <returns>IEnumerable&lt;City&gt;.</returns>
         public IEnumerable<City> GetAll()
         {
             var cities = this.context.Cities; //.Where(c => c.IsDeleted == false)

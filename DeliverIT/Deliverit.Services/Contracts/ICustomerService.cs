@@ -7,18 +7,16 @@ namespace Deliverit.Services.Contracts
 {
     public interface ICustomerService
     {
-        Customer Get(Guid id);
-        IEnumerable<Customer> GetAll();
-        Customer Create(Customer customer);
-        Customer Update(Guid id, string streetName, string city); // Guid id, Customer customer
+        Customer GetByCustomerEmail(string customerEmail);
+        CustomerDTO Get(Guid id);
+        IEnumerable<CustomerDTO> GetAll();
+        int GetCount();
+        CustomerDTO Create(Customer customer);
+        CustomerDTO Update(Guid id, Guid addressId); 
         bool Delete(Guid id);
-        Customer GetByEmail(string email);
-        Customer GetByFirstName(string firstName);
-        Customer GetByLastName(string lastName);
         List<ParcelDTO> GetIncomingParcels(Guid id);
+        List<ParcelDTO> GetPastParcels(Guid id);
         List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter);  
-
-        //  Search all fields from one word (e.g., “john” will search in the email, first and last name fields) (could)
-        Customer GetByKeyWord(string key);
+        CustomerDTO GetByKeyWord(string key);
     }
 }
