@@ -101,22 +101,30 @@ namespace Deliverit.Web.Controllers
             }
         }
 
-        [HttpGet("{id}/incoming")]
+        [HttpGet("{id}/incoming")]                // TODO: Make it visible only for the customer under that ID
         public IActionResult GetIncomingParcels(Guid id)
         {
             return this.Ok(this.customerService.GetIncomingParcels(id));
         }
 
-        [HttpGet("{id}/past")]
+        [HttpGet("{id}/past")]                    // TODO: Make it visible only for the customer under that ID
         public IActionResult GetPastParcels(Guid id)
         {
             return this.Ok(this.customerService.GetPastParcels(id));
         }
 
         [HttpGet("{key}/all")]
-        public IActionResult GetByKeyWord(string key)
+        public IActionResult GetByKeyWord([FromHeader] string authorizationEmail, string key)
         {
-            return this.Ok(this.customerService.GetByKeyWord(key));
+            try
+            {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                return this.Ok(this.customerService.GetByKeyWord(key));
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
         }
 
         [HttpGet("/multiple")]
