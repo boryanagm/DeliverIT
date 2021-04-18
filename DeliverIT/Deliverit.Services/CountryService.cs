@@ -1,5 +1,4 @@
-﻿using Deliverit.Models;
-using Deliverit.Services.Contracts;
+﻿using Deliverit.Services.Contracts;
 using Deliverit.Services.Models;
 using DeliverIT.Database;
 using Microsoft.EntityFrameworkCore;
