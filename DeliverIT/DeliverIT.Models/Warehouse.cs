@@ -11,10 +11,18 @@ namespace DeliverIT.Models
     /// </summary>
     public class Warehouse : Entity
     {
+        /// <summary>
+        /// Gets or sets the address identifier, a foreign key.
+        /// </summary>
+        /// <value>The address identifier.</value>
         [ForeignKey("Address")]
         public Guid AddressId { get; set; }
         public Address Address { get; set; }
 
+        /// <summary>
+        /// Gets or sets the shipments.
+        /// </summary>
+        /// <value>The shipments.</value>
         public ICollection<Shipment> Shipments { get; set; }
     }
 }
