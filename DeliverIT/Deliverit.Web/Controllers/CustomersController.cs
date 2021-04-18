@@ -71,7 +71,7 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId)
+        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) // TODO: The customer should be able to create new address and update it
         {
             try
             {
@@ -87,7 +87,7 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete([FromHeader] string authorizationEmail, Guid id) // TODO: The customer should also be able to delete his/her profile
+        public IActionResult Delete([FromHeader] string authorizationEmail, Guid id)             // TODO: The customer should also be able to delete his/her profile
         {
             try
             {

@@ -1,5 +1,6 @@
 ﻿using Deliverit.Models.Authentication;
 using Deliverit.Services.Contracts;
+using Deliverit.Services.Extension_Methods;
 using Deliverit.Services.Models;
 using DeliverIT.Database;
 using DeliverIT.Models;
@@ -38,18 +39,17 @@ namespace Deliverit.Services
 
         public EmployeeDTO Get(Guid id)
         {
+            //var dto = this.context.Employees
+            //       .Select(e => e.ToEmployeeDTO())
+            //       .FirstOrDefault(e => e.Id == id)
+            //       ?? throw new ArgumentNullException();
+
             var dto = this.context.Employees
-              .Select(e => new EmployeeDTO
-              {
-                  Id = e.Id,
-                  FirstName = e.FirstName,
-                  LastName = e.LastName,
-                  Email = e.Email,
-                  StreetName = e.Address.StreetName,
-                  City = e.Address.City.Name,
-                  Country = e.Address.City.Country.Name,
-                  Parcels = e.Parcels.Select(p => p.Id).ToList()
-              })
+               //.Include(e => e.Parcels)
+               // .Include(e => e.Address)
+               //   .ThenInclude(a => a.City)
+               //     .ThenInclude(c => c.Country)
+              .Select(EmployeeMapper.DTOSelector)
               .FirstOrDefault(e => e.Id == id)
               ?? throw new ArgumentNullException();
 
@@ -66,17 +66,10 @@ namespace Deliverit.Services
                   .ThenInclude(a => a.City)
                     .ThenInclude(c => c.Country))
             {
-                var dto = new EmployeeDTO
-                {
-                    Id = employee.Id,
-                    FirstName = employee.FirstName,
-                    LastName = employee.LastName,
-                    Email = employee.Email,
-                    StreetName = employee.Address.StreetName,
-                    City = employee.Address.City.Name,
-                    Country = employee.Address.City.Country.Name,
-                    Parcels = employee.Parcels.Select(p => p.Id).ToList()
-                };
+
+                var dto = EmployeeMapper.DTOSelector.Compile().Invoke(employee);     // Also works EmployeeMapper.DTOSelector.Compile()(employee);
+                                                                                     // Compile() is needed because of Expression<Func<>>  
+                                                                                     // Check with: var dto = employee.ToEmployeeDTO(); - not working
 
                 employees.Add(dto);
             }
