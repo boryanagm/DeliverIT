@@ -5,6 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Deliverit.Database.DataConfigurations
 {
+    /// <summary>
+    /// Class ParcelConfig.
+    /// Configures the relations of the Parcel model. />
+    /// A Parcel has a one to many realtion with Shipment and Employee.
+    /// </summary>
     public class ParcelConfig : IEntityTypeConfiguration<Parcel>
     {
         public void Configure(EntityTypeBuilder<Parcel> builder)

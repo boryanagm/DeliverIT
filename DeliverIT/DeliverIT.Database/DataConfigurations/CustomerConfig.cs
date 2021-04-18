@@ -5,6 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Deliverit.Database.DataConfigurations
 {
+    /// <summary>
+    /// Class CustomerConfig.
+    /// Configures the relations of the Customer model. />
+    /// A customer has a many to one realtion with Address.
+    /// </summary>
     public class CustomerConfig : IEntityTypeConfiguration<Customer>
     {
         public void Configure(EntityTypeBuilder<Customer> builder)

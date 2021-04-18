@@ -5,6 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Deliverit.Database.DataConfigurations
 {
+    /// <summary>
+    /// Class WarehouseConfig.
+    /// Configures the relations of Warehouse. />
+    /// A warehouse has many shipments and it's address has many warehouses.
+    /// </summary>
     public class WarehouseConfig : IEntityTypeConfiguration<Warehouse>
     {
         public void Configure(EntityTypeBuilder<Warehouse> builder)

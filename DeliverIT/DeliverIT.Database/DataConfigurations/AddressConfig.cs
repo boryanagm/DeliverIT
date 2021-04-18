@@ -5,6 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Deliverit.Database.DataConfigurations
 {
+    /// <summary>
+    /// Class AddressConfig.
+    /// Configures the relations of the Address model. />
+    /// An address has a one to many relation with Customer and Warehouse.
+    /// </summary>
     public class AddressConfig : IEntityTypeConfiguration<Address>
     {
         public void Configure(EntityTypeBuilder<Address> builder)
@@ -20,24 +25,4 @@ namespace Deliverit.Database.DataConfigurations
             builder.HasQueryFilter(a => !a.IsDeleted);
         }
     }
-
-
-
-    /*
-     Exercise with Fluent Api:
-
-            builder.HasKey(a => a.Id);
-
-            builder.Property(a => a.StreetName)
-                   .HasMaxLength(50)
-                   .IsRequired();
-
-            builder.HasOne(a => a.City)
-                   .WithMany(c => c.Addresses)
-                   .HasForeignKey(c => c.Id);
-
-            builder.HasOne(a => a.Warehouse)
-                   .WithOne(w => w.Address)
-                   .HasForeignKey<Warehouse>(a => a.AddressId); 
-     */
 }

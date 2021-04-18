@@ -5,6 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Deliverit.Database.DataConfigurations
 {
+    /// <summary>
+    /// Class EmployeeConfig.
+    /// Configures the relations of the Employee model. />
+    /// Each employee has a unique e-mail and a one to many relation with Parcel.
+    /// </summary>
     public class EmployeeConfig : IEntityTypeConfiguration<Employee>
     {
         public void Configure(EntityTypeBuilder<Employee> builder)

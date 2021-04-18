@@ -5,6 +5,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Deliverit.Database.DataConfigurations
 {
+    /// <summary>
+    /// Class CityConfig.
+    /// Configures the relations of the City model. />
+    /// </summary>
     public class CityConfig : IEntityTypeConfiguration<City>
     {
         public void Configure(EntityTypeBuilder<City> builder)
@@ -12,18 +16,4 @@ namespace Deliverit.Database.DataConfigurations
             builder.HasQueryFilter(c => !c.IsDeleted);
         }
     }
-
-    /*
-     Exercise with Fluent Api:
-
-            builder.HasKey(c => c.Id);
-
-            builder.Property(c => c.Name)
-                   .HasMaxLength(35)
-                   .IsRequired();
-
-            builder.HasOne(city => city.Country)
-                   .WithMany(country => country.Cities)
-                   .HasForeignKey(country => country.Id);
-     */
 }

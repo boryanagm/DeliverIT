@@ -16,6 +16,10 @@ namespace Deliverit.Services
             this.context = context;
         }
 
+        /// <summary>Gets the specified identifier.</summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>City.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public City Get(Guid id)
         {
             var city = this.context.Cities
@@ -26,6 +30,8 @@ namespace Deliverit.Services
             return city;
         }
 
+        /// <summary>Gets all.</summary>
+        /// <returns>IEnumerable&lt;City&gt;.</returns>
         public IEnumerable<City> GetAll()
         {
             var cities = this.context.Cities; //.Where(c => c.IsDeleted == false)
