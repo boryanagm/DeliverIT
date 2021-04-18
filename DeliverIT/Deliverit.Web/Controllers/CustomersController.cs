@@ -63,10 +63,11 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id, Guid addressId) // Guid id, [FromBody] Customer customer
+        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 var customerToUpdate = this.customerService.Update(id, addressId);
 
                 return this.Ok(customerToUpdate);
