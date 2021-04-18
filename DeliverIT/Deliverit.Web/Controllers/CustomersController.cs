@@ -25,7 +25,7 @@ namespace Deliverit.Web.Controllers
         {
             try
             {
-                var admin = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.customerService.Get(id));
             }
             catch (Exception)
@@ -35,9 +35,17 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpGet("")]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromHeader] string authorizationEmail)
         {
-            return this.Ok(this.customerService.GetAll());
+            try
+            {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                return this.Ok(this.customerService.GetAll());
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
         }
 
         [HttpGet("/count")]
