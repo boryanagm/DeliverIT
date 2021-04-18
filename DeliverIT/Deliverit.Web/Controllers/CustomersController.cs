@@ -44,11 +44,11 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id, [FromHeader] string streetName, string city) // Guid id, [FromBody] Customer customer
+        public IActionResult Put(Guid id, Guid addressId) // Guid id, [FromBody] Customer customer
         {
             try
             {
-                var customerToUpdate = this.customerService.Update(id, streetName, city);
+                var customerToUpdate = this.customerService.Update(id, addressId);
 
                 return this.Ok(customerToUpdate);
             }

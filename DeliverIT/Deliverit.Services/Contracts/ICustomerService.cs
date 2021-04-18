@@ -11,8 +11,8 @@ namespace Deliverit.Services.Contracts
         CustomerDTO Get(Guid id);
         IEnumerable<CustomerDTO> GetAll();
         int GetCount();
-        Customer Create(Customer customer);
-        CustomerDTO Update(Guid id, string streetName, string city); // Guid id, Customer customer
+        CustomerDTO Create(Customer customer);
+        CustomerDTO Update(Guid id, Guid addressId); 
         bool Delete(Guid id);
         List<ParcelDTO> GetIncomingParcels(Guid id);
         List<ParcelDTO> GetPastParcels(Guid id);

@@ -34,7 +34,10 @@ namespace Deliverit.Services
                    Id = c.Id,
                    FirstName = c.FirstName,
                    LastName = c.LastName,
-                   Email = c.Email
+                   Email = c.Email,
+                   StreetName = c.Address.StreetName,
+                   City = c.Address.City.Name,
+                   Country = c.Address.City.Country.Name
                })
                .FirstOrDefault(c => c.Id == id)
                ?? throw new ArgumentNullException();
@@ -46,14 +49,20 @@ namespace Deliverit.Services
         {
             List<CustomerDTO> customers = new List<CustomerDTO>();
 
-            foreach (var customer in this.context.Customers)
+            foreach (var customer in this.context.Customers
+                .Include(c => c.Address)
+                   .ThenInclude(a => a.City)
+                      .ThenInclude(c => c.Country))
             {
                 var dto = new CustomerDTO
                 {
                     Id = customer.Id,
                     FirstName = customer.FirstName,
                     LastName = customer.LastName,
-                    Email = customer.Email
+                    Email = customer.Email,
+                    StreetName = customer.Address.StreetName,
+                    City = customer.Address.City.Name,
+                    Country = customer.Address.City.Country.Name
                 };
                 customers.Add(dto);
             }
@@ -65,7 +74,7 @@ namespace Deliverit.Services
             return this.context.Customers.Count();
         }
 
-        public Customer Create(Customer customer)
+        public CustomerDTO Create(Customer customer)
         {
             this.context.Customers.Add(customer);
             customer.CreatedOn = DateTime.UtcNow;
@@ -79,30 +88,37 @@ namespace Deliverit.Services
 
             this.context.SaveChanges();
 
-            return customer;
+            var dto = this.context.Customers
+               .Select(c => new CustomerDTO
+               {
+                   Id = c.Id,
+                   FirstName = c.FirstName,
+                   LastName = c.LastName,
+                   Email = c.Email,
+                   StreetName = c.Address.StreetName,
+                   City = c.Address.City.Name,
+                   Country = c.Address.City.Country.Name
+               })
+               .FirstOrDefault(c => c.Id == customer.Id)
+               ?? throw new ArgumentNullException();
+
+            return dto;
         }
 
-        public CustomerDTO Update(Guid id, string streetName, string city) 
+        public CustomerDTO Update(Guid id, Guid addressId) 
         {
             var customerToUpdate = this.context.Customers
-                .Include(c => c.Address)
-                  .ThenInclude(a => a.City)
-                    .ThenInclude(c => c.Country)
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
 
-            var newCity = this.context.Cities.FirstOrDefault(c => c.Name == city);
-            var newAddress = new Address 
-            { 
-                Id = new Guid(), 
-                CreatedOn = DateTime.UtcNow, 
-                City = newCity, 
-                StreetName = streetName
-            };
-
-            customerToUpdate.Address = newAddress;
             customerToUpdate.ModifiedOn = DateTime.UtcNow;
+            customerToUpdate.AddressId = addressId;
             this.context.SaveChanges();
+
+            customerToUpdate.Address = this.context.Addresses
+               .Include(a => a.City)
+                  .ThenInclude(c => c.Country)
+               .FirstOrDefault(a => a.Id == addressId);
 
             var dto = new CustomerDTO
             { 
