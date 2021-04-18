@@ -39,16 +39,7 @@ namespace Deliverit.Services
 
         public EmployeeDTO Get(Guid id)
         {
-            //var dto = this.context.Employees
-            //       .Select(e => e.ToEmployeeDTO())
-            //       .FirstOrDefault(e => e.Id == id)
-            //       ?? throw new ArgumentNullException();
-
             var dto = this.context.Employees
-               //.Include(e => e.Parcels)
-               // .Include(e => e.Address)
-               //   .ThenInclude(a => a.City)
-               //     .ThenInclude(c => c.Country)
               .Select(EmployeeMapper.DTOSelector)
               .FirstOrDefault(e => e.Id == id)
               ?? throw new ArgumentNullException();
