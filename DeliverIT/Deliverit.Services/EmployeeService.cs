@@ -81,7 +81,7 @@ namespace Deliverit.Services
 
             var dto = this.context.Employees
               .Select(EmployeeMapper.DTOSelector)
-              .FirstOrDefault(c => c.Id == employee.Id)
+              .FirstOrDefault(e => e.Id == employee.Id)
               ?? throw new ArgumentNullException();
 
             return dto;

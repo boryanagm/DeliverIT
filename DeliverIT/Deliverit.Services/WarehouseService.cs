@@ -48,15 +48,13 @@ namespace Deliverit.Services
         {
             this.context.Warehouses.Add(warehouse);
             warehouse.CreatedOn = DateTime.UtcNow;
+
             this.context.SaveChanges();
 
-            var dto = new WarehouseDTO
-            {
-                Id = warehouse.Id,
-                StreetName = warehouse.Address.StreetName,
-                City = warehouse.Address.City.Name,
-                Country = warehouse.Address.City.Country.Name
-            };
+            var dto = this.context.Warehouses
+                 .Select(WarehouseMapper.DTOSelector)
+                 .FirstOrDefault(w => w.Id == warehouse.Id)
+                 ?? throw new ArgumentNullException();
 
             return dto;
         }
@@ -76,13 +74,7 @@ namespace Deliverit.Services
                    .ThenInclude(c => c.Country)
                 .FirstOrDefault(a => a.Id == addressId);
 
-            var dto = new WarehouseDTO
-            { 
-               Id = warehouseToUpdate.Id,
-               StreetName = warehouseToUpdate.Address.StreetName,
-               City = warehouseToUpdate.Address.City.Name,
-               Country = warehouseToUpdate.Address.City.Country.Name
-            };
+            var dto = WarehouseMapper.DTOSelector.Compile().Invoke(warehouseToUpdate);
 
             return dto;
         }
