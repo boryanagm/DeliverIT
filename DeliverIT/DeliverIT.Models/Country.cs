@@ -5,6 +5,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Deliverit.Models
 {
+    /// <summary>
+    /// Class Country.
+    /// Configures the properties of a country.
+    /// </summary>
     public class Country : Entity
     {
 

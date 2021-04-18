@@ -6,6 +6,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DeliverIT.Models
 {
+    /// <summary>
+    /// Class Parcel.
+    /// Configures the properties of a parcel.
+    /// </summary>
     public class Parcel : Entity
     {
         [Range(1, 100, ErrorMessage = "Value for {0} must be between {1} and {2}.")]

@@ -7,6 +7,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DeliverIT.Models
 {
+    /// <summary>
+    /// Class Shipment.
+    /// Configures the properties of a shipment.
+    /// </summary>
     public class Shipment : Entity
     {
         [DataType(DataType.Date)]

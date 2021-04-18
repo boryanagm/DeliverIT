@@ -7,6 +7,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Deliverit.Models
 {
+    /// <summary>
+    /// Class City.
+    /// Configures the properties of a city.
+    /// </summary>
     public class City : Entity
     {
         [StringLength(55, MinimumLength = 2, ErrorMessage = "Value for {0} must be between {1} and {2}.")]

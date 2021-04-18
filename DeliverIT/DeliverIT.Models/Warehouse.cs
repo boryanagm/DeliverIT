@@ -6,6 +6,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DeliverIT.Models
 {
+    /// <summary>
+    /// Class Warehouse.
+    /// Configures the properties of a warehouse.
+    /// </summary>
     public class Warehouse : Entity
     {
         [ForeignKey("Address")]

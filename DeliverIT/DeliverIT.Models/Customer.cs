@@ -6,6 +6,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DeliverIT.Models
 {
+    /// <summary>
+    /// Class Customer.
+    /// Configures the properties of a customer.
+    /// </summary>
     public class Customer : Entity
     {
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
