@@ -1,4 +1,5 @@
-﻿using Deliverit.Services.Contracts;
+﻿using Deliverit.Models.Authentication;
+using Deliverit.Services.Contracts;
 using Deliverit.Services.Models;
 using DeliverIT.Database;
 using DeliverIT.Models;
@@ -87,6 +88,14 @@ namespace Deliverit.Services
         {
             this.context.Employees.Add(employee);
             employee.CreatedOn = DateTime.UtcNow;
+
+            var employeeRole = new EmployeeRole()
+            {
+                Id = Guid.NewGuid(),
+                RoleId = Guid.Parse("275a10a1-e965-460e-a965-e1fe2453e916"),
+                EmployeeId = employee.Id
+            };
+
             this.context.SaveChanges();
 
             return employee;
@@ -122,6 +131,7 @@ namespace Deliverit.Services
 
             return dto;
         }
+
         public bool Delete(Guid id)
         {
             var employee = this.context.Employees
@@ -139,13 +149,14 @@ namespace Deliverit.Services
             return false;
         }
 
-        public Employee Restore(Guid id) // Not working
+        public Employee Restore(Guid id) 
         {
             var employeeToRestore = this.context.Employees
                 .IgnoreQueryFilters()
-                .FirstOrDefault(e => e.Id == id); //  && e.IsDeleted == true
+                .FirstOrDefault(e => e.Id == id); 
 
             employeeToRestore.IsDeleted = false;
+            this.context.SaveChanges();
 
             return employeeToRestore;
         }

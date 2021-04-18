@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Deliverit.Models.Authentication;
 
 namespace Deliverit.Services
 {
@@ -68,6 +69,14 @@ namespace Deliverit.Services
         {
             this.context.Customers.Add(customer);
             customer.CreatedOn = DateTime.UtcNow;
+
+            var customerRole = new CustomerRole()
+            { 
+               Id = Guid.NewGuid(),
+               RoleId = Guid.Parse("2d598edd-793a-4324-ac29-c505a5c790a5"),
+               CustomerId = customer.Id
+            };
+
             this.context.SaveChanges();
 
             return customer;

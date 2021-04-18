@@ -103,7 +103,7 @@ namespace Deliverit.Web.Controllers
             }
         }
 
-        [HttpPost("{id}/restore")] // Not working
+        [HttpPost("{id}/restore")] 
         public IActionResult Restore([FromHeader] string authorizationEmail, Guid id)
         {
             try

@@ -45,7 +45,7 @@ namespace Deliverit.Web.Controllers
         {
             try
             {
-                var admin = this.authEmployeeHelper.TryGetAdmin(authorizationEmail);
+                var admin = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 var warehouseToUpdate = this.warehouseService.Update(id, addressId);
 
                 return this.Ok(warehouseToUpdate);
