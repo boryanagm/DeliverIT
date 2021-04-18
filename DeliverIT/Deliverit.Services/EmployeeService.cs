@@ -57,12 +57,10 @@ namespace Deliverit.Services
                   .ThenInclude(a => a.City)
                     .ThenInclude(c => c.Country))
             {
-
                 var dto = EmployeeMapper.DTOSelector.Compile().Invoke(employee);     // Also works EmployeeMapper.DTOSelector.Compile()(employee);
                                                                                      // Compile() is needed because of Expression<Func<>>  
-                                                                                     // Check with: var dto = employee.ToEmployeeDTO(); - not working
-
                 employees.Add(dto);
+                                                                                     // Check with: var dto = employee.ToEmployeeDTO(); - not working
             }
 
             return employees;
@@ -82,17 +80,7 @@ namespace Deliverit.Services
             this.context.SaveChanges();
 
             var dto = this.context.Employees
-              .Select(e => new EmployeeDTO
-              {
-                  Id = e.Id,
-                  FirstName = e.FirstName,
-                  LastName = e.LastName,
-                  Email = e.Email,
-                  StreetName = e.Address.StreetName,
-                  City = e.Address.City.Name,
-                  Country = e.Address.City.Country.Name,
-                  Parcels = e.Parcels.Select(p => p.Id).ToList()
-              })
+              .Select(EmployeeMapper.DTOSelector)
               .FirstOrDefault(c => c.Id == employee.Id)
               ?? throw new ArgumentNullException();
 
@@ -115,18 +103,8 @@ namespace Deliverit.Services
                   .ThenInclude(c => c.Country)
                .FirstOrDefault(a => a.Id == addressId);
 
-            var dto = new EmployeeDTO
-            {
-                Id = employeeToUpdate.Id,
-                FirstName = employeeToUpdate.FirstName,
-                LastName = employeeToUpdate.LastName,
-                Email = employeeToUpdate.Email,
-                StreetName = employeeToUpdate.Address.StreetName,
-                City = employeeToUpdate.Address.City.Name,
-                Country = employeeToUpdate.Address.City.Country.Name,
-                Parcels = employeeToUpdate.Parcels.Select(p => p.Id).ToList()
-            };
-
+            var dto = EmployeeMapper.DTOSelector.Compile().Invoke(employeeToUpdate);
+            
             return dto;
         }
 
@@ -157,17 +135,7 @@ namespace Deliverit.Services
             this.context.SaveChanges();
 
             var dto = this.context.Employees
-              .Select(e => new EmployeeDTO
-              {
-                  Id = e.Id,
-                  FirstName = e.FirstName,
-                  LastName = e.LastName,
-                  Email = e.Email,
-                  StreetName = e.Address.StreetName,
-                  City = e.Address.City.Name,
-                  Country = e.Address.City.Country.Name,
-                  Parcels = e.Parcels.Select(p => p.Id).ToList()
-              })
+              .Select(EmployeeMapper.DTOSelector)
               .FirstOrDefault(c => c.Id == employeeToRestore.Id)
               ?? throw new ArgumentNullException();
 
