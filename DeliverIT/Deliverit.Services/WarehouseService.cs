@@ -52,13 +52,21 @@ namespace Deliverit.Services
             return warehouses;
         }
 
-        public Warehouse Create(Warehouse warehouse)
+        public WarehouseDTO Create(Warehouse warehouse)
         {
             this.context.Warehouses.Add(warehouse);
             warehouse.CreatedOn = DateTime.UtcNow;
             this.context.SaveChanges();
 
-            return warehouse;
+            var dto = new WarehouseDTO
+            {
+                Id = warehouse.Id,
+                StreetName = warehouse.Address.StreetName,
+                City = warehouse.Address.City.Name,
+                Country = warehouse.Address.City.Country.Name
+            };
+
+            return dto;
         }
 
         public WarehouseDTO Update(Guid id, Guid addressId)
@@ -83,6 +91,7 @@ namespace Deliverit.Services
                City = warehouseToUpdate.Address.City.Name,
                Country = warehouseToUpdate.Address.City.Country.Name
             };
+
             return dto;
         }
 

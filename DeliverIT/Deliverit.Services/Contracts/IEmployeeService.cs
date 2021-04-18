@@ -11,9 +11,9 @@ namespace Deliverit.Services.Contracts
         Employee GetByAdminEmail(string adminEmail);
         EmployeeDTO Get(Guid id);
         IEnumerable<EmployeeDTO> GetAll();
-        Employee Create(Employee employee);
+        EmployeeDTO Create(Employee employee);
         EmployeeDTO Update(Guid id, Guid addressId);
         bool Delete(Guid id);
-        Employee Restore(Guid id);
+        EmployeeDTO Restore(Guid id);
     }
 }

@@ -83,7 +83,7 @@ namespace Deliverit.Services
 
             return employees;
         }
-        public Employee Create(Employee employee)
+        public EmployeeDTO Create(Employee employee)
         {
             this.context.Employees.Add(employee);
             employee.CreatedOn = DateTime.UtcNow;
@@ -97,7 +97,22 @@ namespace Deliverit.Services
 
             this.context.SaveChanges();
 
-            return employee;
+            var dto = this.context.Employees
+              .Select(e => new EmployeeDTO
+              {
+                  Id = e.Id,
+                  FirstName = e.FirstName,
+                  LastName = e.LastName,
+                  Email = e.Email,
+                  StreetName = e.Address.StreetName,
+                  City = e.Address.City.Name,
+                  Country = e.Address.City.Country.Name,
+                  Parcels = e.Parcels.Select(p => p.Id).ToList()
+              })
+              .FirstOrDefault(c => c.Id == employee.Id)
+              ?? throw new ArgumentNullException();
+
+            return dto;
         }
 
         public EmployeeDTO Update(Guid id, Guid addressId)
@@ -148,7 +163,7 @@ namespace Deliverit.Services
             return false;
         }
 
-        public Employee Restore(Guid id) 
+        public EmployeeDTO Restore(Guid id) 
         {
             var employeeToRestore = this.context.Employees
                 .IgnoreQueryFilters()
@@ -157,7 +172,22 @@ namespace Deliverit.Services
             employeeToRestore.IsDeleted = false;
             this.context.SaveChanges();
 
-            return employeeToRestore;
+            var dto = this.context.Employees
+              .Select(e => new EmployeeDTO
+              {
+                  Id = e.Id,
+                  FirstName = e.FirstName,
+                  LastName = e.LastName,
+                  Email = e.Email,
+                  StreetName = e.Address.StreetName,
+                  City = e.Address.City.Name,
+                  Country = e.Address.City.Country.Name,
+                  Parcels = e.Parcels.Select(p => p.Id).ToList()
+              })
+              .FirstOrDefault(c => c.Id == employeeToRestore.Id)
+              ?? throw new ArgumentNullException();
+
+            return dto;
         }
     }
 }
