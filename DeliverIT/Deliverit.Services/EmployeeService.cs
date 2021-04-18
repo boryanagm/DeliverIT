@@ -33,7 +33,6 @@ namespace Deliverit.Services
                   .FirstOrDefault(e => e.Email == adminEmail && e.Roles.Any(r => r.Role.Name == "Admin"))
                   ?? throw new ArgumentNullException();
 
-            // var employee = employeeRole.Employee;
             return employeeRole;
         }
 
