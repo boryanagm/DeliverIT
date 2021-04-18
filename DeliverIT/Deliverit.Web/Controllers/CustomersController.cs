@@ -128,9 +128,17 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpGet("/multiple")]
-        public IActionResult GetByMultipleCriteria([FromQuery] CustomerFilter customerFilter)
+        public IActionResult GetByMultipleCriteria([FromHeader] string authorizationEmail, [FromQuery] CustomerFilter customerFilter)
         {
-            return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
+            try
+            {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
         }
     }
 }
