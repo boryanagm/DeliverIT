@@ -1,4 +1,5 @@
 ﻿using Deliverit.Services.Contracts;
+using Deliverit.Services.Mappers;
 using Deliverit.Services.Models;
 using DeliverIT.Database;
 using DeliverIT.Models;
@@ -21,13 +22,7 @@ namespace Deliverit.Services
         public WarehouseDTO Get(Guid id)
         {
             var dto = this.context.Warehouses
-                .Select(w => new WarehouseDTO
-                {
-                    Id = w.Id,
-                    StreetName = w.Address.StreetName,
-                    City = w.Address.City.Name,
-                    Country = w.Address.City.Country.Name
-                })
+                .Select(WarehouseMapper.DTOSelector)
                 .FirstOrDefault(w => w.Id == id)
                 ?? throw new ArgumentNullException();
 
@@ -38,15 +33,12 @@ namespace Deliverit.Services
         {
             List<WarehouseDTO> warehouses = new List<WarehouseDTO>();
 
-            foreach (var warehouse in this.context.Warehouses.Include(w => w.Address).ThenInclude(a => a.City).ThenInclude(c => c.Country))
+            foreach (var warehouse in this.context.Warehouses
+                .Include(w => w.Address)
+                   .ThenInclude(a => a.City)
+                      .ThenInclude(c => c.Country))
             {
-                var dto = new WarehouseDTO
-                {
-                    Id = warehouse.Id,
-                    StreetName = warehouse.Address.StreetName,
-                    City = warehouse.Address.City.Name,
-                    Country = warehouse.Address.City.Country.Name
-                };
+                var dto = WarehouseMapper.DTOSelector.Compile().Invoke(warehouse);
                 warehouses.Add(dto);
             }
             return warehouses;
