@@ -1,7 +1,4 @@
-﻿using DeliverIT.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
 namespace Deliverit.Services.Models
 {
@@ -10,6 +7,7 @@ namespace Deliverit.Services.Models
         public Guid Id { get; set; }
         public int Weight { get; set; }
         public string Category { get; set; }
-        public string CustomerName { get; set; }
+        public string CustomerFirstName { get; set; }
+        public string CustomerLastName { get; set; }
     }
 }
