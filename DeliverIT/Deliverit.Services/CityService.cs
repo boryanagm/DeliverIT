@@ -19,7 +19,6 @@ namespace Deliverit.Services
         public CityDTO Get(Guid id)
         {
             var city = this.context.Cities
-               // .Where(c => c.IsDeleted == false) 
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
 
