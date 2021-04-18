@@ -41,11 +41,11 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) // change later for employee
+        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) 
         {
             try
             {
-                var admin = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 var warehouseToUpdate = this.warehouseService.Update(id, addressId);
 
                 return this.Ok(warehouseToUpdate);
@@ -57,16 +57,26 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpDelete("{id}")] // admin only
-        public IActionResult Delete(Guid id) 
+        public IActionResult Delete([FromHeader] string authorizationEmail, Guid id) 
         {
-            var success = this.warehouseService.Delete(id);
-
-            if (success)
+            try
             {
-                return this.NoContent();
-            }
+                var admin = this.authEmployeeHelper.TryGetAdmin(authorizationEmail);
+                var success = this.warehouseService.Delete(id);
 
-            return this.NotFound();
+                if (success)
+                {
+                    return this.NoContent();
+                }
+                else
+                {
+                    return this.NotFound();
+                }
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
         }
     }
 }
