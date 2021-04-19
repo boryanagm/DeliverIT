@@ -287,7 +287,6 @@ namespace Deliverit.Services
             return parcelsToDisplay;
         }
 
-
         /// <summary>
         /// Gets all parcels of a given customer.
         /// </summary>
@@ -311,7 +310,6 @@ namespace Deliverit.Services
             return parcelsToDisplay;
         }
 
-
         /// <summary>
         /// Gets all parcels by weight.
         /// </summary>
@@ -334,7 +332,6 @@ namespace Deliverit.Services
 
             return parcelsToDisplay;
         }
-
 
         /// <summary>
         /// Gets all parcels by category.

@@ -36,7 +36,6 @@ namespace Deliverit.Services
                  ?? throw new ArgumentNullException();
         }
 
-
         /// <summary>
         /// Gets a customer by Id.
         /// </summary>
@@ -51,7 +50,6 @@ namespace Deliverit.Services
 
             return dto;
         }
-
 
         /// <summary>
         /// Gets all customers.
@@ -71,7 +69,6 @@ namespace Deliverit.Services
             }
             return customers;
         }
-
 
         /// <summary>
         /// Gets the count of all customers.

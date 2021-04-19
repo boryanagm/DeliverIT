@@ -24,7 +24,6 @@ namespace Deliverit.Services
             this.context = context;
         }
 
-
         /// <summary>
         /// Gets a customer by Id.
         /// </summary>
@@ -60,7 +59,6 @@ namespace Deliverit.Services
             }
             return shipments;
         }
-
 
         /// <summary>
         /// Updates the specified Shipment.
@@ -102,7 +100,6 @@ namespace Deliverit.Services
             return shipmentToDisplay;
         }
 
-
         /// <summary>
         /// Creates a shipment.
         /// </summary>
@@ -129,7 +126,6 @@ namespace Deliverit.Services
             return shipmentToDisplay;
         }
 
-
         /// <summary>
         /// Deletes a shipment.
         /// </summary>
@@ -150,7 +146,6 @@ namespace Deliverit.Services
             this.context.SaveChanges();
             return true;
         }
-
 
         /// <summary>
         /// Searches a shipment by a Warehouse Id.

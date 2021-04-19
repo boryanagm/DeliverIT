@@ -11,10 +11,10 @@ namespace Deliverit.Tests
     public class CityServiceTests
     {
         [TestMethod]
-        public void Get_By_Should_Return_Correct_Entity()
+        public void Get_By_Should_Return_Correct_City()
         {
             //Arrange
-            var options = Utils.GetOptions(nameof(Get_By_Should_Return_Correct_Entity));
+            var options = Utils.GetOptions(nameof(Get_By_Should_Return_Correct_City));
            
             using (var arrangeContext = new DeliveritDbContext(options))
             {

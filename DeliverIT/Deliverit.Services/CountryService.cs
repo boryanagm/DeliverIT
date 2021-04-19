@@ -46,7 +46,6 @@ namespace Deliverit.Services
             return dto;
         }
 
-
         /// <summary>
         /// Gets all countries.
         /// </summary>
@@ -54,6 +53,7 @@ namespace Deliverit.Services
         public IEnumerable<CountryDTO> GetAll()
         {
             List<CountryDTO> countries = new List<CountryDTO>();
+
             foreach(var country in this.context.Countries.Include(c=>c.Cities))
             {
                 CountryDTO countryToAdd = new CountryDTO
@@ -62,8 +62,10 @@ namespace Deliverit.Services
                     Name = country.Name,
                     NumberOfCities = country.Cities.Count()                 
                 };
+
                 countries.Add(countryToAdd);
             }
+
             return countries;
         }
     }
