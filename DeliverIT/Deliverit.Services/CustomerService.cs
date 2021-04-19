@@ -181,14 +181,7 @@ namespace Deliverit.Services
         public List<ParcelDTO> GetIncomingParcels(Guid id)
         {
             List<ParcelDTO> dto = GetIncomingParcelsMapper.ReturnIncomingParcels(context, id)
-                .Select(p => new ParcelDTO 
-                {
-                    Id = p.Id,
-                    Weight = p.Weight,
-                    Category = p.Category.Name,
-                    CustomerFirstName = p.Customer.FirstName,
-                    CustomerLastName = p.Customer.LastName
-                })
+                .Select(ParcelMapper.DTOSelector)
                 .ToList();
 
             return dto;
@@ -202,14 +195,7 @@ namespace Deliverit.Services
         public List<ParcelDTO> GetPastParcels(Guid id)
         {
             List<ParcelDTO> dto = GetPastParcelsMapper.ReturnPastParcels(context, id)
-                 .Select(p => new ParcelDTO
-                 {
-                     Id = p.Id,
-                     Weight = p.Weight,
-                     Category = p.Category.Name,
-                     CustomerFirstName = p.Customer.FirstName,
-                     CustomerLastName = p.Customer.LastName
-                 })
+                 .Select(ParcelMapper.DTOSelector)
                 .ToList();
 
             return dto;
