@@ -6,6 +6,10 @@ using System.Text;
 
 namespace Deliverit.Models.Abstract
 {
+    /// <summary>
+    /// Class Entity.
+    /// An abstract class defining the base properties of all models. />
+    /// </summary>
     public class Entity : IEntity
     {
         [Key]
@@ -15,7 +19,8 @@ namespace Deliverit.Models.Abstract
 
         public DateTime? ModifiedOn { get; set; }
 
-        public bool? IsDeleted { get; set; }
+        [Required]
+        public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
     }

@@ -4,21 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Deliverit.Database.DataConfigurations
 {
-    public class CountryConfig// : IEntityTypeConfiguration<Country>
+    /// <summary>
+    /// Class CountryConfig.
+    /// Configures the relations of the Country model. />
+    /// </summary>
+    public class CountryConfig : IEntityTypeConfiguration<Country>
     {
-        //public void Configure(EntityTypeBuilder<Country> builder)
-        //{
-        //    
-        //}
+        public void Configure(EntityTypeBuilder<Country> builder)
+        {
+            builder.HasQueryFilter(c => !c.IsDeleted);
+        }
     }
-
-    /*
-     Exercise with Fluent Api:
-
-            builder.HasKey(c => c.Id);
-
-            builder.Property(c => c.Name)
-                   .HasMaxLength(35)
-                   .IsRequired();
-     */
 }

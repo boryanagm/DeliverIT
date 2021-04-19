@@ -11,7 +11,7 @@ namespace Deliverit.Models.Contracts
         public DateTime CreatedOn { get; }
         public DateTime? ModifiedOn { get; }
 
-        public bool? IsDeleted { get; }
+        public bool IsDeleted { get; }
         public DateTime? DeletedOn { get; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using DeliverIT.Models;
+﻿using Deliverit.Services.Models;
+using DeliverIT.Models;
 using System;
 using System.Collections.Generic;
 
@@ -6,10 +7,10 @@ namespace Deliverit.Services.Contracts
 {
     public interface IWarehouseService
     {
-        Warehouse Get(Guid id);
-        IEnumerable<Warehouse> GetAll();
-        Warehouse Create(Warehouse warehouse);
-        Warehouse Update(Guid id, Warehouse warehouse);
+        WarehouseDTO Get(Guid id);
+        IEnumerable<WarehouseDTO> GetAll();
+        WarehouseDTO Create(Warehouse warehouse);
+        WarehouseDTO Update(Guid id, Guid addressId);
         bool Delete(Guid id);
     }
 }

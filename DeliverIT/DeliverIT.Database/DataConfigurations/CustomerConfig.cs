@@ -5,6 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Deliverit.Database.DataConfigurations
 {
+    /// <summary>
+    /// Class CustomerConfig.
+    /// Configures the relations of the Customer model. />
+    /// A customer has a many to one realtion with Address.
+    /// </summary>
     public class CustomerConfig : IEntityTypeConfiguration<Customer>
     {
         public void Configure(EntityTypeBuilder<Customer> builder)
@@ -14,6 +19,8 @@ namespace Deliverit.Database.DataConfigurations
                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasIndex(c => c.Email).IsUnique();
+
+            builder.HasQueryFilter(c => !c.IsDeleted);
         }
     }
 

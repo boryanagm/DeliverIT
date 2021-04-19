@@ -1,49 +1,118 @@
-﻿using Deliverit.Services.Contracts;
+﻿using Deliverit.Services;
+using Deliverit.Services.Contracts;
+using Deliverit.Web.Helpers;
 using DeliverIT.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace Deliverit.Web.Controllers
 {
+    /// <summary>
+    /// Class CustomersController.
+    /// Handles all customer services.
+    /// Implements the <see cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
+    /// </summary>
+    /// <seealso cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
     [Route("api/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService customerService;
+        private readonly IAuthEmployeeHelper authEmployeeHelper;
+        private readonly IAuthCustomerHelper authCustomerHelper;
 
-        public CustomersController(ICustomerService customerService)
+        public CustomersController(ICustomerService customerService, IAuthEmployeeHelper authEmployeeHelper, IAuthCustomerHelper authCustomerHelper)
         {
             this.customerService = customerService;
+            this.authEmployeeHelper = authEmployeeHelper;
+            this.authCustomerHelper = authCustomerHelper;
         }
 
+        /// <summary>
+        /// Gets the specified customer by email.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="id">The identifier of the customer.</param>
         [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
-        {
-            return this.Ok(this.customerService.Get(id));
-        }
-
-        [HttpGet("")]
-        public IActionResult GetAll()
-        {
-            return this.Ok(this.customerService.GetAll());
-        }
-
-        [HttpPost("")]
-        public IActionResult Post([FromBody] Customer customer)
-        {
-            var customerToUpdate = this.customerService.Create(customer);
-
-            return this.Created("post", customerToUpdate);
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult Put(Guid id, [FromBody] Customer customer)
+        public IActionResult Get([FromHeader] string authorizationEmail, Guid id)
         {
             try
             {
-                var customerToUpdate = this.customerService.Update(id, customer);
+                var customer = this.authCustomerHelper.TryGetCustomer(authorizationEmail);
 
-                return this.Ok(customer);
+                if (customer.Id != id)
+                {
+                    return this.Forbid();
+                }
+
+                return this.Ok(this.customerService.Get(id));
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
+        }
+
+        /// <summary>
+        /// Gets all customers.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        [HttpGet("")]
+        public IActionResult GetAll([FromHeader] string authorizationEmail)
+        {
+            try
+            {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                return this.Ok(this.customerService.GetAll());
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
+        }
+
+        /// <summary>
+        /// Gets the count of all customers.
+        /// </summary>
+        [HttpGet("/count")]
+        public IActionResult GetCount()
+        {
+            return this.Ok(this.customerService.GetCount());
+        }
+
+        /// <summary>
+        /// Creates a new customer.
+        /// </summary>
+        /// <param name="customer">The customer that is to be created.</param>
+        [HttpPost("")]
+        public IActionResult Post([FromBody] Customer customer)
+        {
+            try
+            {
+                var newCustomer = this.customerService.Create(customer);
+
+                return this.Created("post", newCustomer);
+            }
+            catch (ArgumentNullException)
+            { 
+                return this.Conflict(); 
+            }
+        }
+
+        /// <summary>
+        /// Updates a customer's information.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="addressId">The address identifier.</param>
+        [HttpPut("{id}")]
+        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) 
+        {
+            try
+            {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                var customerToUpdate = this.customerService.Update(id, addressId);
+                return this.Ok(customerToUpdate);
             }
             catch (ArgumentNullException)
             {
@@ -51,48 +120,121 @@ namespace Deliverit.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes a customer.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="id">The identifier.</param>
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id) // Or Try/Catch?
+        public IActionResult Delete([FromHeader] string authorizationEmail, Guid id)             // TODO: The customer should also be able to delete his/her profile
         {
-            var success = this.customerService.Delete(id);
-
-            if (success)
+            try
             {
-                return this.NoContent();
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                var success = this.customerService.Delete(id);
+
+                if (success)
+                {
+                    return this.NoContent();
+                }
+                else
+                {
+                    return this.NotFound();
+                }
             }
-
-            return this.NotFound();
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
         }
 
-        [HttpGet("{email}/email")]
-        public IActionResult GetByEmail(string email)
+        /// <summary>
+        /// Gets the incoming parcels.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="id">The identifier.</param>
+        [HttpGet("{id}/incoming")]
+        public IActionResult GetIncomingParcels([FromHeader] string authorizationEmail, Guid id)
         {
-            return this.Ok(this.customerService.GetByEmail(email));
+            try
+            {
+                var customer = this.authCustomerHelper.TryGetCustomer(authorizationEmail);
+
+                if (customer.Id != id)
+                {
+                    return this.Forbid();
+                }
+
+                return this.Ok(this.customerService.GetIncomingParcels(id));
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
         }
 
-        [HttpGet("{firstName}/firstname")]
-        public IActionResult GetByFirstname(string firstName)
+        /// <summary>
+        /// Gets the past parcels.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="id">The identifier.</param>
+        [HttpGet("{id}/past")]
+        public IActionResult GetPastParcels([FromHeader] string authorizationEmail, Guid id)
         {
-            return this.Ok(this.customerService.GetByFirstName(firstName));
+            try
+            {
+                var customer = this.authCustomerHelper.TryGetCustomer(authorizationEmail);
+
+                if (customer.Id != id)
+                {
+                    return this.Forbid();
+                }
+
+                return this.Ok(this.customerService.GetPastParcels(id));
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
         }
 
-        [HttpGet("{lastName}/lastname")]
-        public IActionResult GetByLastName(string lastName)
-        {
-            return this.Ok(this.customerService.GetByLastName(lastName));
-        }
-
-        [HttpGet("{email}/parcels")]
-        public IActionResult GetIncomingParcels(string email)
-        {
-            return this.Ok(this.customerService.GetIncomingParcels(email));
-        }
-
+        /// <summary>
+        /// Gets by key word.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="key">The key.</param>
         [HttpGet("{key}/all")]
-        public IActionResult GetByKeyWord(string key)
+        public IActionResult GetByKeyWord([FromHeader] string authorizationEmail, string key)
         {
-            return this.Ok(this.customerService.GetByKeyWord(key));
+            try
+            {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                return this.Ok(this.customerService.GetByKeyWord(key));
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
         }
-        // TODO: Implement "shoulds" and "coulds"
+
+
+        /// <summary>
+        /// Gets the by multiple criteria.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="customerFilter">The customer filter.</param>
+        [HttpGet("/multiple")]
+        public IActionResult GetByMultipleCriteria([FromHeader] string authorizationEmail, [FromQuery] CustomerFilter customerFilter)
+        {
+            try
+            {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
+        }
     }
 }

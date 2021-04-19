@@ -1,5 +1,6 @@
 using Deliverit.Services;
 using Deliverit.Services.Contracts;
+using Deliverit.Web.Helpers;
 using DeliverIT.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,8 +23,11 @@ namespace Deliverit.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers()
+                    .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddDbContext<DeliveritDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddControllers();
 
             services.AddSwaggerGen(c =>
             {
@@ -31,8 +35,14 @@ namespace Deliverit.Web
             });
 
             services.AddScoped<ICityService, CityService>();
+            services.AddScoped<ICountryService, CountryService>();
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IWarehouseService, WarehouseService>();
+            services.AddScoped<IShipmentService, ShipmentService>();
+            services.AddScoped<IAuthCustomerHelper, AuthCustomerHelper>();
+            services.AddScoped<IAuthEmployeeHelper, AuthEmployeeHelper>();
+            services.AddScoped<IParcelService, ParcelService>();
             //services.AddScoped<IEmployeeService, EmployeeService>();
         }
 
