@@ -5,6 +5,11 @@ using System;
 
 namespace Deliverit.Web.Controllers
 {
+    /// <summary>
+    /// Class CitiesController.
+    /// Handles all city services
+    /// Implements the <see cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class CitiesController : ControllerBase
@@ -18,6 +23,10 @@ namespace Deliverit.Web.Controllers
             this.autHelper = autHelper;
         }
 
+        /// <summary>
+        /// Shows city by the ID.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
@@ -31,6 +40,11 @@ namespace Deliverit.Web.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Shows all cities.
+        /// </summary>
+        /// <returns>IActionResult.</returns>
         [HttpGet("")]
         public IActionResult GetAll()
         {
