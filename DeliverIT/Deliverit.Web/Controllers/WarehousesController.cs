@@ -69,7 +69,7 @@ namespace Deliverit.Web.Controllers
             }
             catch (Exception)
             {
-                return Conflict();
+                return this.Conflict();
             }
         }
 
