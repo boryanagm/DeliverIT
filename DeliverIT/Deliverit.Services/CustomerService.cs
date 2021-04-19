@@ -129,14 +129,7 @@ namespace Deliverit.Services
 
         public List<ParcelDTO> GetIncomingParcels(Guid id) 
         {
-            List<ParcelDTO> dto = this.context.Customers
-                .Include(c => c.Parcels)
-                   .ThenInclude(p => p.Shipment)
-                     .ThenInclude(s => s.Status)
-                .Include(c => c.Parcels)
-                     .ThenInclude(c => c.Category)
-                .FirstOrDefault(c => c.Id == id).Parcels
-                .Where(p => p.Shipment.Status.Name == "on the way" || p.Shipment.Status.Name == "preparing")
+            List<ParcelDTO> dto = GetIncomingParcelsMapper.ReturnIncomingParcels(context, id)
                 .Select(p => new ParcelDTO 
                 {
                     Id = p.Id,

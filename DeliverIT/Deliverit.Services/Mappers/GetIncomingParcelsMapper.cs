@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace Deliverit.Services.Mappers
 {
-    public static class GetPastParcelsMapper
+    public static class GetIncomingParcelsMapper
     {
-        public static List<Parcel> ReturnPastParcels(DeliveritDbContext context, Guid id)
+        public static List<Parcel> ReturnIncomingParcels(DeliveritDbContext context, Guid id)
         {
             var dto = context.Customers
                    .Include(c => c.Parcels)
@@ -18,7 +18,7 @@ namespace Deliverit.Services.Mappers
                    .Include(c => c.Parcels)
                         .ThenInclude(c => c.Category)
                    .FirstOrDefault(c => c.Id == id).Parcels
-                   .Where(p => p.Shipment.Status.Name == "completed" || p.Shipment.Status.Name == "canceled").ToList();
+                   .Where(p => p.Shipment.Status.Name == "on the way" || p.Shipment.Status.Name == "preparing").ToList();
 
             return dto;
         }
