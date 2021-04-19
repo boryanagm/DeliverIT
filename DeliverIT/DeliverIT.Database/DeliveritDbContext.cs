@@ -1,6 +1,5 @@
 ﻿using Deliverit.Database.Seed;
 using Deliverit.Models;
-using Deliverit.Models.Abstract;
 using Deliverit.Models.Authentication;
 using DeliverIT.Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,14 +9,8 @@ namespace DeliverIT.Database
 {
     public class DeliveritDbContext : DbContext
     {
-        public DeliveritDbContext()
-        {
-        }
-
-        public DeliveritDbContext(DbContextOptions<DeliveritDbContext> options)
-            : base(options)
-        {
-        }
+        public DeliveritDbContext (DbContextOptions<DeliveritDbContext> options)
+            : base (options) {   }
 
         public DbSet<Role> Roles { get; set; }
         public DbSet<Customer> Customers { get; set; }
@@ -36,11 +29,6 @@ namespace DeliverIT.Database
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            //if (!optionsBuilder.IsConfigured)
-            //{
-            //    base.OnConfiguring(optionsBuilder);
-            //    optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS; Database=DeliveritDatabase; Trusted_Connection=True");
-            //}
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
