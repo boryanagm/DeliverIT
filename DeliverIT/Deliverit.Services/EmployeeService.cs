@@ -68,7 +68,6 @@ namespace Deliverit.Services
             return dto;
         }
 
-
         /// <summary>
         /// Gets all Employees.
         /// </summary>
@@ -119,7 +118,6 @@ namespace Deliverit.Services
             return dto;
         }
 
-
         /// <summary>
         /// Updates the specified employee.
         /// </summary>
@@ -147,7 +145,6 @@ namespace Deliverit.Services
             return dto;
         }
 
-
         /// <summary>
         /// Deletes the specified Employee.
         /// </summary>
@@ -168,7 +165,6 @@ namespace Deliverit.Services
 
             return false;
         }
-
 
         /// <summary>
         /// Restores the specified employee.

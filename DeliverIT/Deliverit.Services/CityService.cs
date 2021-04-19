@@ -7,7 +7,6 @@ using System.Linq;
 
 namespace Deliverit.Services
 {
-
     /// <summary>
     /// Class CityService.
     /// Implements the <see cref="Deliverit.Services.Contracts.ICityService" />
@@ -21,7 +20,6 @@ namespace Deliverit.Services
         {
             this.context = context;
         }
-
 
         /// <summary>
         /// Gets the specified identifier.
@@ -49,6 +47,7 @@ namespace Deliverit.Services
         public IEnumerable<CityDTO> GetAll()
         {
             List<CityDTO> cities = new List<CityDTO>();
+
             foreach (var city in this.context.Cities)
             {
                 CityDTO cityToAdd = new CityDTO
@@ -59,6 +58,7 @@ namespace Deliverit.Services
 
                 cities.Add(cityToAdd);
             }
+
             return cities;
         }
     }

@@ -8,7 +8,7 @@ namespace Deliverit.Database.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Category",
+                name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -20,7 +20,7 @@ namespace Deliverit.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Category", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -52,7 +52,7 @@ namespace Deliverit.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Status",
+                name: "Statuses",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -64,7 +64,7 @@ namespace Deliverit.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Status", x => x.Id);
+                    table.PrimaryKey("PK_Statuses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -253,9 +253,9 @@ namespace Deliverit.Database.Migrations
                 {
                     table.PrimaryKey("PK_Shipments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Shipments_Status_StatusId",
+                        name: "FK_Shipments_Statuses_StatusId",
                         column: x => x.StatusId,
-                        principalTable: "Status",
+                        principalTable: "Statuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -285,9 +285,9 @@ namespace Deliverit.Database.Migrations
                 {
                     table.PrimaryKey("PK_Parcels", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Parcels_Category_CategoryId",
+                        name: "FK_Parcels_Categories_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "Category",
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -311,14 +311,14 @@ namespace Deliverit.Database.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Category",
+                table: "Categories",
                 columns: new[] { "Id", "CreatedOn", "DeletedOn", "IsDeleted", "ModifiedOn", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("1db0c76c-ab76-4105-be89-3af983f6f137"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(4583), null, false, null, "Electronics" },
-                    { new Guid("df79ccb6-1f56-41da-9f8f-df2f92a468bb"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(4927), null, false, null, "Clothing" },
-                    { new Guid("7aeb290e-3592-4128-a77a-1a6db6fd81f5"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(4935), null, false, null, "Medical" },
-                    { new Guid("72280df2-7d81-4ec6-936a-51e19aabf7ff"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(4935), null, false, null, "Books" }
+                    { new Guid("1db0c76c-ab76-4105-be89-3af983f6f137"), new DateTime(2021, 4, 19, 16, 15, 38, 443, DateTimeKind.Utc).AddTicks(7415), null, false, null, "Electronics" },
+                    { new Guid("df79ccb6-1f56-41da-9f8f-df2f92a468bb"), new DateTime(2021, 4, 19, 16, 15, 38, 443, DateTimeKind.Utc).AddTicks(7776), null, false, null, "Clothing" },
+                    { new Guid("7aeb290e-3592-4128-a77a-1a6db6fd81f5"), new DateTime(2021, 4, 19, 16, 15, 38, 443, DateTimeKind.Utc).AddTicks(7785), null, false, null, "Medical" },
+                    { new Guid("72280df2-7d81-4ec6-936a-51e19aabf7ff"), new DateTime(2021, 4, 19, 16, 15, 38, 443, DateTimeKind.Utc).AddTicks(7785), null, false, null, "Books" }
                 });
 
             migrationBuilder.InsertData(
@@ -326,10 +326,10 @@ namespace Deliverit.Database.Migrations
                 columns: new[] { "Id", "CreatedOn", "DeletedOn", "IsDeleted", "ModifiedOn", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("2a84fe90-6605-4052-8a49-e7251af05754"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(3318), null, false, null, "Spain" },
-                    { new Guid("afbcad66-1a0a-49f2-9e9c-2c61ded8ae08"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(3706), null, false, null, "Germany" },
-                    { new Guid("72ec653b-aeb1-42fc-bcd1-153f005b1cd4"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(3714), null, false, null, "France" },
-                    { new Guid("c4b3bb07-585f-412b-9f5f-f423928015d4"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(3723), null, false, null, "Lithuania" }
+                    { new Guid("2a84fe90-6605-4052-8a49-e7251af05754"), new DateTime(2021, 4, 19, 16, 15, 38, 443, DateTimeKind.Utc).AddTicks(6013), null, false, null, "Spain" },
+                    { new Guid("afbcad66-1a0a-49f2-9e9c-2c61ded8ae08"), new DateTime(2021, 4, 19, 16, 15, 38, 443, DateTimeKind.Utc).AddTicks(6400), null, false, null, "Germany" },
+                    { new Guid("72ec653b-aeb1-42fc-bcd1-153f005b1cd4"), new DateTime(2021, 4, 19, 16, 15, 38, 443, DateTimeKind.Utc).AddTicks(6408), null, false, null, "France" },
+                    { new Guid("c4b3bb07-585f-412b-9f5f-f423928015d4"), new DateTime(2021, 4, 19, 16, 15, 38, 443, DateTimeKind.Utc).AddTicks(6443), null, false, null, "Lithuania" }
                 });
 
             migrationBuilder.InsertData(
@@ -343,14 +343,14 @@ namespace Deliverit.Database.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Status",
+                table: "Statuses",
                 columns: new[] { "Id", "CreatedOn", "DeletedOn", "IsDeleted", "ModifiedOn", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("917f8117-d392-4f64-81fb-48415f80f77e"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(5624), null, false, null, "on the way" },
-                    { new Guid("858ac364-d94f-414c-bbea-a0f5b8679b3d"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(5942), null, false, null, "on the way" },
-                    { new Guid("84568d3c-04df-47c3-9ad8-216b1d664166"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(5950), null, false, null, "completed" },
-                    { new Guid("b31754e2-82fc-4862-ad20-9331a87537eb"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(5959), null, false, null, "canceled" }
+                    { new Guid("917f8117-d392-4f64-81fb-48415f80f77e"), new DateTime(2021, 4, 19, 16, 15, 38, 443, DateTimeKind.Utc).AddTicks(8533), null, false, null, "on the way" },
+                    { new Guid("858ac364-d94f-414c-bbea-a0f5b8679b3d"), new DateTime(2021, 4, 19, 16, 15, 38, 443, DateTimeKind.Utc).AddTicks(8851), null, false, null, "on the way" },
+                    { new Guid("84568d3c-04df-47c3-9ad8-216b1d664166"), new DateTime(2021, 4, 19, 16, 15, 38, 443, DateTimeKind.Utc).AddTicks(8860), null, false, null, "completed" },
+                    { new Guid("b31754e2-82fc-4862-ad20-9331a87537eb"), new DateTime(2021, 4, 19, 16, 15, 38, 443, DateTimeKind.Utc).AddTicks(8860), null, false, null, "canceled" }
                 });
 
             migrationBuilder.InsertData(
@@ -358,10 +358,10 @@ namespace Deliverit.Database.Migrations
                 columns: new[] { "Id", "CountryId", "CreatedOn", "DeletedOn", "IsDeleted", "ModifiedOn", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("e99abf10-63e9-4212-9053-87cb1d80763e"), new Guid("2a84fe90-6605-4052-8a49-e7251af05754"), new DateTime(2021, 4, 17, 20, 2, 37, 290, DateTimeKind.Utc).AddTicks(6931), null, false, null, "Barcelona" },
-                    { new Guid("e422b2de-f54d-4a4e-9259-0f3f4033f93d"), new Guid("afbcad66-1a0a-49f2-9e9c-2c61ded8ae08"), new DateTime(2021, 4, 17, 20, 2, 37, 290, DateTimeKind.Utc).AddTicks(7955), null, false, null, "Berlin" },
-                    { new Guid("7fdbb1a0-9f76-4b63-aab4-901c61591336"), new Guid("72ec653b-aeb1-42fc-bcd1-153f005b1cd4"), new DateTime(2021, 4, 17, 20, 2, 37, 290, DateTimeKind.Utc).AddTicks(7972), null, false, null, "Paris" },
-                    { new Guid("8bf95d78-e5ac-495d-ab67-14b60f644b70"), new Guid("c4b3bb07-585f-412b-9f5f-f423928015d4"), new DateTime(2021, 4, 17, 20, 2, 37, 290, DateTimeKind.Utc).AddTicks(7981), null, false, null, "Vilnius" }
+                    { new Guid("e99abf10-63e9-4212-9053-87cb1d80763e"), new Guid("2a84fe90-6605-4052-8a49-e7251af05754"), new DateTime(2021, 4, 19, 16, 15, 38, 441, DateTimeKind.Utc).AddTicks(8499), null, false, null, "Barcelona" },
+                    { new Guid("e422b2de-f54d-4a4e-9259-0f3f4033f93d"), new Guid("afbcad66-1a0a-49f2-9e9c-2c61ded8ae08"), new DateTime(2021, 4, 19, 16, 15, 38, 441, DateTimeKind.Utc).AddTicks(9652), null, false, null, "Berlin" },
+                    { new Guid("7fdbb1a0-9f76-4b63-aab4-901c61591336"), new Guid("72ec653b-aeb1-42fc-bcd1-153f005b1cd4"), new DateTime(2021, 4, 19, 16, 15, 38, 441, DateTimeKind.Utc).AddTicks(9678), null, false, null, "Paris" },
+                    { new Guid("8bf95d78-e5ac-495d-ab67-14b60f644b70"), new Guid("c4b3bb07-585f-412b-9f5f-f423928015d4"), new DateTime(2021, 4, 19, 16, 15, 38, 441, DateTimeKind.Utc).AddTicks(9686), null, false, null, "Vilnius" }
                 });
 
             migrationBuilder.InsertData(
@@ -369,12 +369,12 @@ namespace Deliverit.Database.Migrations
                 columns: new[] { "Id", "CityId", "CreatedOn", "DeletedOn", "IsDeleted", "ModifiedOn", "StreetName" },
                 values: new object[,]
                 {
-                    { new Guid("36049406-10ba-499d-916b-063422046239"), new Guid("e99abf10-63e9-4212-9053-87cb1d80763e"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(6664), null, false, null, "Ramon Berenguer El Vell 1" },
-                    { new Guid("5fd8c18f-6885-488e-af8c-ff06901a7d37"), new Guid("e99abf10-63e9-4212-9053-87cb1d80763e"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(7378), null, false, null, "Gran Via De Les Corts Catalanes 105" },
-                    { new Guid("da703902-00bc-47da-b950-4fa730494d4e"), new Guid("e99abf10-63e9-4212-9053-87cb1d80763e"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(7387), null, false, null, "Passatge De Bocabella 11" },
-                    { new Guid("ac2fee3a-f76e-4d94-aa42-d85b4bb45299"), new Guid("e422b2de-f54d-4a4e-9259-0f3f4033f93d"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(7361), null, false, null, "Zeughofstraße 20" },
-                    { new Guid("b1347388-583d-4324-870a-e487e61ef483"), new Guid("7fdbb1a0-9f76-4b63-aab4-901c61591336"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(7378), null, false, null, "Rue La Boetie 7" },
-                    { new Guid("97fa423a-a144-4d67-97f5-4211c2758dc5"), new Guid("8bf95d78-e5ac-495d-ab67-14b60f644b70"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(7378), null, false, null, "Liepkalnio 117" }
+                    { new Guid("36049406-10ba-499d-916b-063422046239"), new Guid("e99abf10-63e9-4212-9053-87cb1d80763e"), new DateTime(2021, 4, 19, 16, 15, 38, 443, DateTimeKind.Utc).AddTicks(9909), null, false, null, "Ramon Berenguer El Vell 1" },
+                    { new Guid("5fd8c18f-6885-488e-af8c-ff06901a7d37"), new Guid("e99abf10-63e9-4212-9053-87cb1d80763e"), new DateTime(2021, 4, 19, 16, 15, 38, 444, DateTimeKind.Utc).AddTicks(821), null, false, null, "Gran Via De Les Corts Catalanes 105" },
+                    { new Guid("da703902-00bc-47da-b950-4fa730494d4e"), new Guid("e99abf10-63e9-4212-9053-87cb1d80763e"), new DateTime(2021, 4, 19, 16, 15, 38, 444, DateTimeKind.Utc).AddTicks(829), null, false, null, "Passatge De Bocabella 11" },
+                    { new Guid("ac2fee3a-f76e-4d94-aa42-d85b4bb45299"), new Guid("e422b2de-f54d-4a4e-9259-0f3f4033f93d"), new DateTime(2021, 4, 19, 16, 15, 38, 444, DateTimeKind.Utc).AddTicks(786), null, false, null, "Zeughofstraße 20" },
+                    { new Guid("b1347388-583d-4324-870a-e487e61ef483"), new Guid("7fdbb1a0-9f76-4b63-aab4-901c61591336"), new DateTime(2021, 4, 19, 16, 15, 38, 444, DateTimeKind.Utc).AddTicks(812), null, false, null, "Rue La Boetie 7" },
+                    { new Guid("97fa423a-a144-4d67-97f5-4211c2758dc5"), new Guid("8bf95d78-e5ac-495d-ab67-14b60f644b70"), new DateTime(2021, 4, 19, 16, 15, 38, 444, DateTimeKind.Utc).AddTicks(812), null, false, null, "Liepkalnio 117" }
                 });
 
             migrationBuilder.InsertData(
@@ -382,8 +382,8 @@ namespace Deliverit.Database.Migrations
                 columns: new[] { "Id", "AddressId", "CreatedOn", "DeletedOn", "Email", "FirstName", "IsDeleted", "LastName", "ModifiedOn" },
                 values: new object[,]
                 {
-                    { new Guid("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1"), new Guid("b1347388-583d-4324-870a-e487e61ef483"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(9194), null, "isabelle.huppert@gmail.com", "Isabelle", false, "Huppert", null },
-                    { new Guid("5adb06fe-fca4-4347-b1ea-118c55e17331"), new Guid("97fa423a-a144-4d67-97f5-4211c2758dc5"), new DateTime(2021, 4, 17, 20, 2, 37, 293, DateTimeKind.Utc).AddTicks(828), null, "lukas.petr@gmail.com", "Lukas", false, "Petrauskas", null }
+                    { new Guid("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1"), new Guid("b1347388-583d-4324-870a-e487e61ef483"), new DateTime(2021, 4, 19, 16, 15, 38, 444, DateTimeKind.Utc).AddTicks(3281), null, "isabelle.huppert@gmail.com", "Isabelle", false, "Huppert", null },
+                    { new Guid("5adb06fe-fca4-4347-b1ea-118c55e17331"), new Guid("97fa423a-a144-4d67-97f5-4211c2758dc5"), new DateTime(2021, 4, 19, 16, 15, 38, 444, DateTimeKind.Utc).AddTicks(4691), null, "lukas.petr@gmail.com", "Lukas", false, "Petrauskas", null }
                 });
 
             migrationBuilder.InsertData(
@@ -391,9 +391,9 @@ namespace Deliverit.Database.Migrations
                 columns: new[] { "Id", "AddressId", "CreatedOn", "DeletedOn", "Email", "FirstName", "IsDeleted", "LastName", "ModifiedOn" },
                 values: new object[,]
                 {
-                    { new Guid("d2c26c93-d589-4b05-850b-fbf21c59c84d"), new Guid("5fd8c18f-6885-488e-af8c-ff06901a7d37"), new DateTime(2021, 4, 17, 20, 2, 37, 293, DateTimeKind.Utc).AddTicks(3409), null, "fer.trujillo@deliverit.com", "Fermin", false, "Trujillo", null },
-                    { new Guid("e9a6b4e2-073b-4ebc-a248-a8d71d426174"), new Guid("da703902-00bc-47da-b950-4fa730494d4e"), new DateTime(2021, 4, 17, 20, 2, 37, 293, DateTimeKind.Utc).AddTicks(1938), null, "admin@deliverit.com", "Antonio", false, "Recio", null },
-                    { new Guid("facdefb9-19df-42b3-9d3d-6524076e152f"), new Guid("da703902-00bc-47da-b950-4fa730494d4e"), new DateTime(2021, 4, 17, 20, 2, 37, 293, DateTimeKind.Utc).AddTicks(3444), null, "a.rivas@deliverit.com", "Amador", false, "Rivas", null }
+                    { new Guid("d2c26c93-d589-4b05-850b-fbf21c59c84d"), new Guid("5fd8c18f-6885-488e-af8c-ff06901a7d37"), new DateTime(2021, 4, 19, 16, 15, 38, 444, DateTimeKind.Utc).AddTicks(7126), null, "fer.trujillo@deliverit.com", "Fermin", false, "Trujillo", null },
+                    { new Guid("e9a6b4e2-073b-4ebc-a248-a8d71d426174"), new Guid("da703902-00bc-47da-b950-4fa730494d4e"), new DateTime(2021, 4, 19, 16, 15, 38, 444, DateTimeKind.Utc).AddTicks(5715), null, "admin@deliverit.com", "Antonio", false, "Recio", null },
+                    { new Guid("facdefb9-19df-42b3-9d3d-6524076e152f"), new Guid("da703902-00bc-47da-b950-4fa730494d4e"), new DateTime(2021, 4, 19, 16, 15, 38, 444, DateTimeKind.Utc).AddTicks(7160), null, "a.rivas@deliverit.com", "Amador", false, "Rivas", null }
                 });
 
             migrationBuilder.InsertData(
@@ -401,8 +401,8 @@ namespace Deliverit.Database.Migrations
                 columns: new[] { "Id", "AddressId", "CreatedOn", "DeletedOn", "IsDeleted", "ModifiedOn" },
                 values: new object[,]
                 {
-                    { new Guid("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba"), new Guid("36049406-10ba-499d-916b-063422046239"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(8092), null, false, null },
-                    { new Guid("988a4201-8c55-42fc-b2a6-e08d1abe6693"), new Guid("ac2fee3a-f76e-4d94-aa42-d85b4bb45299"), new DateTime(2021, 4, 17, 20, 2, 37, 292, DateTimeKind.Utc).AddTicks(8471), null, false, null }
+                    { new Guid("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba"), new Guid("36049406-10ba-499d-916b-063422046239"), new DateTime(2021, 4, 19, 16, 15, 38, 444, DateTimeKind.Utc).AddTicks(1724), null, false, null },
+                    { new Guid("988a4201-8c55-42fc-b2a6-e08d1abe6693"), new Guid("ac2fee3a-f76e-4d94-aa42-d85b4bb45299"), new DateTime(2021, 4, 19, 16, 15, 38, 444, DateTimeKind.Utc).AddTicks(2326), null, false, null }
                 });
 
             migrationBuilder.InsertData(
@@ -429,19 +429,19 @@ namespace Deliverit.Database.Migrations
                 columns: new[] { "Id", "ArrivalDate", "CreatedOn", "DeletedOn", "DepartureDate", "IsDeleted", "ModifiedOn", "StatusId", "WarehouseId" },
                 values: new object[,]
                 {
-                    { new Guid("ce465c59-4866-4905-bdbd-943a26f59fdd"), new DateTime(2021, 4, 24, 20, 2, 37, 294, DateTimeKind.Utc).AddTicks(6415), new DateTime(2021, 4, 17, 20, 2, 37, 294, DateTimeKind.Utc).AddTicks(6063), null, new DateTime(2021, 4, 17, 20, 2, 37, 294, DateTimeKind.Utc).AddTicks(6063), false, null, new Guid("917f8117-d392-4f64-81fb-48415f80f77e"), new Guid("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba") },
-                    { new Guid("e2a2c29b-b7f4-458a-9cde-4a70717607c8"), new DateTime(2021, 4, 22, 20, 2, 37, 294, DateTimeKind.Utc).AddTicks(7869), new DateTime(2021, 4, 17, 20, 2, 37, 294, DateTimeKind.Utc).AddTicks(7860), null, new DateTime(2021, 4, 17, 20, 2, 37, 294, DateTimeKind.Utc).AddTicks(7860), false, null, new Guid("84568d3c-04df-47c3-9ad8-216b1d664166"), new Guid("988a4201-8c55-42fc-b2a6-e08d1abe6693") }
+                    { new Guid("ce465c59-4866-4905-bdbd-943a26f59fdd"), new DateTime(2021, 4, 26, 16, 15, 38, 445, DateTimeKind.Utc).AddTicks(7354), new DateTime(2021, 4, 19, 16, 15, 38, 445, DateTimeKind.Utc).AddTicks(7010), null, new DateTime(2021, 4, 19, 16, 15, 38, 445, DateTimeKind.Utc).AddTicks(7010), false, null, new Guid("917f8117-d392-4f64-81fb-48415f80f77e"), new Guid("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba") },
+                    { new Guid("e2a2c29b-b7f4-458a-9cde-4a70717607c8"), new DateTime(2021, 4, 24, 16, 15, 38, 445, DateTimeKind.Utc).AddTicks(8403), new DateTime(2021, 4, 19, 16, 15, 38, 445, DateTimeKind.Utc).AddTicks(8394), null, new DateTime(2021, 4, 19, 16, 15, 38, 445, DateTimeKind.Utc).AddTicks(8394), false, null, new Guid("84568d3c-04df-47c3-9ad8-216b1d664166"), new Guid("988a4201-8c55-42fc-b2a6-e08d1abe6693") }
                 });
 
             migrationBuilder.InsertData(
                 table: "Parcels",
                 columns: new[] { "Id", "CategoryId", "CreatedOn", "CustomerId", "DeletedOn", "EmployeeId", "IsDeleted", "ModifiedOn", "ShipmentId", "Weight" },
-                values: new object[] { new Guid("198457ae-236c-4592-90af-3ca2302a8737"), new Guid("1db0c76c-ab76-4105-be89-3af983f6f137"), new DateTime(2021, 4, 17, 20, 2, 37, 294, DateTimeKind.Utc).AddTicks(2072), new Guid("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1"), null, new Guid("d2c26c93-d589-4b05-850b-fbf21c59c84d"), false, null, new Guid("ce465c59-4866-4905-bdbd-943a26f59fdd"), 10 });
+                values: new object[] { new Guid("198457ae-236c-4592-90af-3ca2302a8737"), new Guid("1db0c76c-ab76-4105-be89-3af983f6f137"), new DateTime(2021, 4, 19, 16, 15, 38, 445, DateTimeKind.Utc).AddTicks(3680), new Guid("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1"), null, new Guid("d2c26c93-d589-4b05-850b-fbf21c59c84d"), false, null, new Guid("ce465c59-4866-4905-bdbd-943a26f59fdd"), 10 });
 
             migrationBuilder.InsertData(
                 table: "Parcels",
                 columns: new[] { "Id", "CategoryId", "CreatedOn", "CustomerId", "DeletedOn", "EmployeeId", "IsDeleted", "ModifiedOn", "ShipmentId", "Weight" },
-                values: new object[] { new Guid("28ae32a1-10a4-4aef-b262-3baaa1102753"), new Guid("72280df2-7d81-4ec6-936a-51e19aabf7ff"), new DateTime(2021, 4, 17, 20, 2, 37, 294, DateTimeKind.Utc).AddTicks(5039), new Guid("5adb06fe-fca4-4347-b1ea-118c55e17331"), null, new Guid("facdefb9-19df-42b3-9d3d-6524076e152f"), false, null, new Guid("e2a2c29b-b7f4-458a-9cde-4a70717607c8"), 5 });
+                values: new object[] { new Guid("28ae32a1-10a4-4aef-b262-3baaa1102753"), new Guid("72280df2-7d81-4ec6-936a-51e19aabf7ff"), new DateTime(2021, 4, 19, 16, 15, 38, 445, DateTimeKind.Utc).AddTicks(6175), new Guid("5adb06fe-fca4-4347-b1ea-118c55e17331"), null, new Guid("facdefb9-19df-42b3-9d3d-6524076e152f"), false, null, new Guid("e2a2c29b-b7f4-458a-9cde-4a70717607c8"), 5 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_CityId",
@@ -546,7 +546,7 @@ namespace Deliverit.Database.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Category");
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Customers");
@@ -558,7 +558,7 @@ namespace Deliverit.Database.Migrations
                 name: "Shipments");
 
             migrationBuilder.DropTable(
-                name: "Status");
+                name: "Statuses");
 
             migrationBuilder.DropTable(
                 name: "Warehouses");

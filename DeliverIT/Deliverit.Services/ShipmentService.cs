@@ -24,7 +24,6 @@ namespace Deliverit.Services
             this.context = context;
         }
 
-
         /// <summary>
         /// Gets a customer by Id.
         /// </summary>
@@ -60,7 +59,6 @@ namespace Deliverit.Services
             }
             return shipments;
         }
-
 
         /// <summary>
         /// Updates the specified Shipment.
@@ -102,7 +100,6 @@ namespace Deliverit.Services
             return shipmentToDisplay;
         }
 
-
         /// <summary>
         /// Creates a shipment.
         /// </summary>
@@ -112,7 +109,7 @@ namespace Deliverit.Services
         {
             var warehouse = this.context.Warehouses
                 .FirstOrDefault(w => w.Id == shipment.WarehouseId);
-            var status = this.context.Status
+            var status = this.context.Statuses
                .FirstOrDefault(w => w.Name == "preparing");
 
             var newShipment = new Shipment
@@ -128,7 +125,6 @@ namespace Deliverit.Services
 
             return shipmentToDisplay;
         }
-
 
         /// <summary>
         /// Deletes a shipment.
@@ -150,7 +146,6 @@ namespace Deliverit.Services
             this.context.SaveChanges();
             return true;
         }
-
 
         /// <summary>
         /// Searches a shipment by a Warehouse Id.
