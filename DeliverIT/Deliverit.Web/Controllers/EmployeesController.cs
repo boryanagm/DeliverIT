@@ -9,6 +9,12 @@ using System.Threading.Tasks;
 
 namespace Deliverit.Web.Controllers
 {
+    /// <summary>
+    /// Class EmployeesController.
+    /// Handles all Employee services.
+    /// Implements the <see cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
+    /// </summary>
+    /// <seealso cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeesController : ControllerBase
@@ -22,6 +28,11 @@ namespace Deliverit.Web.Controllers
             this.authEmployeeHelper = authEmployeeHelper;
         }
 
+        /// <summary>
+        /// Gets an employee by e-mail.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="id">The identifier.</param>
         [HttpGet("{id}")]
         public IActionResult Get([FromHeader] string authorizationEmail, Guid id)
         {
@@ -36,6 +47,10 @@ namespace Deliverit.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets all employees.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
         [HttpGet("")]
         public IActionResult GetAll([FromHeader] string authorizationEmail)
         {
@@ -50,6 +65,12 @@ namespace Deliverit.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates an employee.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="employee">The employee that is to be created.</param>
+        /// <returns>IActionResult.</returns>
         [HttpPost("")]
         public IActionResult Post([FromHeader] string authorizationEmail, [FromBody] Employee employee)
         {
@@ -65,6 +86,12 @@ namespace Deliverit.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates an employee.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="addressId">The address identifier.</param>
         [HttpPut("{id}")]
         public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) 
         {
@@ -80,6 +107,11 @@ namespace Deliverit.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes an employee by Id.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="id">The identifier.</param>
         [HttpDelete("{id}")]
         public IActionResult Delete([FromHeader] string authorizationEmail, Guid id)
         {
@@ -103,6 +135,12 @@ namespace Deliverit.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Restores the specified employee by Id.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="id">The identifier.</param>
+        /// <returns>IActionResult.</returns>
         [HttpPost("{id}/restore")] 
         public IActionResult Restore([FromHeader] string authorizationEmail, Guid id)
         {
