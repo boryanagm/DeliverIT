@@ -89,7 +89,7 @@ namespace Deliverit.Web.Controllers
                 {
                     return this.NoContent();
                 }
-                return this.NotFound();
+                return this.Conflict();
             }
             catch (Exception)
             {

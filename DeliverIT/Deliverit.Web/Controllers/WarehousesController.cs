@@ -6,6 +6,11 @@ using System;
 
 namespace Deliverit.Web.Controllers
 {
+    /// <summary>
+    /// Class WarehousesController.
+    /// Handles all warehouse services.
+    /// Implements the <see cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class WarehousesController : ControllerBase
@@ -13,35 +18,69 @@ namespace Deliverit.Web.Controllers
         private readonly IWarehouseService warehouseService;
         private readonly IAuthEmployeeHelper authEmployeeHelper;
 
-        public WarehousesController(IWarehouseService warehouseService, IAuthEmployeeHelper authEmployeeHelper) 
+        public WarehousesController(IWarehouseService warehouseService, IAuthEmployeeHelper authEmployeeHelper)
         {
             this.warehouseService = warehouseService;
             this.authEmployeeHelper = authEmployeeHelper;
         }
 
+        /// <summary>
+        /// Gets the a warehouse by Id.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
         [HttpGet("{id}")]
         public IActionResult Get(Guid id) // public part
         {
-            return this.Ok(this.warehouseService.Get(id));
+            try
+            {
+                return this.Ok(this.warehouseService.Get(id));
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+
         }
 
+        /// <summary>
+        /// Gets all warehouses.
+        /// </summary>
+        /// <returns>IActionResult.</returns>
         [HttpGet("")]
-        public IActionResult GetAll()     // public part
+        public IActionResult GetAll()
         {
             return this.Ok(this.warehouseService.GetAll());
         }
 
+        /// <summary>
+        /// Creates a warehouse.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="warehouse">The warehouse.</param>
         [HttpPost("")]
-        public IActionResult Post([FromHeader] string authorizationEmail, [FromBody] Warehouse warehouse) 
+        public IActionResult Post([FromHeader] string authorizationEmail, [FromBody] Warehouse warehouse)
         {
-            var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
-            var warehouseToUpdate = this.warehouseService.Create(warehouse);
+            try
+            {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                var warehouseToUpdate = this.warehouseService.Create(warehouse);
 
-            return this.Created("post", warehouseToUpdate);
+                return this.Created("post", warehouseToUpdate);
+            }
+            catch (Exception)
+            {
+                return Conflict();
+            }
         }
 
+        /// <summary>
+        /// Updates a warehouse.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="addressId">The address identifier.</param>
         [HttpPut("{id}")]
-        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) 
+        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId)
         {
             try
             {
@@ -56,8 +95,14 @@ namespace Deliverit.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes a warehouse.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="id">The identifier.</param>
+        /// <returns>IActionResult.</returns>
         [HttpDelete("{id}")] // admin only
-        public IActionResult Delete([FromHeader] string authorizationEmail, Guid id) 
+        public IActionResult Delete([FromHeader] string authorizationEmail, Guid id)
         {
             try
             {

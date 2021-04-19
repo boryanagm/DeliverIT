@@ -39,7 +39,7 @@ namespace Deliverit.Web.Controllers
             }
             catch (Exception)
             {
-                return NotFound();
+                return this.NotFound();
             }
         }
 
@@ -66,7 +66,7 @@ namespace Deliverit.Web.Controllers
             }
             catch (Exception)
             {
-                return Conflict();
+                return this.Conflict();
             }
         }
 
@@ -105,7 +105,7 @@ namespace Deliverit.Web.Controllers
                 {
                     return this.NoContent();
                 }
-                return this.NotFound();
+                return this.Conflict();
             }
             catch (Exception)
             {
@@ -126,7 +126,7 @@ namespace Deliverit.Web.Controllers
             }
             catch (Exception)
             {
-                return Conflict();
+                return this.Conflict();
             }
         }
 
@@ -144,7 +144,7 @@ namespace Deliverit.Web.Controllers
             }
             catch (Exception)
             {
-                return Conflict();
+                return this.Conflict();
             }
         }
 
@@ -162,7 +162,7 @@ namespace Deliverit.Web.Controllers
             }
             catch (Exception)
             {
-                return Conflict();
+                return this.Conflict();
             }
         }
 
@@ -180,7 +180,7 @@ namespace Deliverit.Web.Controllers
             }
             catch (Exception)
             {
-                return Conflict();
+                return this.Conflict();
             }
         }
 
@@ -198,7 +198,7 @@ namespace Deliverit.Web.Controllers
             }
             catch(Exception)
             {
-                return Conflict();
+                return this.Conflict();
             }
         }
 
@@ -215,7 +215,7 @@ namespace Deliverit.Web.Controllers
             }
             catch(Exception)
             {
-                return Conflict();
+                return this.Conflict();
             }
         }
 
@@ -232,7 +232,7 @@ namespace Deliverit.Web.Controllers
             }
             catch(Exception)
             {
-                return Conflict();
+                return this.Conflict();
             }
         }
     }
