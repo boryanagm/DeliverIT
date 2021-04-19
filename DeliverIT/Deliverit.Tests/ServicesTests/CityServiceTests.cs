@@ -26,12 +26,12 @@ namespace Deliverit.Tests
                 var sut = new CityService(assertContext);
 
                 //Act
-                var result = sut.Get(Guid.Parse("e99abf10-63e9-4212-9053-87cb1d80763e"));
+                var actualResult = sut.Get(Guid.Parse("e99abf10-63e9-4212-9053-87cb1d80763e"));
 
                 //Assert
                 var expectedResult = assertContext.Cities.FirstOrDefault(c => c.Id == Guid.Parse("e99abf10-63e9-4212-9053-87cb1d80763e"));
-                Assert.AreEqual(expectedResult.Name, result.Name);
-                Assert.AreEqual(expectedResult.Id, result.Id);
+                Assert.AreEqual(expectedResult.Id, actualResult.Id);
+                Assert.AreEqual(expectedResult.Name, actualResult.Name);
             }
         }
 
@@ -52,12 +52,22 @@ namespace Deliverit.Tests
                 var sut = new CityService(assertContext);
 
                 //Act
-                var result = sut.GetAll();
+                var actualResult = sut.GetAll().ToList();
+                int actualCitiesCount = actualResult.Count();
+                var firstCityInActualList = actualResult.First();
+                var lastCityInActualList = actualResult.Last();
 
                 //Assert
-                // assert collection count
-                // assert first entity
-                // assert last entity
+                var expectedResult = assertContext.Cities.ToList();
+                int expectedCitiesCount = expectedResult.Count();
+                var firstCityInExpectedList = expectedResult.First();
+                var lastCityInExpectedList = expectedResult.Last();
+
+                Assert.AreEqual(expectedCitiesCount, actualCitiesCount);
+                Assert.AreEqual(firstCityInExpectedList.Id, firstCityInActualList.Id);
+                Assert.AreEqual(firstCityInExpectedList.Name, firstCityInActualList.Name);
+                Assert.AreEqual(lastCityInExpectedList.Id, lastCityInActualList.Id);
+                Assert.AreEqual(lastCityInExpectedList.Name, lastCityInActualList.Name);
             }
         }
     }
