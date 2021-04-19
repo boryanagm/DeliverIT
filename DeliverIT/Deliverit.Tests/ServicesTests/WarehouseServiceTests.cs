@@ -2,9 +2,7 @@
 using DeliverIT.Database;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Deliverit.Tests.ServicesTests
 {
@@ -35,9 +33,11 @@ namespace Deliverit.Tests.ServicesTests
                 var actualResult = sut.Get(Guid.Parse("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba"));
 
                 //Assert
-                var expectedResult = assertContext.Cities.FirstOrDefault(c => c.Id == Guid.Parse("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba"));
+                var expectedResult = assertContext.Warehouses.FirstOrDefault(w => w.Id == Guid.Parse("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba"));
                 Assert.AreEqual(expectedResult.Id, actualResult.Id);
-                Assert.AreEqual(expectedResult, actualResult.StreetName);
+                Assert.AreEqual(expectedResult.Address.StreetName, actualResult.StreetName);
+                Assert.AreEqual(expectedResult.Address.City.Name, actualResult.City);
+                Assert.AreEqual(expectedResult.Address.City.Country.Name, actualResult.Country);
             }
         }
     }
