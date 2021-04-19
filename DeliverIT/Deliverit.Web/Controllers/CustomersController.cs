@@ -41,13 +41,7 @@ namespace Deliverit.Web.Controllers
                 return this.Conflict();
             }
         }
-
-            catch (Exception)
-            {
-                return NotFound();
-            }
-        }
-
+         
         [HttpGet("")]
         public IActionResult GetAll([FromHeader] string authorizationEmail)
         {
@@ -185,23 +179,3 @@ namespace Deliverit.Web.Controllers
         }
     }
 }
-
-/*
-  [HttpGet("{email}/email")]
-        public IActionResult GetByEmail(string email)
-        {
-            return this.Ok(this.customerService.GetByEmail(email));
-        }
-
-        [HttpGet("{firstName}/firstname")]
-        public IActionResult GetByFirstname(string firstName)
-        {
-            return this.Ok(this.customerService.GetByFirstName(firstName));
-        }
-
-        [HttpGet("{lastName}/lastname")]
-        public IActionResult GetByLastName(string lastName)
-        {
-            return this.Ok(this.customerService.GetByLastName(lastName));
-        }
- */

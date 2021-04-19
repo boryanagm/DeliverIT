@@ -11,6 +11,11 @@ using System.Linq;
 
 namespace Deliverit.Services
 {
+    /// <summary>
+    /// Class EmployeeService.
+    /// Implements the <see cref="Deliverit.Services.Contracts.IEmployeeService" />
+    /// Defines all CRUD operations
+    /// </summary>
     public class EmployeeService : IEmployeeService
     {
         private readonly DeliveritDbContext context;
@@ -19,6 +24,12 @@ namespace Deliverit.Services
         {
             this.context = context;
         }
+
+        /// <summary>
+        /// Gets the employee by email.
+        /// </summary>
+        /// <param name="employeeEmail">The employee email.</param>
+        /// <returns>The employee with the given e-mail.</returns>
         public Employee GetByEmployeeEmail(string employeeEmail)
         {
             return this.context.Employees
@@ -26,6 +37,11 @@ namespace Deliverit.Services
                  ?? throw new ArgumentNullException();
         }
 
+        /// <summary>
+        /// Gets the admin by email.
+        /// </summary>
+        /// <param name="adminEmail">The admin email.</param>
+        /// <returns>The admin with the given e-mail.</returns>
         public Employee GetByAdminEmail(string adminEmail)
         {
             var employeeRole = this.context.Employees
@@ -37,6 +53,11 @@ namespace Deliverit.Services
             return employeeRole;
         }
 
+        /// <summary>
+        /// Gets the employee by the given identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The employee in a EmployeeDTO format.</returns>
         public EmployeeDTO Get(Guid id)
         {
             var dto = this.context.Employees
@@ -47,6 +68,11 @@ namespace Deliverit.Services
             return dto;
         }
 
+
+        /// <summary>
+        /// Gets all Employees.
+        /// </summary>
+        /// <returns>Returns a collection of all employees.</returns>
         public IEnumerable<EmployeeDTO> GetAll()
         {
             List<EmployeeDTO> employees = new List<EmployeeDTO>();
@@ -65,6 +91,12 @@ namespace Deliverit.Services
 
             return employees;
         }
+
+        /// <summary>
+        /// Creates an employee.
+        /// </summary>
+        /// <param name="employee">The employee that is to be created.</param>
+        /// <returns>The employee in a EmployeeDTO format.</returns>
         public EmployeeDTO Create(Employee employee)
         {
             this.context.Employees.Add(employee);
@@ -87,6 +119,13 @@ namespace Deliverit.Services
             return dto;
         }
 
+
+        /// <summary>
+        /// Updates the specified employee.
+        /// </summary>
+        /// <param name="id">The identifier of the employee.</param>
+        /// <param name="addressId">The address identifier.</param>
+        /// <returns>The updated employee in a EmployeeDTO format.</returns>
         public EmployeeDTO Update(Guid id, Guid addressId)
         {
             var employeeToUpdate = this.context.Employees
@@ -108,6 +147,11 @@ namespace Deliverit.Services
             return dto;
         }
 
+
+        /// <summary>
+        /// Deletes the specified Employee.
+        /// </summary>
+        /// <param name="id">The identifier of the employee.</param
         public bool Delete(Guid id)
         {
             var employee = this.context.Employees
@@ -125,6 +169,12 @@ namespace Deliverit.Services
             return false;
         }
 
+
+        /// <summary>
+        /// Restores the specified employee.
+        /// </summary>
+        /// <param name="id">The identifier of the employee.</param>
+        /// <returns>The employee in a EmployeeDTO format.</returns>
         public EmployeeDTO Restore(Guid id) 
         {
             var employeeToRestore = this.context.Employees

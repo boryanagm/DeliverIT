@@ -1,4 +1,5 @@
 ﻿using Deliverit.Services.Contracts;
+using Deliverit.Services.Mappers;
 using Deliverit.Services.Models;
 using DeliverIT.Database;
 using DeliverIT.Models;
@@ -9,6 +10,11 @@ using System.Linq;
 
 namespace Deliverit.Services
 {
+    /// <summary>
+    /// Class ParcelService.
+    /// Implements the <see cref="Deliverit.Services.Contracts.IParcelService" />
+    /// Defines all CRUD/Filter/Search operations for a parcel.
+    /// </summary>
     public class ParcelService : IParcelService
     {
         private readonly DeliveritDbContext context;
@@ -18,6 +24,11 @@ namespace Deliverit.Services
             this.context = context;
         }
 
+        /// <summary>
+        /// Gets the Parcel by ID.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>A Parcel in a ParcelDTO format.</returns
         public ParcelDTO Get(Guid id)
         {
             var parcel = this.context.Parcels
@@ -26,43 +37,32 @@ namespace Deliverit.Services
                 .FirstOrDefault(p => p.Id == id)
                 ?? throw new ArgumentNullException();
 
-            if (parcel.IsDeleted == true)
-                throw new ArgumentException("A parcel with this ID doesn't exist.");
-
-            var dto = new ParcelDTO
-            {
-                Id = parcel.Id,
-                Weight = parcel.Weight,
-                Category = parcel.Category.Name,
-                CustomerFirstName = parcel.Customer.FirstName,
-                CustomerLastName = parcel.Customer.LastName
-            };
+            var dto = ParcelMapper.DTOSelector.Compile().Invoke(parcel);
 
             return dto;
         }
 
+        /// <summary>
+        /// Gets all Parcels.
+        /// </summary>
+        /// <returns>A collection of all parcels.</returns>
         public IEnumerable<ParcelDTO> GetAll()
         {
             List<ParcelDTO> parcels = new List<ParcelDTO>();
 
             foreach (var parcel in this.context.Parcels.Include(p => p.Category).Include(p => p.Customer))
             {
-                if (parcel.IsDeleted == true)
-                    continue;
-
-                var parcelToDisplay = new ParcelDTO
-                {
-                    Id = parcel.Id,
-                    Weight = parcel.Weight,
-                    Category = parcel.Category.Name,
-                    CustomerFirstName = parcel.Customer.FirstName,
-                    CustomerLastName = parcel.Customer.LastName
-                };
+                var parcelToDisplay = ParcelMapper.DTOSelector.Compile().Invoke(parcel);
                 parcels.Add(parcelToDisplay);
             }
             return parcels;
         }
 
+        /// <summary>
+        /// Creates a parcel.
+        /// </summary>
+        /// <param name="parcel">The parcel that is to be created.</param>
+        /// <returns>The parcel in a ParcelDTO format.</returns>
         public ParcelDTO Create(CreateParcelDTO parcel)
         {
             var shipment = this.context.Shipments
@@ -87,18 +87,17 @@ namespace Deliverit.Services
             this.context.Parcels.Add(newParcel);
             this.context.SaveChanges();
 
-            var parcelToDisplay = new ParcelDTO
-            {
-                Id = newParcel.Id,
-                Weight = newParcel.Weight,
-                Category = newParcel.Category.Name,
-                CustomerFirstName = newParcel.Customer.FirstName,
-                CustomerLastName = newParcel.Customer.LastName
-            };
+            var parcelToDisplay = ParcelMapper.DTOSelector.Compile().Invoke(newParcel); ;
 
             return parcelToDisplay;
         }
 
+        /// <summary>
+        /// Updates the specified parcel.
+        /// </summary>
+        /// <param name="id">The identifier of the parcel.</param>
+        /// <param name="parcel">The update data.</param>
+        /// <returns>ParcelDTO.</returns>
         public ParcelDTO Update(Guid id, UpdateParcelDTO parcel)
         {
             var parcelToUpdate = this.context.Parcels
@@ -134,17 +133,15 @@ namespace Deliverit.Services
             if (parcel.Weight > 0)
                 parcelToUpdate.Weight = parcel.Weight;
 
-            var parcelToDisplay = new ParcelDTO
-            {
-                Id = parcelToUpdate.Id,
-                Weight = parcelToUpdate.Weight,
-                Category = parcelToUpdate.Category.Name,
-                CustomerFirstName = parcelToUpdate.Customer.FirstName,
-                CustomerLastName = parcelToUpdate.Customer.LastName
-            };
+            var parcelToDisplay = ParcelMapper.DTOSelector.Compile().Invoke(parcelToUpdate); ;
 
             return parcelToDisplay;
         }
+
+        /// <summary>
+        /// Deletes the specified parcel.
+        /// </summary>
+        /// <param name="id">The identifier of the parcel.</param>
         public bool Delete(Guid id)
         {
             var parcel = this.context.Parcels
@@ -162,6 +159,11 @@ namespace Deliverit.Services
             return true;
         }
 
+        /// <summary>
+        /// Searches all parcels by e-mail.
+        /// </summary>
+        /// <param name="email">The email that is to be searched for.</param>
+        /// <returns>A collection of all parcels that are connected to this e-mail.</returns>
         public List<ParcelDTO> SearchByEmail(string email)
         {
             var customers = this.context.Customers
@@ -175,20 +177,19 @@ namespace Deliverit.Services
             {
                 foreach (var parcel in customer.Parcels)
                 {
-                    var parcelToDisplay = new ParcelDTO
-                    {
-                        Id = parcel.Id,
-                        Weight = parcel.Weight,
-                        Category = parcel.Category.Name,
-                        CustomerFirstName = parcel.Customer.FirstName,
-                        CustomerLastName = parcel.Customer.LastName
-                    };
+                    var parcelToDisplay = ParcelMapper.DTOSelector.Compile().Invoke(parcel);
                     parcelsToDisplay.Add(parcelToDisplay);
                 }
             }
             return parcelsToDisplay;
         }
 
+        /// <summary>
+        /// Searches all parcel by the name of the customer.
+        /// </summary>
+        /// <param name="firstname">The firstname of the customer.</param>
+        /// <param name="lastname">The lastname of the customer.</param>
+        /// <returns>A collection of all parcel connected to those names.</returns>
         public List<ParcelDTO> SearchByName(string firstname, string lastname)
         {
             List<Customer> customers = new List<Customer>();
@@ -225,20 +226,18 @@ namespace Deliverit.Services
             {
                 foreach (var parcel in customer.Parcels)
                 {
-                    var parcelToDisplay = new ParcelDTO
-                    {
-                        Id = parcel.Id,
-                        Weight = parcel.Weight,
-                        Category = parcel.Category.Name,
-                        CustomerFirstName = parcel.Customer.FirstName,
-                        CustomerLastName = parcel.Customer.LastName
-                    };
+                    var parcelToDisplay = ParcelMapper.DTOSelector.Compile().Invoke(parcel); ;
                     parcelsToDisplay.Add(parcelToDisplay);
                 }
             }
             return parcelsToDisplay;
         }
 
+        /// <summary>
+        /// Finds the incoming parcels of a customer.
+        /// </summary>
+        /// <param name="Id">The identifier of the customer.</param>
+        /// <returns>A collection of all incoming parcels to the given customer.</returns>
         public List<ParcelDTO> FindIncomingParcels(Guid Id)
         {
             var customer = this.context.Customers
@@ -255,14 +254,7 @@ namespace Deliverit.Services
             {
                 if (parcel.Shipment.Status.Name == "on the way")
                 {
-                    var parcelToDisplay = new ParcelDTO
-                    {
-                        Id = parcel.Id,
-                        Weight = parcel.Weight,
-                        Category = parcel.Category.Name,
-                        CustomerFirstName = parcel.Customer.FirstName,
-                        CustomerLastName = parcel.Customer.LastName
-                    };
+                    var parcelToDisplay = ParcelMapper.DTOSelector.Compile().Invoke(parcel);
                     parcelsToDisplay.Add(parcelToDisplay);
                 }
             }
@@ -270,39 +262,40 @@ namespace Deliverit.Services
             return parcelsToDisplay;
         }
 
+        /// <summary>
+        /// Gets all parcels of a given warehouse.
+        /// </summary>
+        /// <param name="id">The identifier of the warehouse.</param>
+        /// <returns>A collection of all parcels of the given warehouse.</returns>
         public List<ParcelDTO> GetByWarehouse(Guid id)
         {
             var parcels = this.context.Parcels
                 .Include(p => p.Shipment)
                 .ThenInclude(p => p.Warehouse)
-                .Include(p=>p.Category)
-                .Include(p=>p.Customer)
+                .Include(p => p.Category)
+                .Include(p => p.Customer)
                 .Where(p => p.Shipment.Warehouse.Id == id)
                 .ToList();
 
             List<ParcelDTO> parcelsToDisplay = new List<ParcelDTO>();
             foreach (var parcel in parcels)
             {
-                if (parcel.IsDeleted == true)
-                    continue;
-
-                var parcelToDisplay = new ParcelDTO
-                {
-                    Id = parcel.Id,
-                    Weight = parcel.Weight,
-                    Category = parcel.Category.Name,
-                    CustomerFirstName = parcel.Customer.FirstName,
-                    CustomerLastName = parcel.Customer.LastName
-                };
+                var parcelToDisplay  = ParcelMapper.DTOSelector.Compile().Invoke(parcel);
                 parcelsToDisplay.Add(parcelToDisplay);
             }
 
             return parcelsToDisplay;
         }
 
+
+        /// <summary>
+        /// Gets all parcels of a given customer.
+        /// </summary>
+        /// <param name="id">The identifier of the customer.</param>
+        /// <returns>A collection of all parcels of a given customer.</returns>
         public List<ParcelDTO> GetByCustomer(Guid id)
         {
-            var parcels = this.context.Parcels             
+            var parcels = this.context.Parcels
                 .Include(p => p.Category)
                 .Include(p => p.Customer)
                 .Where(p => p.Customer.Id == id)
@@ -311,23 +304,19 @@ namespace Deliverit.Services
             List<ParcelDTO> parcelsToDisplay = new List<ParcelDTO>();
             foreach (var parcel in parcels)
             {
-                if (parcel.IsDeleted == true)
-                    continue;
-
-                var parcelToDisplay = new ParcelDTO
-                {
-                    Id = parcel.Id,
-                    Weight = parcel.Weight,
-                    Category = parcel.Category.Name,
-                    CustomerFirstName = parcel.Customer.FirstName,
-                    CustomerLastName = parcel.Customer.LastName
-                };
+                var parcelToDisplay = ParcelMapper.DTOSelector.Compile().Invoke(parcel); ;
                 parcelsToDisplay.Add(parcelToDisplay);
             }
 
             return parcelsToDisplay;
         }
 
+
+        /// <summary>
+        /// Gets all parcels by weight.
+        /// </summary>
+        /// <param name="weight">The weight.</param>
+        /// <returns>A collection of all parcels with a given weight.</returns>
         public List<ParcelDTO> GetByWeight(int weight)
         {
             var parcels = this.context.Parcels
@@ -339,23 +328,19 @@ namespace Deliverit.Services
             List<ParcelDTO> parcelsToDisplay = new List<ParcelDTO>();
             foreach (var parcel in parcels)
             {
-                if (parcel.IsDeleted == true)
-                    continue;
-
-                var parcelToDisplay = new ParcelDTO
-                {
-                    Id = parcel.Id,
-                    Weight = parcel.Weight,
-                    Category = parcel.Category.Name,
-                    CustomerFirstName = parcel.Customer.FirstName,
-                    CustomerLastName = parcel.Customer.LastName
-                };
+                var parcelToDisplay = ParcelMapper.DTOSelector.Compile().Invoke(parcel);
                 parcelsToDisplay.Add(parcelToDisplay);
             }
 
             return parcelsToDisplay;
         }
 
+
+        /// <summary>
+        /// Gets all parcels by category.
+        /// </summary>
+        /// <param name="category">The category's name.</param>
+        /// <returns>A collection of all parcels of a given category.</returns>
         public List<ParcelDTO> GetByCategory(string category)
         {
             var parcels = this.context.Parcels
@@ -367,17 +352,7 @@ namespace Deliverit.Services
             List<ParcelDTO> parcelsToDisplay = new List<ParcelDTO>();
             foreach (var parcel in parcels)
             {
-                if (parcel.IsDeleted == true)
-                    continue;
-
-                var parcelToDisplay = new ParcelDTO
-                {
-                    Id = parcel.Id,
-                    Weight = parcel.Weight,
-                    Category = parcel.Category.Name,
-                    CustomerFirstName = parcel.Customer.FirstName,
-                    CustomerLastName = parcel.Customer.LastName
-                };
+                var parcelToDisplay = ParcelMapper.DTOSelector.Compile().Invoke(parcel);
                 parcelsToDisplay.Add(parcelToDisplay);
             }
 
