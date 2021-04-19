@@ -7,6 +7,12 @@ using System;
 
 namespace Deliverit.Web.Controllers
 {
+    /// <summary>
+    /// Class CustomersController.
+    /// Handles all customer services.
+    /// Implements the <see cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
+    /// </summary>
+    /// <seealso cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
     [Route("api/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase
@@ -22,7 +28,12 @@ namespace Deliverit.Web.Controllers
             this.authCustomerHelper = authCustomerHelper;
         }
 
-        [HttpGet("{id}")] 
+        /// <summary>
+        /// Gets the specified customer by email.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="id">The identifier of the customer.</param>
+        [HttpGet("{id}")]
         public IActionResult Get([FromHeader] string authorizationEmail, Guid id)
         {
             try
@@ -41,7 +52,11 @@ namespace Deliverit.Web.Controllers
                 return this.Conflict();
             }
         }
-         
+
+        /// <summary>
+        /// Gets all customers.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
         [HttpGet("")]
         public IActionResult GetAll([FromHeader] string authorizationEmail)
         {
@@ -56,20 +71,40 @@ namespace Deliverit.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets the count of all customers.
+        /// </summary>
         [HttpGet("/count")]
         public IActionResult GetCount()
         {
             return this.Ok(this.customerService.GetCount());
         }
 
+        /// <summary>
+        /// Creates a new customer.
+        /// </summary>
+        /// <param name="customer">The customer that is to be created.</param>
         [HttpPost("")]
-        public IActionResult Post([FromBody] Customer customer) // public part
+        public IActionResult Post([FromBody] Customer customer)
         {
-            var newCustomer = this.customerService.Create(customer);
+            try
+            {
+                var newCustomer = this.customerService.Create(customer);
 
-            return this.Created("post", newCustomer);
+                return this.Created("post", newCustomer);
+            }
+            catch (ArgumentNullException)
+            { 
+                return Conflict(); 
+            }
         }
 
+        /// <summary>
+        /// Updates a customer's information.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="addressId">The address identifier.</param>
         [HttpPut("{id}")]
         public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) // TODO: The customer should be able to create new address and update it
         {
@@ -77,7 +112,6 @@ namespace Deliverit.Web.Controllers
             {
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 var customerToUpdate = this.customerService.Update(id, addressId);
-
                 return this.Ok(customerToUpdate);
             }
             catch (ArgumentNullException)
@@ -86,6 +120,11 @@ namespace Deliverit.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes a customer.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="id">The identifier.</param>
         [HttpDelete("{id}")]
         public IActionResult Delete([FromHeader] string authorizationEmail, Guid id)             // TODO: The customer should also be able to delete his/her profile
         {
@@ -109,7 +148,12 @@ namespace Deliverit.Web.Controllers
             }
         }
 
-        [HttpGet("{id}/incoming")]                
+        /// <summary>
+        /// Gets the incoming parcels.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="id">The identifier.</param>
+        [HttpGet("{id}/incoming")]
         public IActionResult GetIncomingParcels([FromHeader] string authorizationEmail, Guid id)
         {
             try
@@ -129,7 +173,12 @@ namespace Deliverit.Web.Controllers
             }
         }
 
-        [HttpGet("{id}/past")]                    
+        /// <summary>
+        /// Gets the past parcels.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="id">The identifier.</param>
+        [HttpGet("{id}/past")]
         public IActionResult GetPastParcels([FromHeader] string authorizationEmail, Guid id)
         {
             try
@@ -147,9 +196,13 @@ namespace Deliverit.Web.Controllers
             {
                 return this.Conflict();
             }
-            
         }
 
+        /// <summary>
+        /// Gets by key word.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="key">The key.</param>
         [HttpGet("{key}/all")]
         public IActionResult GetByKeyWord([FromHeader] string authorizationEmail, string key)
         {
@@ -164,6 +217,12 @@ namespace Deliverit.Web.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Gets the by multiple criteria.
+        /// </summary>
+        /// <param name="authorizationEmail">The authorization email.</param>
+        /// <param name="customerFilter">The customer filter.</param>
         [HttpGet("/multiple")]
         public IActionResult GetByMultipleCriteria([FromHeader] string authorizationEmail, [FromQuery] CustomerFilter customerFilter)
         {
