@@ -41,7 +41,7 @@ namespace Deliverit.Web.Controllers
                 var admin = this.authEmployeeHelper.TryGetAdmin(authorizationEmail);
                 return this.Ok(this.employeeService.Get(id));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return this.Conflict();
             }
