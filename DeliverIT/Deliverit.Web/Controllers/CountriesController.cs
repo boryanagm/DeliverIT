@@ -10,6 +10,11 @@ namespace Deliverit.Web.Controllers
 {
     namespace Deliverit.Web.Controllers
     {
+        /// <summary>
+        /// Class CountriesController.
+        /// Handles all contry services
+        /// Implements the <see cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
+        /// </summary>
         [Route("api/[controller]")]
         [ApiController]
         public class CountriesController : ControllerBase
@@ -21,6 +26,10 @@ namespace Deliverit.Web.Controllers
                 this.countryService = countryService;
             }
 
+            /// <summary>
+            /// Shows country by the ID.
+            /// </summary>
+            /// <param name="id">The identifier.</param>
             [HttpGet("{id}")]
             public IActionResult Get(Guid id)
             {
@@ -35,6 +44,9 @@ namespace Deliverit.Web.Controllers
                 }
             }
 
+            /// <summary>
+            /// Shows all countries.
+            /// </summary>
             [HttpGet("")]
             public IActionResult GetAll()
             {
