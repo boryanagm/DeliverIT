@@ -11,6 +11,10 @@ using Deliverit.Services.Mappers;
 
 namespace Deliverit.Services
 {
+    /// <summary>
+    /// Class CustomerService.
+    /// Implements the <see cref="Deliverit.Services.Contracts.ICustomerService" />
+    /// </summary>
     public class CustomerService : ICustomerService
     {
         private readonly DeliveritDbContext context;
@@ -20,14 +24,25 @@ namespace Deliverit.Services
             this.context = context;
         }
 
+        /// <summary>
+        /// Gets a customer by email.
+        /// </summary>
+        /// <param name="customerEmail">The customer email.</param>
+        /// <returns>The customer connected to this email.</returns>
         public Customer GetByCustomerEmail(string customerEmail)
         {
-           return this.context.Customers
-                .FirstOrDefault(c => c.Email == customerEmail)
-                ?? throw new ArgumentNullException();
+            return this.context.Customers
+                 .FirstOrDefault(c => c.Email == customerEmail)
+                 ?? throw new ArgumentNullException();
         }
 
-        public CustomerDTO Get(Guid id) 
+
+        /// <summary>
+        /// Gets a customer by Id.
+        /// </summary>
+        /// <param name="Id">The customer email.</param>
+        /// <returns>The customer connected to this Id.</returns>
+        public CustomerDTO Get(Guid id)
         {
             var dto = this.context.Customers
                .Select(CustomerMapper.DTOSelector)
@@ -37,6 +52,11 @@ namespace Deliverit.Services
             return dto;
         }
 
+
+        /// <summary>
+        /// Gets all customers.
+        /// </summary>
+        /// <returns>A collection of all Customer in a CustomerDTO format</returns>
         public IEnumerable<CustomerDTO> GetAll()
         {
             List<CustomerDTO> customers = new List<CustomerDTO>();
@@ -52,21 +72,31 @@ namespace Deliverit.Services
             return customers;
         }
 
+
+        /// <summary>
+        /// Gets the count of all customers.
+        /// </summary>
+        /// <returns>Returns the count of all customers.</returns>
         public int GetCount()
         {
             return this.context.Customers.Count();
         }
 
+        /// <summary>
+        /// Creates a specified customer.
+        /// </summary>
+        /// <param name="customer">The customer to be created.</param>
+        /// <returns>A the customer that is to be created in a CustomerDTO format.</returns>
         public CustomerDTO Create(Customer customer)
         {
             this.context.Customers.Add(customer);
             customer.CreatedOn = DateTime.UtcNow;
 
             var customerRole = new CustomerRole()
-            { 
-               Id = Guid.NewGuid(),
-               RoleId = Guid.Parse("2d598edd-793a-4324-ac29-c505a5c790a5"),
-               CustomerId = customer.Id
+            {
+                Id = Guid.NewGuid(),
+                RoleId = Guid.Parse("2d598edd-793a-4324-ac29-c505a5c790a5"),
+                CustomerId = customer.Id
             };
 
             this.context.SaveChanges();
@@ -79,7 +109,13 @@ namespace Deliverit.Services
             return dto;
         }
 
-        public CustomerDTO Update(Guid id, Guid addressId) 
+        /// <summary>
+        /// Updates the specified Customer.
+        /// </summary>
+        /// <param name="id">The identifier of the customer that is to be updated..</param>
+        /// <param name="addressId">The new address.</param>
+        /// <returns>The updated customer in a CustomerDTO format.</returns>
+        public CustomerDTO Update(Guid id, Guid addressId)
         {
             var customerToUpdate = this.context.Customers
                 .FirstOrDefault(c => c.Id == id)
@@ -98,6 +134,11 @@ namespace Deliverit.Services
 
             return dto;
         }
+
+        /// <summary>
+        /// Deletes a specified customer.
+        /// </summary>
+        /// <param name="id">The identifier of the customer that is to be deleted.</param>
         public bool Delete(Guid id)
         {
             var customer = this.context.Customers
@@ -106,7 +147,7 @@ namespace Deliverit.Services
             if (customer != null)
             {
                 customer.DeletedOn = DateTime.UtcNow;
-                customer.IsDeleted = true;          
+                customer.IsDeleted = true;
                 this.context.SaveChanges();
 
                 return true;
@@ -115,7 +156,12 @@ namespace Deliverit.Services
             return false;
         }
 
-        public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)  
+        /// <summary>
+        /// Gets customers by multiple criteria.
+        /// </summary>
+        /// <param name="customerFilter">The filtration.</param>
+        /// <returns>A list of all customer matching the filter.</returns>
+        public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)
         {
             var searchResult = this.context.Customers
                 .Where(c => c.FirstName == customerFilter.FirstName
@@ -127,7 +173,12 @@ namespace Deliverit.Services
             return searchResult;
         }
 
-        public List<ParcelDTO> GetIncomingParcels(Guid id) 
+        /// <summary>
+        /// Gets the incoming parcels of a given customer.
+        /// </summary>
+        /// <param name="id">The identifier of the customer that is to be searched for.</param>
+        /// <returns>List of all parcels matching the customer.</returns>
+        public List<ParcelDTO> GetIncomingParcels(Guid id)
         {
             List<ParcelDTO> dto = this.context.Customers
                 .Include(c => c.Parcels)
@@ -137,7 +188,7 @@ namespace Deliverit.Services
                      .ThenInclude(c => c.Category)
                 .FirstOrDefault(c => c.Id == id).Parcels
                 .Where(p => p.Shipment.Status.Name == "on the way" || p.Shipment.Status.Name == "preparing")
-                .Select(p => new ParcelDTO 
+                .Select(p => new ParcelDTO
                 {
                     Id = p.Id,
                     Weight = p.Weight,
@@ -150,7 +201,12 @@ namespace Deliverit.Services
             return dto;
         }
 
-        public List<ParcelDTO> GetPastParcels(Guid id)  
+        /// <summary>
+        /// Gets the past parcels of a customer.
+        /// </summary>
+        /// <param name="id">The identifier of the customer that is to be searched for.</param>
+        /// <returns>A list of all past parcels matching the customer.</returns>
+        public List<ParcelDTO> GetPastParcels(Guid id)
         {
             List<ParcelDTO> dto = this.context.Customers
                 .Include(c => c.Parcels)
@@ -173,6 +229,11 @@ namespace Deliverit.Services
             return dto;
         }
 
+        /// <summary>
+        /// Gets a customer by a key word.
+        /// </summary>
+        /// <param name="key">The key word.</param>
+        /// <returns>The customer matching the key word.</returns>
         public CustomerDTO GetByKeyWord(string key)
         {
             var customer = this.context.Customers
@@ -189,46 +250,3 @@ namespace Deliverit.Services
         }
     }
 }
-/*
-  public List<CustomerDTO> GetByMultipleCriteria(CustomerFilter customerFilter)  
-        {
-            var searchResult = this.context.Customers
-                .Where(c => customerFilter.FirstName == null || c.FirstName.Contains(customerFilter.FirstName) 
-                && customerFilter.LastName == null || c.LastName.Contains(customerFilter.LastName) 
-                && customerFilter.Email == null || c.Email.Contains(customerFilter.Email))
-                .Select(c => new CustomerDTO 
-                {
-                   Id = c.Id,
-                   FirstName = c.FirstName,
-                   LastName = c.LastName, 
-                   Email = c.Email
-                })
-                .ToList();
-
-            return searchResult;
-        }
-
- public Customer GetByEmail(string email)
-        {
-            var customer = this.context.Customers
-                .FirstOrDefault(c => c.Email == email);
-
-            return customer;
-        }
-
-        public Customer GetByFirstName(string firstName)
-        {
-            var customer = this.context.Customers
-                .FirstOrDefault(c => c.FirstName == firstName);
-
-            return customer;
-        }
-
-        public Customer GetByLastName(string lastName)
-        {
-            var customer = this.context.Customers
-                 .FirstOrDefault(c => c.LastName == lastName);
-
-            return customer;
-        }
- */

@@ -5,6 +5,12 @@ using System;
 
 namespace Deliverit.Services
 {
+
+    /// <summary>
+    /// Class AdressService.
+    /// Implements the <see cref="Deliverit.Services.Contracts.IAddressService" />
+    /// Responsible for creating an address.
+    /// </summary>
     public class AdressService : IAddressService
     {
         private readonly DeliveritDbContext context;

@@ -1,5 +1,8 @@
 ﻿namespace Deliverit.Services
 {
+    /// <summary>
+    /// Class CustomerFilter, helper for filtering customers.
+    /// </summary>
     public class CustomerFilter
     {
         public string FirstName { get; set; }
