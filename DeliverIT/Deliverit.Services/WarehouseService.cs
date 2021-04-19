@@ -10,6 +10,11 @@ using System.Linq;
 
 namespace Deliverit.Services
 {
+    /// <summary>
+    /// Class WarehouseService.
+    /// Defines all CRUD operations.
+    /// Implements the <see cref="Deliverit.Services.Contracts.IWarehouseService" />
+    /// </summary>
     public class WarehouseService : IWarehouseService
     {
         private readonly DeliveritDbContext context;
@@ -19,6 +24,12 @@ namespace Deliverit.Services
             this.context = context;
         }
 
+
+        /// <summary>
+        /// Gets a warehouse by an Id.
+        /// </summary>
+        /// <param name="id">The identifier of the warehouse.</param>
+        /// <returns>The warehouse in a WarehouseDTO format.</returns>
         public WarehouseDTO Get(Guid id)
         {
             var dto = this.context.Warehouses
@@ -29,6 +40,11 @@ namespace Deliverit.Services
             return dto;
         }
 
+
+        /// <summary>
+        /// Gets all warehouses.
+        /// </summary>
+        /// <returns>A collection of all warehouses.</returns>
         public IEnumerable<WarehouseDTO> GetAll()
         {
             List<WarehouseDTO> warehouses = new List<WarehouseDTO>();
@@ -44,6 +60,11 @@ namespace Deliverit.Services
             return warehouses;
         }
 
+        /// <summary>
+        /// Creates a warehouse.
+        /// </summary>
+        /// <param name="warehouse">The warehouse that is to be created.</param>
+        /// <returns>A warehouse in a WarehouseDTO format.</returns>
         public WarehouseDTO Create(Warehouse warehouse)
         {
             this.context.Warehouses.Add(warehouse);
@@ -59,6 +80,13 @@ namespace Deliverit.Services
             return dto;
         }
 
+
+        /// <summary>
+        /// Updates a warehouse.
+        /// </summary>
+        /// <param name="id">The identifier of the warehouse.</param>
+        /// <param name="addressId">The address identifier of the address.</param>
+        /// <returns>The warehouse in a WarehouseDTO format.</returns>
         public WarehouseDTO Update(Guid id, Guid addressId)
         {
             var warehouseToUpdate = this.context.Warehouses
@@ -79,6 +107,11 @@ namespace Deliverit.Services
             return dto;
         }
 
+
+        /// <summary>
+        /// Deletes a warehouse.
+        /// </summary>
+        /// <param name="id">The identifier of the warehouse to be deleted..</param>
         public bool Delete(Guid id)
         {
             var warehouse = this.context.Warehouses

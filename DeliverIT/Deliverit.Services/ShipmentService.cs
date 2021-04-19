@@ -1,4 +1,5 @@
 ﻿using Deliverit.Services.Contracts;
+using Deliverit.Services.Mappers;
 using Deliverit.Services.Models;
 using DeliverIT.Database;
 using DeliverIT.Models;
@@ -9,6 +10,11 @@ using System.Linq;
 
 namespace Deliverit.Services
 {
+    /// <summary>
+    /// Class ShipmentService.
+    /// Defines all CRUD/Search operations.
+    /// Implements the <see cref="Deliverit.Services.Contracts.IShipmentService" />
+    /// </summary>
     public class ShipmentService : IShipmentService
     {
         private readonly DeliveritDbContext context;
@@ -18,6 +24,12 @@ namespace Deliverit.Services
             this.context = context;
         }
 
+
+        /// <summary>
+        /// Gets a customer by Id.
+        /// </summary>
+        /// <param name="id">The identifier of the customer.</param>
+        /// <returns>The customer in a CustomerDTO format.</returns>
         public ShipmentDTO Get(Guid id)
         {
             var shipment = this.context.Shipments
@@ -28,38 +40,34 @@ namespace Deliverit.Services
             if (shipment.IsDeleted == true)
                 throw new ArgumentException("A shipment with this ID doesn't exist.");
 
-            var dto = new ShipmentDTO
-            {
-                Id = shipment.Id,
-                Status = shipment.Status.Name,
-                DepartureDate = shipment.DepartureDate,
-                ArrivalDate = shipment.ArrivalDate
-            };
+            var dto = ShipmentMapper.DTOSelector.Compile().Invoke(shipment);
 
             return dto;
         }
 
+        /// <summary>
+        /// Gets all shipments.
+        /// </summary>
+        /// <returns>A collections of all shipments in a ShipmentDTO format.</returns>
         public IEnumerable<ShipmentDTO> GetAll()
         {
             List<ShipmentDTO> shipments = new List<ShipmentDTO>();
 
             foreach (var shipment in this.context.Shipments.Include(c => c.Status))
             {
-                if (shipment.IsDeleted == true)
-                    continue;
-
-                var shipmentToDisplay = new ShipmentDTO
-                {
-                    Id = shipment.Id,
-                    Status = shipment.Status.Name,
-                    DepartureDate = shipment.DepartureDate,
-                    ArrivalDate = shipment.ArrivalDate
-                };
+                var shipmentToDisplay = ShipmentMapper.DTOSelector.Compile().Invoke(shipment);
                 shipments.Add(shipmentToDisplay);
             }
             return shipments;
         }
 
+
+        /// <summary>
+        /// Updates the specified Shipment.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="shipment">The shipment.</param>
+        /// <returns>The shipment in a ShipmentDTO format.</returns
         public ShipmentDTO Update(Guid id, ShipmentDTO shipment)
         {
             shipment.Status.ToLower();
@@ -71,8 +79,6 @@ namespace Deliverit.Services
                 .FirstOrDefault(s => s.Id == id)
                 ?? throw new ArgumentNullException();
 
-            if (shipmentToUpdate.IsDeleted == true)
-                throw new ArgumentException("A shipment with this ID doesn't exist.");
             if (shipmentToUpdate.Status.Name == "completed")
                 throw new ArgumentException("A shipment that has a completed status can't be updated.");
             if (shipmentToUpdate.Status.Name == "on the way" && shipment.Status == "preparing")
@@ -91,17 +97,17 @@ namespace Deliverit.Services
                 this.context.SaveChanges();
             }
 
-            var shipmentToDisplay = new ShipmentDTO
-            {
-                Id = shipmentToUpdate.Id,
-                Status = shipmentToUpdate.Status.Name,
-                DepartureDate = shipmentToUpdate.DepartureDate,
-                ArrivalDate = shipmentToUpdate.ArrivalDate
-            };
+            var shipmentToDisplay = ShipmentMapper.DTOSelector.Compile().Invoke(shipmentToUpdate); ;
 
             return shipmentToDisplay;
         }
 
+
+        /// <summary>
+        /// Creates a shipment.
+        /// </summary>
+        /// <param name="shipment">The shipment to be created.</param>
+        /// <returns>The shipment to be created in a ShipmentDTO format.</returns>
         public ShipmentDTO Create(CreateShipmentDTO shipment)
         {
             var warehouse = this.context.Warehouses
@@ -118,17 +124,16 @@ namespace Deliverit.Services
             this.context.Shipments.Add(newShipment);
             this.context.SaveChanges();
 
-            var shipmentToDisplay = new ShipmentDTO
-            {
-                Id = newShipment.Id,
-                Status = newShipment.Status.Name,
-                DepartureDate = newShipment.DepartureDate,
-                ArrivalDate = newShipment.ArrivalDate
-            };
+            var shipmentToDisplay = ShipmentMapper.DTOSelector.Compile().Invoke(newShipment);
 
             return shipmentToDisplay;
         }
 
+
+        /// <summary>
+        /// Deletes a shipment.
+        /// </summary>
+        /// <param name="id">The identifier of the shipment.</param>
         public bool Delete(Guid id)
         {
             var shipment = this.context.Shipments
@@ -146,6 +151,12 @@ namespace Deliverit.Services
             return true;
         }
 
+
+        /// <summary>
+        /// Searches a shipment by a Warehouse Id.
+        /// </summary>
+        /// <param name="Id">The identifier of the warehouse.</param>
+        /// <returns>A collection of all shipments by a given warehouse.</returns>
         public List<ShipmentDTO> SearchByWarehouse(Guid Id)
         {
             var warehouse = this.context.Warehouses
@@ -164,18 +175,18 @@ namespace Deliverit.Services
                 if (shipment.IsDeleted == true)
                     continue;
 
-                var shipmentToDisplay = new ShipmentDTO
-                {
-                    Id = shipment.Id,
-                    Status = shipment.Status.Name,
-                    DepartureDate = shipment.DepartureDate,
-                    ArrivalDate = shipment.ArrivalDate
-                };
+                var shipmentToDisplay = ShipmentMapper.DTOSelector.Compile().Invoke(shipment);
                 shipmentsToDisplay.Add(shipmentToDisplay);
             }
 
             return shipmentsToDisplay;
         }
+
+        /// <summary>
+        /// Searches a shipment by customer.
+        /// </summary>
+        /// <param name="Id">The identifier of the customer.</param>
+        /// <returns>A collection of all shipments of a given customer.</returns>
         public List<ShipmentDTO> SearchByCustomer(Guid Id)
         {
             var customer = this.context.Customers
@@ -193,16 +204,7 @@ namespace Deliverit.Services
                 .FirstOrDefault(s => s.Id == member)
                 ?? throw new ArgumentNullException();
 
-                if (shipment.IsDeleted == true)
-                    continue;
-
-                var shipmentToDisplay = new ShipmentDTO
-                {
-                    Id = shipment.Id,
-                    Status = shipment.Status.Name,
-                    DepartureDate = shipment.DepartureDate,
-                    ArrivalDate = shipment.ArrivalDate
-                };
+                var shipmentToDisplay= ShipmentMapper.DTOSelector.Compile().Invoke(shipment);
                 shipmentsToDisplay.Add(shipmentToDisplay);
             }
 
