@@ -71,7 +71,7 @@ namespace Deliverit.Web.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) // TODO: The customer should be able to create new address and update it
+        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) 
         {
             try
             {

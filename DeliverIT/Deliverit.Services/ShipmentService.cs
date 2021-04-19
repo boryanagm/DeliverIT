@@ -106,7 +106,7 @@ namespace Deliverit.Services
         {
             var warehouse = this.context.Warehouses
                 .FirstOrDefault(w => w.Id == shipment.WarehouseId);
-            var status = this.context.Status
+            var status = this.context.Statuses
                .FirstOrDefault(w => w.Name == "preparing");
 
             var newShipment = new Shipment

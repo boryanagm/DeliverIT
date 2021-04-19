@@ -1,4 +1,4 @@
-using Deliverit.Services;
+﻿using Deliverit.Services;
 using DeliverIT.Database;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -35,22 +35,30 @@ namespace Deliverit.Tests
             }
         }
 
-        //[TestMethod]
-        //public void Get_By_Should_Return_Correct_Entitye()
-        //{
-        //    //Arrange
-        //    using (var assertContext = Utils.GetFakeDatabase(nameof(Get_By_Should_Return_Correct_Entity))) 
-        //    {
-        //        var sut = new CityService(assertContext);
+        [TestMethod]
+        public void Get_Should_Return_All_Cities()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Get_Should_Return_All_Cities));
 
-        //        //Act
-        //        var result = sut.Get(Guid.Parse("e99abf10-63e9-4212-9053-87cb1d80763e"));
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Cities.AddRange(Utils.GetCities());
+                arrangeContext.SaveChanges();
+            }
 
-        //        //Assert
-        //        var expectedResult = assertContext.Cities.FirstOrDefault(c => c.Id == Guid.Parse("e99abf10-63e9-4212-9053-87cb1d80763e"));
-        //        Assert.AreEqual(expectedResult.Name, result.Name);
-        //        Assert.AreEqual(expectedResult.Id, result.Id);
-        //    }
-        //}
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new CityService(assertContext);
+
+                //Act
+                var result = sut.GetAll();
+
+                //Assert
+                // assert collection count
+                // assert first entity
+                // assert last entity
+            }
+        }
     }
 }

@@ -21,9 +21,9 @@ namespace DeliverIT.Database
         public DbSet<City> Cities { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Shipment> Shipments { get; set; }
-        public DbSet<Status> Status { get; set; }
+        public DbSet<Status> Statuses { get; set; }
         public DbSet<Parcel> Parcels { get; set; }
-        public DbSet<Category> Category { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
