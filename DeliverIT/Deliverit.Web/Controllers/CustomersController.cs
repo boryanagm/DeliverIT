@@ -106,7 +106,7 @@ namespace Deliverit.Web.Controllers
         /// <param name="id">The identifier.</param>
         /// <param name="addressId">The address identifier.</param>
         [HttpPut("{id}")]
-        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) // TODO: The customer should be able to create new address and update it
+        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) 
         {
             try
             {

@@ -180,15 +180,8 @@ namespace Deliverit.Services
         /// <returns>List of all parcels matching the customer.</returns>
         public List<ParcelDTO> GetIncomingParcels(Guid id)
         {
-            List<ParcelDTO> dto = this.context.Customers
-                .Include(c => c.Parcels)
-                   .ThenInclude(p => p.Shipment)
-                     .ThenInclude(s => s.Status)
-                .Include(c => c.Parcels)
-                     .ThenInclude(c => c.Category)
-                .FirstOrDefault(c => c.Id == id).Parcels
-                .Where(p => p.Shipment.Status.Name == "on the way" || p.Shipment.Status.Name == "preparing")
-                .Select(p => new ParcelDTO
+            List<ParcelDTO> dto = GetIncomingParcelsMapper.ReturnIncomingParcels(context, id)
+                .Select(p => new ParcelDTO 
                 {
                     Id = p.Id,
                     Weight = p.Weight,
@@ -208,14 +201,7 @@ namespace Deliverit.Services
         /// <returns>A list of all past parcels matching the customer.</returns>
         public List<ParcelDTO> GetPastParcels(Guid id)
         {
-            List<ParcelDTO> dto = this.context.Customers
-                .Include(c => c.Parcels)
-                   .ThenInclude(p => p.Shipment)
-                     .ThenInclude(s => s.Status)
-                .Include(c => c.Parcels)
-                     .ThenInclude(c => c.Category)
-                .FirstOrDefault(c => c.Id == id).Parcels
-                .Where(p => p.Shipment.Status.Name == "completed" || p.Shipment.Status.Name == "canceled")
+            List<ParcelDTO> dto = GetPastParcelsMapper.ReturnPastParcels(context, id)
                  .Select(p => new ParcelDTO
                  {
                      Id = p.Id,

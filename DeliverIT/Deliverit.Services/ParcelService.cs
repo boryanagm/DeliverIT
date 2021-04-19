@@ -71,7 +71,7 @@ namespace Deliverit.Services
 
             var customer = this.context.Customers
                 .FirstOrDefault(c => c.Id == parcel.CustomerId);
-            var category = this.context.Category
+            var category = this.context.Categories
                 .FirstOrDefault(c => c.Name == parcel.CategoryName);
             var employee = this.context.Employees
                 .FirstOrDefault(c => c.Id == parcel.EmployeeId);
@@ -116,7 +116,7 @@ namespace Deliverit.Services
 
             if (parcel.CategoryId != null)
             {
-                var category = this.context.Category
+                var category = this.context.Categories
                 .FirstOrDefault(s => s.Id == parcel.CategoryId)
                 ?? throw new ArgumentNullException();
                 parcelToUpdate.Category = category;
