@@ -1,6 +1,7 @@
 ﻿using Deliverit.Services;
 using Deliverit.Services.Models;
 using DeliverIT.Database;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -152,7 +153,7 @@ namespace Deliverit.Tests
                 var assertResult = sut.Update(parcelId, parcelToUpdate);
 
                 //Assert
-                var actualParcel = assertContext.Parcels.FirstOrDefault(p=>p.Id == parcelId);
+                var actualParcel = assertContext.Parcels.FirstOrDefault(p => p.Id == parcelId);
                 Assert.AreEqual(actualParcel.Weight, parcelToUpdate.Weight);
                 Assert.AreEqual(actualParcel.Shipment.Id, shipmentId);
             }
@@ -186,7 +187,7 @@ namespace Deliverit.Tests
                 };
 
                 //Act & Assert
-                Assert.ThrowsException<ArgumentNullException>(() => sut.Update(parcelId,parcelToUpdate));
+                Assert.ThrowsException<ArgumentNullException>(() => sut.Update(parcelId, parcelToUpdate));
             }
         }
         [TestMethod]
@@ -233,7 +234,7 @@ namespace Deliverit.Tests
 
             using (var assertContext = new DeliveritDbContext(options))
             {
-              
+
                 var sut = new ParcelService(assertContext);
                 var parcelCount = assertContext.Parcels.Count();
                 Guid categoryId = new Guid("1db0c76c-ab76-4105-be89-3af983f6f137");
@@ -252,7 +253,6 @@ namespace Deliverit.Tests
                 Assert.ThrowsException<ArgumentNullException>(() => sut.Update(parcelId, parcelToUpdate));
             }
         }
-
         [TestMethod]
         public void Update_Should_Throw_When_Parcel_Invalid()
         {
@@ -283,6 +283,58 @@ namespace Deliverit.Tests
 
                 //Act & Assert
                 Assert.ThrowsException<ArgumentNullException>(() => sut.Update(parcelId, parcelToUpdate));
+            }
+        }
+        [TestMethod]
+        public void Delete_Should_Parcel()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Delete_Should_Parcel));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+
+                Guid parcelId = new Guid("198457ae-236c-4592-90af-3ca2302a8737");
+
+                //Act
+                var assertResult = sut.Delete(parcelId);
+
+                //Assert
+                var resultParcel = assertContext.Parcels
+                .IgnoreQueryFilters()
+                .FirstOrDefault(e => e.Id == parcelId);
+
+                Assert.AreEqual(resultParcel.IsDeleted, true);
+
+            }
+        }
+        [TestMethod]
+        public void Delete_Should_Throw_When_Invalid_Parcel()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Delete_Should_Throw_When_Invalid_Parcel));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+
+                Guid parcelId = new Guid("d2c26c93-d589-4b05-850b-fbf21c59c84d");
+
+                //Act & Assert
+                Assert.ThrowsException<ArgumentNullException>(() => sut.Delete(parcelId));
             }
         }
     }

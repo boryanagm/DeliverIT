@@ -148,11 +148,6 @@ namespace Deliverit.Services
                 .FirstOrDefault(s => s.Id == id)
                 ?? throw new ArgumentNullException();
 
-            if (parcel.IsDeleted == true)
-            {
-                throw new ArgumentNullException("There is no shipment with this ID.");
-            }
-
             parcel.IsDeleted = true;
             parcel.DeletedOn = DateTime.UtcNow;
             this.context.SaveChanges();
