@@ -1,5 +1,6 @@
 ﻿using Deliverit.Services.Contracts;
 using Deliverit.Services.Models;
+using Deliverit.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -16,9 +17,13 @@ namespace Deliverit.Web.Controllers
     public class ParcelController : Controller
     {
         private readonly IParcelService parcelService;
-        public ParcelController(IParcelService parcelService)
+        private readonly IAuthEmployeeHelper authEmployeeHelper;
+        private readonly IAuthCustomerHelper authCustomerHelper;
+        public ParcelController(IParcelService parcelService, IAuthEmployeeHelper authEmployeeHelper, IAuthCustomerHelper authCustomerHelper)
         {
             this.parcelService = parcelService;
+            this.authEmployeeHelper = authEmployeeHelper;
+            this.authCustomerHelper = authCustomerHelper;
         }
 
         /// <summary>
@@ -26,10 +31,11 @@ namespace Deliverit.Web.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
+        public IActionResult Get([FromHeader] string authorizationEmail, Guid id)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.parcelService.Get(id));
             }
             catch (Exception)
@@ -52,10 +58,11 @@ namespace Deliverit.Web.Controllers
         /// </summary>
         /// <param name="parcel">The parcel.</param>
         [HttpPost("create/")]
-        public IActionResult Post([FromQuery] CreateParcelDTO parcel)
+        public IActionResult Post([FromHeader] string authorizationEmail, [FromQuery] CreateParcelDTO parcel)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 var parcelToCreate = this.parcelService.Create(parcel);
                 return this.Created("post", parcelToCreate);
             }
@@ -71,10 +78,11 @@ namespace Deliverit.Web.Controllers
         /// <param name="id">The identifier.</param>
         /// <param name="parcel">The parcel.</param>
         [HttpPut("update/{id}")]
-        public IActionResult Put(Guid id, [FromQuery] UpdateParcelDTO parcel)
+        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, [FromQuery] UpdateParcelDTO parcel)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 var parcelToUpdate = this.parcelService.Update(id, parcel);
 
                 return this.Ok(parcelToUpdate);
@@ -90,10 +98,11 @@ namespace Deliverit.Web.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         [HttpDelete("delete/{id}")]
-        public IActionResult Delete(Guid id)
+        public IActionResult Delete([FromHeader] string authorizationEmail, Guid id)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 var success = this.parcelService.Delete(id);
 
                 if (success)
@@ -113,10 +122,11 @@ namespace Deliverit.Web.Controllers
         /// </summary>
         /// <param name="email">The email.</param>
         [HttpGet("filter/email")]
-        public IActionResult SearchByEmail([FromQuery] string email)
+        public IActionResult SearchByEmail([FromHeader] string authorizationEmail, [FromQuery] string email)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.parcelService.SearchByEmail(email));
             }
             catch (Exception)
@@ -131,10 +141,11 @@ namespace Deliverit.Web.Controllers
         /// <param name="firstname">The firstname.</param>
         /// <param name="lastname">The lastname.</param>
         [HttpGet("filter/name")]
-        public IActionResult SearchByName([FromQuery] string firstname, string lastname)
+        public IActionResult SearchByName([FromHeader] string authorizationEmail, [FromQuery] string firstname, string lastname)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.parcelService.SearchByName(firstname, lastname));
             }
             catch (Exception)
@@ -149,11 +160,15 @@ namespace Deliverit.Web.Controllers
         /// <param name="Id">The identifier.</param>
         /// <returns>IActionResult.</returns>
         [HttpGet("filter/incoming")]
-        public IActionResult SearchByIncomingShippment([FromQuery] Guid Id)
+        public IActionResult SearchByIncomingShippment([FromHeader] string authorizationEmail, [FromQuery] Guid Id)
         {
             try
             {
-                return this.Ok(this.parcelService.FindIncomingParcels(Id));
+                var customer = this.authCustomerHelper.TryGetCustomer(authorizationEmail);
+                if (customer.Id == Id)
+                    return this.Ok(this.parcelService.FindIncomingParcels(Id));
+                else
+                    return this.NotFound();
             }
             catch (Exception)
             {
@@ -167,10 +182,11 @@ namespace Deliverit.Web.Controllers
         /// <param name="Id">The identifier.</param>
         /// <returns>IActionResult.</returns>
         [HttpGet("filter/warehouse")]
-        public IActionResult GetByWarehouse([FromQuery] Guid Id)
+        public IActionResult GetByWarehouse([FromHeader] string authorizationEmail, [FromQuery] Guid Id)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.parcelService.GetByWarehouse(Id));
             }
             catch (Exception)
@@ -185,13 +201,14 @@ namespace Deliverit.Web.Controllers
         /// <param name="Id">The identifier.</param>
         /// <returns>IActionResult.</returns>
         [HttpGet("filter/customer")]
-        public IActionResult GetByCustomer([FromQuery] Guid Id)
+        public IActionResult GetByCustomer([FromHeader] string authorizationEmail, [FromQuery] Guid Id)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.parcelService.GetByCustomer(Id));
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return this.Conflict();
             }
@@ -202,13 +219,14 @@ namespace Deliverit.Web.Controllers
         /// </summary>
         /// <param name="weight">The weight.</param>
         [HttpGet("filter/weight")]
-        public IActionResult GetByWeight([FromQuery] int weight)
+        public IActionResult GetByWeight([FromHeader] string authorizationEmail, [FromQuery] int weight)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.parcelService.GetByWeight(weight));
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return this.Conflict();
             }
@@ -219,13 +237,50 @@ namespace Deliverit.Web.Controllers
         /// </summary>
         /// <param name="category">The category.</param>    
         [HttpGet("filter/category")]
-        public IActionResult GetByCategory([FromQuery] string category)
+        public IActionResult GetByCategory([FromHeader] string authorizationEmail, [FromQuery] string category)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.parcelService.GetByCategory(category));
             }
-            catch(Exception)
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
+        }
+
+        /// <summary>
+        /// Filters parcels by category and Id.
+        /// </summary>
+        /// <param name="category">The category.</param>    
+        [HttpGet("filter/multiplecriteria")]
+        public IActionResult GetByMultipleCriteria([FromHeader] string authorizationEmail, [FromQuery] string category, [FromQuery] Guid Id)
+        {
+            try
+            {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                return this.Ok(this.parcelService.GetByMultipleCriteria(category, Id));
+            }
+            catch (Exception)
+            {
+                return this.Conflict();
+            }
+        }
+
+        /// <summary>
+        /// Sorts by weight or arrival date.
+        /// </summary>
+        /// <param name="category">The category.</param>    
+        [HttpGet("filter/weightordate")]
+        public IActionResult SortByWeightOrDate([FromHeader] string authorizationEmail, [FromQuery] string criteria)
+        {
+            try
+            {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                return this.Ok(this.parcelService.SortByWeightOrArrivalDate(criteria));
+            }
+            catch (Exception)
             {
                 return this.Conflict();
             }

@@ -280,7 +280,7 @@ namespace Deliverit.Services
             List<ParcelDTO> parcelsToDisplay = new List<ParcelDTO>();
             foreach (var parcel in parcels)
             {
-                var parcelToDisplay  = ParcelMapper.DTOSelector.Compile().Invoke(parcel);
+                var parcelToDisplay = ParcelMapper.DTOSelector.Compile().Invoke(parcel);
                 parcelsToDisplay.Add(parcelToDisplay);
             }
 
@@ -345,6 +345,46 @@ namespace Deliverit.Services
                 .Include(p => p.Customer)
                 .Where(p => p.Category.Name == category)
                 .ToList();
+
+            List<ParcelDTO> parcelsToDisplay = new List<ParcelDTO>();
+            foreach (var parcel in parcels)
+            {
+                var parcelToDisplay = ParcelMapper.DTOSelector.Compile().Invoke(parcel);
+                parcelsToDisplay.Add(parcelToDisplay);
+            }
+
+            return parcelsToDisplay;
+        }
+        public List<ParcelDTO> GetByMultipleCriteria(string category, Guid Id)
+        {
+            var parcels = this.context.Parcels
+                .Include(p => p.Category)
+                .Include(p => p.Customer)
+                .Where(p => p.Category.Name == category && p.CustomerId == Id)
+                .ToList();
+
+            List<ParcelDTO> parcelsToDisplay = new List<ParcelDTO>();
+            foreach (var parcel in parcels)
+            {
+                var parcelToDisplay = ParcelMapper.DTOSelector.Compile().Invoke(parcel);
+                parcelsToDisplay.Add(parcelToDisplay);
+            }
+
+            return parcelsToDisplay;
+        }
+
+        public List<ParcelDTO> SortByWeightOrArrivalDate(string sortcriteria)
+        {
+            var parcels = this.context.Parcels
+                .Include(p => p.Category)
+                .Include(p => p.Customer)
+                .Include(p => p.Shipment);
+
+            if (sortcriteria == "weight")
+                parcels.OrderBy(p => p.Weight);
+
+            if (sortcriteria == "date")
+                parcels.OrderBy(p => p.Shipment.ArrivalDate);
 
             List<ParcelDTO> parcelsToDisplay = new List<ParcelDTO>();
             foreach (var parcel in parcels)

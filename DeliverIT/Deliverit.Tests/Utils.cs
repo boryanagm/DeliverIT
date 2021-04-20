@@ -26,7 +26,7 @@ namespace Deliverit.Tests
             context.Customers.AddRange(GetCustomers());
             context.Employees.AddRange(GetEmployees());
             context.Warehouses.AddRange(GetWarehouses());
-            context.Parcels.AddRange(GetPatcels());
+            context.Parcels.AddRange(GetParcels());
             context.Shipments.AddRange(GetShipments());
             context.Categories.AddRange(GetCategories());
             context.Statuses.AddRange(GetStatuses());
@@ -238,7 +238,7 @@ namespace Deliverit.Tests
                 }
             };
         }
-        public static ICollection<Parcel> GetPatcels()
+        public static ICollection<Parcel> GetParcels()
         {
             return new List<Parcel>()
             {
