@@ -247,5 +247,34 @@ namespace Deliverit.Tests.ServicesTests
                 Assert.AreEqual(expectedResult.Address.City.Country.Name, actualResult.Country);
             }
         }
+
+        [TestMethod]
+        public void Should_Mark_True_IsDeleted_OfSelectedCustomer()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Should_Mark_True_IsDeleted_OfSelectedCustomer));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new CustomerService(assertContext);
+
+                //Act
+                var customerToDeleteId = Guid.Parse("5adb06fe-fca4-4347-b1ea-118c55e17331");
+                var customerToDelete = assertContext.Customers
+                    .FirstOrDefault(c => c.Id == customerToDeleteId);
+
+                var actualResult = sut.Delete(customerToDeleteId);
+                var expectedResult = customerToDelete.IsDeleted;
+
+                //Assert
+                Assert.AreEqual(expectedResult, actualResult);
+            }
+        }
     }
 }
