@@ -1,4 +1,5 @@
 ﻿using Deliverit.Services;
+using Deliverit.Services.Models;
 using DeliverIT.Database;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -61,9 +62,6 @@ namespace Deliverit.Tests
 
             using (var arrangeContext = new DeliveritDbContext(options))
             {
-                arrangeContext.Parcels.AddRange(Utils.GetParcels());
-                arrangeContext.Categories.AddRange(Utils.GetCategories());
-                arrangeContext.Customers.AddRange(Utils.GetCustomers());
                 arrangeContext.SaveChanges();
             }
 
@@ -76,11 +74,217 @@ namespace Deliverit.Tests
                 int actualParcelCount = actualResult.Count();
 
                 //Assert
-                var expectedResult = assertContext.Countries;
-                int expectedParcelCount = expectedResult.Count();
+                var expectedResult = assertContext.Parcels.Count();
 
-                Assert.AreEqual(expectedParcelCount, actualParcelCount);
+                Assert.AreEqual(expectedResult, actualParcelCount);
+            }
+        }
+
+        [TestMethod]
+        public void Create_Should_Add_Parcel()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Get_Should_Return_All_Parcels));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Shipments.AddRange(Utils.GetShipments());
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+                var parcelCount = assertContext.Parcels.Count();
+                Guid employeeId = new Guid("d2c26c93-d589-4b05-850b-fbf21c59c84d");
+                Guid customerId = new Guid("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1");
+                Guid shipmentId = new Guid("ce465c59-4866-4905-bdbd-943a26f59fdd");
+                var parcelToCreate = new CreateParcelDTO
+                {
+                    Weight = 2,
+                    CategoryName = "Electronics",
+                    EmployeeId = employeeId,
+                    CustomerId = customerId,
+                    ShipmentId = shipmentId
+                };
+
+                //Act
+                var assertResult = sut.Create(parcelToCreate);
+                var expectedResult = parcelCount + 1;
+
+                //Assert
+                var actualParcelCount = assertContext.Parcels.Count();
+                Assert.AreEqual(expectedResult, actualParcelCount);
+            }
+        }
+
+        [TestMethod]
+        public void Update_Should_Parcel()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Get_Should_Return_All_Parcels));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+                var parcelCount = assertContext.Parcels.Count();
+                Guid categoryId = new Guid("1db0c76c-ab76-4105-be89-3af983f6f137");
+                Guid customerId = new Guid("5adb06fe-fca4-4347-b1ea-118c55e17331");
+                Guid shipmentId = new Guid("ce465c59-4866-4905-bdbd-943a26f59fdd");
+                Guid parcelId = new Guid("198457ae-236c-4592-90af-3ca2302a8737");
+                var parcelToUpdate = new UpdateParcelDTO
+                {
+                    Weight = 2,
+                    CategoryId = categoryId,
+                    CustomerId = customerId,
+                    ShipmentId = shipmentId
+                };
+
+                //Act
+                var assertResult = sut.Update(parcelId, parcelToUpdate);
+
+                //Assert
+                var actualParcel = assertContext.Parcels.FirstOrDefault(p=>p.Id == parcelId);
+                Assert.AreEqual(actualParcel.Weight, parcelToUpdate.Weight);
+                Assert.AreEqual(actualParcel.Shipment.Id, shipmentId);
+            }
+        }
+
+        [TestMethod]
+        public void Update_Should_Throw_When_Customer_Invalid()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Update_Should_Throw_When_Customer_Invalid));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+                var parcelCount = assertContext.Parcels.Count();
+                Guid categoryId = new Guid("1db0c76c-ab76-4105-be89-3af983f6f137");
+                Guid customerId = new Guid("5a1206fe-fca4-4347-b1ea-118c55e17331");
+                Guid shipmentId = new Guid("ce465c59-4866-4905-bdbd-943a26f59fdd");
+                Guid parcelId = new Guid("198457ae-236c-4592-90af-3ca2302a8737");
+                var parcelToUpdate = new UpdateParcelDTO
+                {
+                    Weight = 2,
+                    CategoryId = categoryId,
+                    CustomerId = customerId,
+                    ShipmentId = shipmentId
+                };
+
+                //Act & Assert
+                Assert.ThrowsException<ArgumentNullException>(() => sut.Update(parcelId,parcelToUpdate));
+            }
+        }
+        [TestMethod]
+        public void Update_Should_Throw_When_Category_Invalid()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Update_Should_Throw_When_Category_Invalid));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+                var parcelCount = assertContext.Parcels.Count();
+                Guid categoryId = new Guid("12b0c76c-ab76-4105-be89-3af983f6f137");
+                Guid customerId = new Guid("5adb06fe-fca4-4347-b1ea-118c55e17331");
+                Guid shipmentId = new Guid("ce465c59-4866-4905-bdbd-943a26f59fdd");
+                Guid parcelId = new Guid("198457ae-236c-4592-90af-3ca2302a8737");
+                var parcelToUpdate = new UpdateParcelDTO
+                {
+                    Weight = 2,
+                    CategoryId = categoryId,
+                    CustomerId = customerId,
+                    ShipmentId = shipmentId
+                };
+
+                //Act & Assert
+                Assert.ThrowsException<ArgumentNullException>(() => sut.Update(parcelId, parcelToUpdate));
+            }
+        }
+        [TestMethod]
+        public void Update_Should_Throw_When_Shipment_Invalid()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Update_Should_Throw_When_Shipment_Invalid));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+              
+                var sut = new ParcelService(assertContext);
+                var parcelCount = assertContext.Parcels.Count();
+                Guid categoryId = new Guid("1db0c76c-ab76-4105-be89-3af983f6f137");
+                Guid customerId = new Guid("5adb06fe-fca4-4347-b1ea-118c55e17331");
+                Guid shipmentId = new Guid("1e465c59-4866-4905-bdbd-943a26f59fdd");
+                Guid parcelId = new Guid("198457ae-236c-4592-90af-3ca2302a8737");
+                var parcelToUpdate = new UpdateParcelDTO
+                {
+                    Weight = 2,
+                    CategoryId = categoryId,
+                    CustomerId = customerId,
+                    ShipmentId = shipmentId
+                };
+
+                //Act & Assert
+                Assert.ThrowsException<ArgumentNullException>(() => sut.Update(parcelId, parcelToUpdate));
+            }
+        }
+
+        [TestMethod]
+        public void Update_Should_Throw_When_Parcel_Invalid()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Update_Should_Throw_When_Shipment_Invalid));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+
+                var sut = new ParcelService(assertContext);
+                var parcelCount = assertContext.Parcels.Count();
+                Guid categoryId = new Guid("1db0c76c-ab76-4105-be89-3af983f6f137");
+                Guid customerId = new Guid("5adb06fe-fca4-4347-b1ea-118c55e17331");
+                Guid shipmentId = new Guid("ce465c59-4866-4905-bdbd-943a26f59fdd");
+                Guid parcelId = new Guid("195457ae-236c-4592-90af-3ca2302a8737");
+                var parcelToUpdate = new UpdateParcelDTO
+                {
+                    Weight = 2,
+                    CategoryId = categoryId,
+                    CustomerId = customerId,
+                    ShipmentId = shipmentId
+                };
+
+                //Act & Assert
+                Assert.ThrowsException<ArgumentNullException>(() => sut.Update(parcelId, parcelToUpdate));
             }
         }
     }
 }
+
