@@ -1,4 +1,5 @@
 ﻿using Deliverit.Services;
+using Deliverit.Services.Models;
 using DeliverIT.Database;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -60,10 +61,7 @@ namespace Deliverit.Tests
             var options = Utils.GetOptions(nameof(Get_Should_Return_All_Parcels));
 
             using (var arrangeContext = new DeliveritDbContext(options))
-            {
-                arrangeContext.Parcels.AddRange(Utils.GetParcels());
-                arrangeContext.Categories.AddRange(Utils.GetCategories());
-                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+            {        
                 arrangeContext.SaveChanges();
             }
 
@@ -76,10 +74,91 @@ namespace Deliverit.Tests
                 int actualParcelCount = actualResult.Count();
 
                 //Assert
-                var expectedResult = assertContext.Countries;
-                int expectedParcelCount = expectedResult.Count();
+                var expectedResult = assertContext.Parcels.Count();
 
-                Assert.AreEqual(expectedParcelCount, actualParcelCount);
+                Assert.AreEqual(expectedResult, actualParcelCount);
+            }
+        }
+
+        [TestMethod]
+        public void Create_Should_Add_Parcel()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Get_Should_Return_All_Parcels));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Shipments.AddRange(Utils.GetShipments());
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+                var parcelCount = assertContext.Parcels.Count();
+                Guid employeeId = new Guid("d2c26c93-d589-4b05-850b-fbf21c59c84d");
+                Guid customerId = new Guid("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1");
+                Guid shipmentId = new Guid("ce465c59-4866-4905-bdbd-943a26f59fdd");
+                var parcelToCreate = new CreateParcelDTO
+                {
+                    Weight = 2,
+                    CategoryName = "Electronics",
+                    EmployeeId = employeeId,
+                    CustomerId = customerId,
+                    ShipmentId = shipmentId
+                };
+
+                //Act
+                var assertResult = sut.Create(parcelToCreate);
+                var expectedResult = parcelCount + 1;
+
+                //Assert
+                var actualParcelCount = assertContext.Parcels.Count();
+                Assert.AreEqual(expectedResult, actualParcelCount);
+            }
+        }
+
+        [TestMethod]
+        public void Update_Should_Parcel()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Get_Should_Return_All_Parcels));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Shipments.AddRange(Utils.GetShipments());
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+                var parcelCount = assertContext.Parcels.Count();
+                Guid employeeId = new Guid("d2c26c93-d589-4b05-850b-fbf21c59c84d");
+                Guid customerId = new Guid("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1");
+                Guid shipmentId = new Guid("ce465c59-4866-4905-bdbd-943a26f59fdd");
+                var parcelToCreate = new CreateParcelDTO
+                {
+                    Weight = 2,
+                    CategoryName = "Electronics",
+                    EmployeeId = employeeId,
+                    CustomerId = customerId,
+                    ShipmentId = shipmentId
+                };
+
+                //Act
+                var assertResult = sut.Create(parcelToCreate);
+                var expectedResult = parcelCount + 1;
+
+                //Assert
+                var actualParcelCount = assertContext.Parcels.Count();
+                Assert.AreEqual(expectedResult, actualParcelCount);
             }
         }
     }

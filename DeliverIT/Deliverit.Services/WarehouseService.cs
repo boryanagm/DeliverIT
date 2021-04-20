@@ -72,8 +72,7 @@ namespace Deliverit.Services
 
             var dto = this.context.Warehouses
                  .Select(WarehouseMapper.DTOSelector)
-                 .FirstOrDefault(w => w.Id == warehouse.Id)
-                 ?? throw new ArgumentNullException();
+                 .FirstOrDefault(w => w.Id == warehouse.Id);
 
             return dto;
         }
