@@ -3,6 +3,7 @@ using DeliverIT.Database;
 using DeliverIT.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,10 +32,11 @@ namespace Deliverit.Tests.ServicesTests
                 var sut = new CustomerService(assertContext);
 
                 //Act
-                var actualResult = sut.GetByCustomerEmail("isabelle.huppert@gmail.com");
+                var customerEmail = "isabelle.huppert@gmail.com";
+                var actualResult = sut.GetByCustomerEmail(customerEmail);
 
                 //Assert
-                var expectedResult = assertContext.Customers.FirstOrDefault(c => c.Email == "isabelle.huppert@gmail.com");
+                var expectedResult = assertContext.Customers.FirstOrDefault(c => c.Email == customerEmail);
 
                 Assert.AreEqual(expectedResult, actualResult);
             }
@@ -171,7 +173,7 @@ namespace Deliverit.Tests.ServicesTests
 
                 //Assert
                 var expectedResult = assertContext.Customers.Count();
-                
+
                 Assert.AreEqual(expectedResult, actualResult);
             }
         }
@@ -274,6 +276,164 @@ namespace Deliverit.Tests.ServicesTests
 
                 //Assert
                 Assert.AreEqual(expectedResult, actualResult);
+            }
+        }
+
+        [TestMethod]
+        public void Should_Return_Customer_When_MultipleCriteria_SearchByFirstName_IsApplied()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Should_Return_Customer_When_MultipleCriteria_SearchByFirstName_IsApplied));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.Addresses.AddRange(Utils.GetAddresses());
+                arrangeContext.Cities.AddRange(Utils.GetCities());
+                arrangeContext.Countries.AddRange(Utils.GetCountries());
+
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new CustomerService(assertContext);
+                var firstNameSearch = "Isabelle";
+                var customerFilter = new CustomerFilter
+                {
+                    FirstName = firstNameSearch,
+                    LastName = "",
+                    Email = ""
+                };
+                //Act
+                var actualResult = sut.GetByMultipleCriteria(customerFilter);             //.FirstOrDefault();
+
+                //Assert
+                var expectedResult = assertContext.Customers.Where(c => c.FirstName == firstNameSearch).ToList(); //.FirstOrDefault(c => c.FirstName == firstNameSearch);
+
+                Assert.AreEqual(expectedResult.Count(), actualResult.Count());
+            }
+        }
+
+        [TestMethod]
+        public void Should_Return_Incoming_Parcels()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Should_Return_Incoming_Parcels));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Shipments.AddRange(Utils.GetShipments());
+                arrangeContext.Statuses.AddRange(Utils.GetStatuses());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new CustomerService(assertContext);
+
+                //Act
+                var customerId = Guid.Parse("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1");
+                var actualResult = sut.GetIncomingParcels(customerId);
+                int actualParcelsCount = actualResult.Count();
+                var firstParcelInActualList = actualResult.FirstOrDefault();
+                var lastParcelInActualList = actualResult.Last();
+
+                //Assert
+                var expectedResult = assertContext.Customers
+                   .FirstOrDefault(c => c.Id == customerId).Parcels
+                   .Where(p => p.Shipment.Status.Name == "on the way" || p.Shipment.Status.Name == "preparing")
+                   .ToList();
+
+                int expectedParcelsCount = expectedResult.Count();
+                var firstParcelInExpectedList = expectedResult.FirstOrDefault();
+                var lastParcelInExpectedList = expectedResult.Last();
+
+                Assert.AreEqual(expectedParcelsCount, actualParcelsCount);
+                Assert.AreEqual(firstParcelInExpectedList.Id, firstParcelInActualList.Id);
+                Assert.AreEqual(lastParcelInExpectedList.Id, lastParcelInActualList.Id);
+            }
+        }
+
+        [TestMethod]
+        public void Should_Return_Past_Parcels()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Should_Return_Past_Parcels));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Shipments.AddRange(Utils.GetShipments());
+                arrangeContext.Statuses.AddRange(Utils.GetStatuses());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new CustomerService(assertContext);
+
+                //Act
+                var customerId = Guid.Parse("5adb06fe-fca4-4347-b1ea-118c55e17331");
+                var actualResult = sut.GetPastParcels(customerId);
+                int actualParcelsCount = actualResult.Count();
+                var firstParcelInActualList = actualResult.FirstOrDefault();
+                var lastParcelInActualList = actualResult.Last();
+
+                //Assert
+                var expectedResult = assertContext.Customers
+                   .FirstOrDefault(c => c.Id == customerId).Parcels
+                   .Where(p => p.Shipment.Status.Name == "completed" || p.Shipment.Status.Name == "canceled")
+                   .ToList();
+
+                int expectedParcelsCount = expectedResult.Count();
+                var firstParcelInExpectedList = expectedResult.FirstOrDefault();
+                var lastParcelInExpectedList = expectedResult.Last();
+
+                Assert.AreEqual(expectedParcelsCount, actualParcelsCount);
+                Assert.AreEqual(firstParcelInExpectedList.Id, firstParcelInActualList.Id);
+                Assert.AreEqual(lastParcelInExpectedList.Id, lastParcelInActualList.Id);
+            }
+        }
+
+        [TestMethod]
+        public void Should_Return_Customer_When_SearchByKeyWord_IsApplied()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Should_Return_Customer_When_SearchByKeyWord_IsApplied));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.Addresses.AddRange(Utils.GetAddresses());
+                arrangeContext.Cities.AddRange(Utils.GetCities());
+                arrangeContext.Countries.AddRange(Utils.GetCountries());
+
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new CustomerService(assertContext);
+
+                //Act
+                var keyWord = "Petrauskas";
+                var actualResult = sut.GetByKeyWord(keyWord);
+
+                //Assert
+                var expectedResult = assertContext.Customers
+                    .FirstOrDefault(c => c.FirstName == keyWord
+                    || c.LastName == keyWord
+                    || c.Email == keyWord);
+
+                Assert.AreEqual(expectedResult.Email, actualResult.Email);
             }
         }
     }
