@@ -142,10 +142,10 @@ namespace Deliverit.Tests.ServicesTests
         }
 
         [TestMethod]
-        public void Should_Update_AddressId_OfTheWarehouse()
+        public void Should_Update_AddressId_OfSelectedWarehouse()
         {
             //Arrange
-            var options = Utils.GetOptions(nameof(Should_Update_AddressId_OfTheWarehouse));
+            var options = Utils.GetOptions(nameof(Should_Update_AddressId_OfSelectedWarehouse));
 
             using (var arrangeContext = new DeliveritDbContext(options))
             {
@@ -176,6 +176,39 @@ namespace Deliverit.Tests.ServicesTests
                 Assert.AreEqual(expectedResult.Address.StreetName, actualResult.StreetName);
                 Assert.AreEqual(expectedResult.Address.City.Name, actualResult.City);
                 Assert.AreEqual(expectedResult.Address.City.Country.Name, actualResult.Country);
+            }
+        }
+
+        [TestMethod]
+        public void Should_Mark_True_IsDeleted_OfSelectedWarehouse()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Should_Mark_True_IsDeleted_OfSelectedWarehouse));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Warehouses.AddRange(Utils.GetWarehouses());
+                arrangeContext.Addresses.AddRange(Utils.GetAddresses());
+                arrangeContext.Cities.AddRange(Utils.GetCities());
+                arrangeContext.Countries.AddRange(Utils.GetCountries());
+
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new WarehouseService(assertContext);
+
+                //Act
+                var warehouseToDeleteId = Guid.Parse("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba");
+                var warehouseToDelete = assertContext.Warehouses
+                    .FirstOrDefault(w => w.Id == warehouseToDeleteId);
+
+                var actualResult = sut.Delete(warehouseToDeleteId);
+                var expectedResult = warehouseToDelete.IsDeleted;
+
+                //Assert
+                Assert.AreEqual(expectedResult, actualResult);
             }
         }
     }
