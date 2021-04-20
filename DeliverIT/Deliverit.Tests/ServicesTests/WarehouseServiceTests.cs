@@ -129,22 +129,15 @@ namespace Deliverit.Tests.ServicesTests
                     Id = Guid.Parse("519f6bc2-5a4c-4ad1-9f79-6b4ad0a65288"),
                     AddressId = Guid.Parse("36049406-10ba-499d-916b-063422046239")
                 };
-                int warehouseCount = assertContext.Warehouses.Count();
 
-                var actualResult = sut.Create(warehouseToCreate);
+                int warehousesCount = assertContext.Warehouses.Count();
+                var createdWarehouse = sut.Create(warehouseToCreate);
+
                 //Assert
-              //  assertContext.Warehouses.Add(warehouseToCreate);
-                assertContext.SaveChanges();
+                int expectedWarehousesCount = warehousesCount + 1;
+                int actualWarehousesCount = assertContext.Warehouses.Count();
 
-                //var expectedResult = assertContext.Warehouses
-                //    .FirstOrDefault(w => w.Id == Guid.Parse("519f6bc2-5a4c-4ad1-9f79-6b4ad0a65288"));
-                var expectedResult = warehouseCount + 1;
-
-                Assert.AreEqual(expectedResult, assertContext.Warehouses.Count());
-                //Assert.AreEqual(expectedResult.Id, actualResult.Id);
-                //Assert.AreEqual(expectedResult.Address.StreetName, actualResult.StreetName);
-                //Assert.AreEqual(expectedResult.Address.City.Name, actualResult.City);
-                //Assert.AreEqual(expectedResult.Address.City.Country.Name, actualResult.Country);
+                Assert.AreEqual(expectedWarehousesCount, actualWarehousesCount);
             }
         }
     }
