@@ -104,10 +104,10 @@ namespace Deliverit.Tests.ServicesTests
         }
 
         [TestMethod]
-        public void Create_Should_Return_CreatedWarehouse()
+        public void Should_Create_New_Warehouse()
         {
             //Arrange
-            var options = Utils.GetOptions(nameof(Create_Should_Return_CreatedWarehouse));
+            var options = Utils.GetOptions(nameof(Should_Create_New_Warehouse));
 
             using (var arrangeContext = new DeliveritDbContext(options))
             {
@@ -138,6 +138,44 @@ namespace Deliverit.Tests.ServicesTests
                 int actualWarehousesCount = assertContext.Warehouses.Count();
 
                 Assert.AreEqual(expectedWarehousesCount, actualWarehousesCount);
+            }
+        }
+
+        [TestMethod]
+        public void Should_Update_AddressId_OfTheWarehouse()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Should_Update_AddressId_OfTheWarehouse));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Warehouses.AddRange(Utils.GetWarehouses());
+                arrangeContext.Addresses.AddRange(Utils.GetAddresses());
+                arrangeContext.Cities.AddRange(Utils.GetCities());
+                arrangeContext.Countries.AddRange(Utils.GetCountries());
+
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new WarehouseService(assertContext);
+
+                //Act
+                var warehouseToUptadeId = Guid.Parse("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba");
+                var newAddressId = Guid.Parse("ac2fee3a-f76e-4d94-aa42-d85b4bb45299");
+                var actualResult = sut.Update(warehouseToUptadeId, newAddressId);
+
+                //Assert
+                var expectedResult = assertContext.Warehouses
+                    .Include(w => w.Address)
+                       .ThenInclude(a => a.City)
+                          .ThenInclude(c => c.Country)
+                    .FirstOrDefault(w => w.Id == Guid.Parse("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba"));
+
+                Assert.AreEqual(expectedResult.Address.StreetName, actualResult.StreetName);
+                Assert.AreEqual(expectedResult.Address.City.Name, actualResult.City);
+                Assert.AreEqual(expectedResult.Address.City.Country.Name, actualResult.Country);
             }
         }
     }
