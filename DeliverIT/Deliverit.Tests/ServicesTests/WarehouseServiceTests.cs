@@ -1,5 +1,6 @@
 ﻿using Deliverit.Services;
 using DeliverIT.Database;
+using DeliverIT.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -99,6 +100,51 @@ namespace Deliverit.Tests.ServicesTests
                 Assert.AreEqual(firstWarehouseInExpectedList.Address.StreetName, firstWarehouseInActualList.StreetName);
                 Assert.AreEqual(lastWarehouseInExpectedList.Address.City.Name, lastWarehouseInActualList.City);
                 Assert.AreEqual(lastWarehouseInExpectedList.Address.City.Country.Name, lastWarehouseInActualList.Country);
+            }
+        }
+
+        [TestMethod]
+        public void Create_Should_Return_CreatedWarehouse()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Create_Should_Return_CreatedWarehouse));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Warehouses.AddRange(Utils.GetWarehouses());
+                arrangeContext.Addresses.AddRange(Utils.GetAddresses());
+                arrangeContext.Cities.AddRange(Utils.GetCities());
+                arrangeContext.Countries.AddRange(Utils.GetCountries());
+
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new WarehouseService(assertContext);
+
+                //Act
+                var warehouseToCreate = new Warehouse()
+                {
+                    Id = Guid.Parse("519f6bc2-5a4c-4ad1-9f79-6b4ad0a65288"),
+                    AddressId = Guid.Parse("36049406-10ba-499d-916b-063422046239")
+                };
+                int warehouseCount = assertContext.Warehouses.Count();
+
+                var actualResult = sut.Create(warehouseToCreate);
+                //Assert
+              //  assertContext.Warehouses.Add(warehouseToCreate);
+                assertContext.SaveChanges();
+
+                //var expectedResult = assertContext.Warehouses
+                //    .FirstOrDefault(w => w.Id == Guid.Parse("519f6bc2-5a4c-4ad1-9f79-6b4ad0a65288"));
+                var expectedResult = warehouseCount + 1;
+
+                Assert.AreEqual(expectedResult, assertContext.Warehouses.Count());
+                //Assert.AreEqual(expectedResult.Id, actualResult.Id);
+                //Assert.AreEqual(expectedResult.Address.StreetName, actualResult.StreetName);
+                //Assert.AreEqual(expectedResult.Address.City.Name, actualResult.City);
+                //Assert.AreEqual(expectedResult.Address.City.Country.Name, actualResult.Country);
             }
         }
     }
