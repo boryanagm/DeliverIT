@@ -37,5 +37,20 @@ namespace Deliverit.Tests.ServicesTests
                 Assert.AreEqual(expectedResult, actualResult);
             }
         }
+
+        [TestMethod]
+        public void Should_Throw_Expception_When_Customer_NotFound()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Should_Throw_Expception_When_Customer_NotFound));
+
+            //Act & Assert
+            using (var context = new DeliveritDbContext(options))
+            {
+                var sut = new CustomerService(context);
+
+                Assert.ThrowsException<ArgumentNullException>(() => sut.GetByCustomerEmail("notfound@abv.bg"));
+            }
+        }
     }
 }
