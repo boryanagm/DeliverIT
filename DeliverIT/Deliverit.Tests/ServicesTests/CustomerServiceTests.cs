@@ -212,5 +212,40 @@ namespace Deliverit.Tests.ServicesTests
                 Assert.AreEqual(expectedCustomersCount, actualCustomersCount);
             }
         }
+
+        [TestMethod]
+        public void Should_Update_AddressId_OfSelectedCustomer()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Should_Update_AddressId_OfSelectedCustomer));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.Addresses.AddRange(Utils.GetAddresses());
+                arrangeContext.Cities.AddRange(Utils.GetCities());
+                arrangeContext.Countries.AddRange(Utils.GetCountries());
+
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new CustomerService(assertContext);
+
+                //Act
+                var customerToUptadeId = Guid.Parse("5adb06fe-fca4-4347-b1ea-118c55e17331");
+                var newAddressId = Guid.Parse("b1347388-583d-4324-870a-e487e61ef483");
+                var actualResult = sut.Update(customerToUptadeId, newAddressId);
+
+                //Assert
+                var expectedResult = assertContext.Customers
+                    .FirstOrDefault(c => c.Id == customerToUptadeId);
+
+                Assert.AreEqual(expectedResult.Address.StreetName, actualResult.StreetName);
+                Assert.AreEqual(expectedResult.Address.City.Name, actualResult.City);
+                Assert.AreEqual(expectedResult.Address.City.Country.Name, actualResult.Country);
+            }
+        }
     }
 }

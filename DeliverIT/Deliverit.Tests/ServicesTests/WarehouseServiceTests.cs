@@ -164,9 +164,6 @@ namespace Deliverit.Tests.ServicesTests
 
                 //Assert
                 var expectedResult = assertContext.Warehouses
-                    .Include(w => w.Address)
-                       .ThenInclude(a => a.City)
-                          .ThenInclude(c => c.Country)
                     .FirstOrDefault(w => w.Id == Guid.Parse("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba"));
 
                 Assert.AreEqual(expectedResult.Address.StreetName, actualResult.StreetName);
