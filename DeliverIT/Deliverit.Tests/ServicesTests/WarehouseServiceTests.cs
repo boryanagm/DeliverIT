@@ -98,8 +98,8 @@ namespace Deliverit.Tests.ServicesTests
                 Assert.AreEqual(expectedWarehousesCount, actualWarehousesCount);
                 Assert.AreEqual(firstWarehouseInExpectedList.Id, firstWarehouseInActualList.Id);
                 Assert.AreEqual(firstWarehouseInExpectedList.Address.StreetName, firstWarehouseInActualList.StreetName);
-                Assert.AreEqual(lastWarehouseInExpectedList.Address.City.Name, lastWarehouseInActualList.City);
-                Assert.AreEqual(lastWarehouseInExpectedList.Address.City.Country.Name, lastWarehouseInActualList.Country);
+                Assert.AreEqual(lastWarehouseInExpectedList.Id, lastWarehouseInActualList.Id);
+                Assert.AreEqual(lastWarehouseInExpectedList.Address.StreetName, lastWarehouseInActualList.StreetName);
             }
         }
 

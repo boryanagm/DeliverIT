@@ -108,5 +108,45 @@ namespace Deliverit.Tests.ServicesTests
                 Assert.ThrowsException<ArgumentNullException>(() => sut.Get(Guid.Parse("e6d2c0f7-cffb-4155-8a13-5976136cd4db")));
             }
         }
+
+        [TestMethod]
+        public void Get_Should_Return_All_Customers()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Get_Should_Return_All_Customers));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.Addresses.AddRange(Utils.GetAddresses());
+                arrangeContext.Cities.AddRange(Utils.GetCities());
+                arrangeContext.Countries.AddRange(Utils.GetCountries());
+
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new CustomerService(assertContext);
+
+                //Act
+                var actualResult = sut.GetAll().ToList();
+                int actualCustomersCount = actualResult.Count();
+                var firstCustomerInActualList = actualResult.FirstOrDefault();
+                var lastCustomerInActualList = actualResult.Last();
+
+                //Assert
+                var expectedResult = assertContext.Customers.ToList();
+                int expectedCustomersCount = expectedResult.Count();
+                var firstCustomerInExpectedList = expectedResult.FirstOrDefault();
+                var lastCustomerInExpectedList = expectedResult.Last();
+
+                Assert.AreEqual(expectedCustomersCount, actualCustomersCount);
+                Assert.AreEqual(firstCustomerInExpectedList.Id, firstCustomerInActualList.Id);
+                Assert.AreEqual(firstCustomerInExpectedList.FirstName, firstCustomerInActualList.FirstName);
+                Assert.AreEqual(lastCustomerInExpectedList.Id, lastCustomerInActualList.Id);
+                Assert.AreEqual(lastCustomerInExpectedList.FirstName, lastCustomerInActualList.FirstName);
+            }
+        }
     }
 }
