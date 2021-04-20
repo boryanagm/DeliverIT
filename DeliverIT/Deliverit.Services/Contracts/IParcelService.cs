@@ -20,6 +20,6 @@ namespace Deliverit.Services.Contracts
         List<ParcelDTO> GetByWeight(int weight);
         List<ParcelDTO> GetByCategory(string category);
         List<ParcelDTO> GetByMultipleCriteria(string category, Guid Id);
-        List<ParcelDTO> SortByWeightOrArrivalDate(string sortcriteria)
+        List<ParcelDTO> SortByWeightOrArrivalDate(string sortcriteria);
     }
 }

@@ -19,6 +19,8 @@ namespace Deliverit.Tests
             using (var arrangeContext = new DeliveritDbContext(options))
             {
                 arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
                 arrangeContext.SaveChanges();
             }
 
@@ -27,10 +29,10 @@ namespace Deliverit.Tests
                 var sut = new ParcelService(assertContext);
 
                 //Act
-                var actualResult = sut.Get(Guid.Parse("28ae32a1-10a4-4aef-b262-3baaa1102753"));
+                var actualResult = sut.Get(Guid.Parse("198457ae-236c-4592-90af-3ca2302a8737"));
 
                 //Assert
-                var expectedResult = assertContext.Parcels.FirstOrDefault(c => c.Id == Guid.Parse("28ae32a1-10a4-4aef-b262-3baaa1102753"));
+                var expectedResult = assertContext.Parcels.FirstOrDefault(c => c.Id == Guid.Parse("198457ae-236c-4592-90af-3ca2302a8737"));
                 Assert.AreEqual(expectedResult.Id, actualResult.Id);
                 Assert.AreEqual(expectedResult.Weight, actualResult.Weight);
             }
@@ -60,6 +62,8 @@ namespace Deliverit.Tests
             using (var arrangeContext = new DeliveritDbContext(options))
             {
                 arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
                 arrangeContext.SaveChanges();
             }
 
@@ -68,11 +72,11 @@ namespace Deliverit.Tests
                 var sut = new ParcelService(assertContext);
 
                 //Act
-                var actualResult = sut.GetAll().ToList();
+                var actualResult = sut.GetAll();
                 int actualParcelCount = actualResult.Count();
 
                 //Assert
-                var expectedResult = assertContext.Countries.ToList();
+                var expectedResult = assertContext.Countries;
                 int expectedParcelCount = expectedResult.Count();
 
                 Assert.AreEqual(expectedParcelCount, actualParcelCount);
