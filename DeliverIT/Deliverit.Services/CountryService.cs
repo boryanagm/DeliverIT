@@ -32,10 +32,6 @@ namespace Deliverit.Services
                 .Include(c=> c.Cities)
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
-            if(country.IsDeleted == true)
-            {
-                throw new ArgumentException("Country is already deleted");
-            }
             var dto = new CountryDTO
             {
                 Id = country.Id,
