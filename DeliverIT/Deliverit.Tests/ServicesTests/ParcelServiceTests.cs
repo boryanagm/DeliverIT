@@ -337,6 +337,130 @@ namespace Deliverit.Tests
                 Assert.ThrowsException<ArgumentNullException>(() => sut.Delete(parcelId));
             }
         }
+        [TestMethod]
+        public void Search_By_Email_Should()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Search_By_Email_Should));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+
+                //Act
+                string email = "lukas.petr@gmail.com";
+                var assertResult = sut.SearchByEmail(email);
+
+                //Assert
+                var actualResult = assertContext.Customers.Include(c => c.Parcels)
+                .ThenInclude(c => c.Category)
+                .Where(s => s.Email.Contains(email))
+                .ToList();
+                Assert.AreEqual(actualResult.Count, assertResult.Count);
+            }
+        }
+
+        [TestMethod]
+        public void Search_By_Name_Should()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Search_By_Name_Should));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+
+                //Act
+                string firstName = "Lukas";
+                string lastName = "Petrauskas";
+                var assertResult = sut.SearchByName(firstName, lastName);
+
+                //Assert
+                var actualResult = assertContext.Customers.Include(c => c.Parcels)
+                .ThenInclude(c => c.Category)
+                .Where(s => s.LastName == lastName && s.FirstName == firstName)
+                .ToList();
+                Assert.AreEqual(actualResult.Count, assertResult.Count);
+            }
+        }
+        [TestMethod]
+        public void Search_By_Name_Should_When_Only_FirstName()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Search_By_Name_Should_When_Only_FirstName));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+
+                //Act
+                string firstName = "Lukas";
+                string lastName = null;
+                var assertResult = sut.SearchByName(firstName, lastName);
+
+                //Assert
+                var actualResult = assertContext.Customers.Include(c => c.Parcels)
+                .ThenInclude(c => c.Category)
+                .Where(s => s.FirstName == firstName)
+                .ToList();
+                Assert.AreEqual(actualResult.Count, assertResult.Count);
+            }
+        }
+        [TestMethod]
+        public void Search_By_Name_Should_When_Only_LastName()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Search_By_Name_Should_When_Only_LastName));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+
+                //Act
+                string firstName = null;
+                string lastName = "Petrauskas";
+                var assertResult = sut.SearchByName(firstName, lastName);
+
+                //Assert
+                var actualResult = assertContext.Customers.Include(c => c.Parcels)
+                .ThenInclude(c => c.Category)
+                .Where(s => s.LastName == lastName)
+                .ToList();
+                Assert.AreEqual(actualResult.Count, assertResult.Count);
+            }
+        }
     }
 }
 
