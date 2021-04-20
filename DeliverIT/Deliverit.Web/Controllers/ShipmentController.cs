@@ -1,5 +1,6 @@
 ﻿using Deliverit.Services.Contracts;
 using Deliverit.Services.Models;
+using Deliverit.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -16,10 +17,13 @@ namespace Deliverit.Web.Controllers
     public class ShipmentController : Controller
     {
         private readonly IShipmentService shipmentService;
-
-        public ShipmentController(IShipmentService shipmentService)
+        private readonly IAuthEmployeeHelper authEmployeeHelper;
+        private readonly IAuthCustomerHelper authCustomerHelper;
+        public ShipmentController(IShipmentService shipmentService, IAuthEmployeeHelper authEmployeeHelper, IAuthCustomerHelper authCustomerHelper)
         {
             this.shipmentService = shipmentService;
+            this.authEmployeeHelper = authEmployeeHelper;
+            this.authCustomerHelper = authCustomerHelper;
         }
 
         /// <summary>
@@ -27,10 +31,11 @@ namespace Deliverit.Web.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
+        public IActionResult Get([FromHeader] string authorizationEmail, Guid id)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.shipmentService.Get(id));
             }
             catch(Exception)
@@ -44,8 +49,9 @@ namespace Deliverit.Web.Controllers
         /// </summary>
         /// <returns>IActionResult.</returns>
         [HttpGet("")]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromHeader] string authorizationEmail)
         {
+            var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
             return this.Ok(this.shipmentService.GetAll());
         }
 
@@ -55,10 +61,11 @@ namespace Deliverit.Web.Controllers
         /// <param name="shipment">The shipment.</param>
         /// <returns>IActionResult.</returns>
         [HttpPost("create/")]
-        public IActionResult Post([FromQuery] CreateShipmentDTO shipment)
+        public IActionResult Post([FromHeader] string authorizationEmail, [FromQuery] CreateShipmentDTO shipment)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 var shipmentToCreate = this.shipmentService.Create(shipment);
                 return this.Created("post", shipmentToCreate);
             }
@@ -68,16 +75,16 @@ namespace Deliverit.Web.Controllers
             }     
         }
 
-
         /// <summary>
         /// Deletes a shipment.
         /// </summary>
         /// <param name="id">The identifier.</param>
         [HttpDelete("delete/{id}")]
-        public IActionResult Delete(Guid id)
+        public IActionResult Delete([FromHeader] string authorizationEmail, Guid id)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 var success = this.shipmentService.Delete(id);
 
                 if (success)
@@ -98,10 +105,11 @@ namespace Deliverit.Web.Controllers
         /// <param name="id">The identifier.</param>
         /// <param name="shipment">The shipment update data.</param>
         [HttpPut("update/{id}")]
-        public IActionResult Put(Guid id, [FromQuery] ShipmentDTO shipment)
+        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, [FromQuery] ShipmentDTO shipment)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 var shipmentToUpdate = this.shipmentService.Update(id, shipment);
                 return this.Ok(shipmentToUpdate);
             }
@@ -117,10 +125,11 @@ namespace Deliverit.Web.Controllers
         /// </summary>
         /// <param name="Id">The identifier of the warehouse.</param>
         [HttpGet("filter/warehouse")]
-        public IActionResult FilterShipments([FromQuery] Guid Id)
+        public IActionResult FilterShipments([FromHeader] string authorizationEmail, [FromQuery] Guid Id)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.shipmentService.SearchByWarehouse(Id));
             }
             catch(Exception)
@@ -135,10 +144,11 @@ namespace Deliverit.Web.Controllers
         /// </summary>
         /// <param name="Id">The identifier of the customer.</param>
         [HttpGet("filter/customer")]
-        public IActionResult FilterCustomers([FromQuery] Guid Id)
+        public IActionResult FilterCustomers([FromHeader] string authorizationEmail, [FromQuery] Guid Id)
         {
             try
             {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.shipmentService.SearchByCustomer(Id));
             }
             catch(Exception)

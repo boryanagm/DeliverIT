@@ -4,14 +4,16 @@ using DeliverIT.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Deliverit.Database.Migrations
 {
     [DbContext(typeof(DeliveritDbContext))]
-    partial class DeliveritDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210420003003_NewMig")]
+    partial class NewMig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,8 +44,7 @@ namespace Deliverit.Database.Migrations
 
                     b.Property<string>("StreetName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -56,7 +57,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("36049406-10ba-499d-916b-063422046239"),
                             CityId = new Guid("e99abf10-63e9-4212-9053-87cb1d80763e"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(7300),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(5241),
                             IsDeleted = false,
                             StreetName = "Ramon Berenguer El Vell 1"
                         },
@@ -64,7 +65,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("ac2fee3a-f76e-4d94-aa42-d85b4bb45299"),
                             CityId = new Guid("e422b2de-f54d-4a4e-9259-0f3f4033f93d"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(8489),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(7032),
                             IsDeleted = false,
                             StreetName = "Zeughofstraße 20"
                         },
@@ -72,7 +73,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("b1347388-583d-4324-870a-e487e61ef483"),
                             CityId = new Guid("7fdbb1a0-9f76-4b63-aab4-901c61591336"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(8507),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(7050),
                             IsDeleted = false,
                             StreetName = "Rue La Boetie 7"
                         },
@@ -80,7 +81,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("97fa423a-a144-4d67-97f5-4211c2758dc5"),
                             CityId = new Guid("8bf95d78-e5ac-495d-ab67-14b60f644b70"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(8511),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(7054),
                             IsDeleted = false,
                             StreetName = "Liepkalnio 117"
                         },
@@ -88,7 +89,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("5fd8c18f-6885-488e-af8c-ff06901a7d37"),
                             CityId = new Guid("e99abf10-63e9-4212-9053-87cb1d80763e"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(8515),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(7057),
                             IsDeleted = false,
                             StreetName = "Gran Via De Les Corts Catalanes 105"
                         },
@@ -96,7 +97,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("da703902-00bc-47da-b950-4fa730494d4e"),
                             CityId = new Guid("e99abf10-63e9-4212-9053-87cb1d80763e"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(8522),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(7065),
                             IsDeleted = false,
                             StreetName = "Passatge De Bocabella 11"
                         });
@@ -151,7 +152,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1"),
                             AddressId = new Guid("b1347388-583d-4324-870a-e487e61ef483"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 926, DateTimeKind.Utc).AddTicks(1250),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 91, DateTimeKind.Utc).AddTicks(91),
                             Email = "isabelle.huppert@gmail.com",
                             FirstName = "Isabelle",
                             IsDeleted = false,
@@ -161,7 +162,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("5adb06fe-fca4-4347-b1ea-118c55e17331"),
                             AddressId = new Guid("97fa423a-a144-4d67-97f5-4211c2758dc5"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 926, DateTimeKind.Utc).AddTicks(4076),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 91, DateTimeKind.Utc).AddTicks(2207),
                             Email = "lukas.petr@gmail.com",
                             FirstName = "Lukas",
                             IsDeleted = false,
@@ -218,7 +219,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("e9a6b4e2-073b-4ebc-a248-a8d71d426174"),
                             AddressId = new Guid("da703902-00bc-47da-b950-4fa730494d4e"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 926, DateTimeKind.Utc).AddTicks(5195),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 91, DateTimeKind.Utc).AddTicks(3242),
                             Email = "admin@deliverit.com",
                             FirstName = "Antonio",
                             IsDeleted = false,
@@ -228,7 +229,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("d2c26c93-d589-4b05-850b-fbf21c59c84d"),
                             AddressId = new Guid("5fd8c18f-6885-488e-af8c-ff06901a7d37"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 926, DateTimeKind.Utc).AddTicks(7369),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 91, DateTimeKind.Utc).AddTicks(5310),
                             Email = "fer.trujillo@deliverit.com",
                             FirstName = "Fermin",
                             IsDeleted = false,
@@ -238,7 +239,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("facdefb9-19df-42b3-9d3d-6524076e152f"),
                             AddressId = new Guid("da703902-00bc-47da-b950-4fa730494d4e"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 926, DateTimeKind.Utc).AddTicks(7402),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 91, DateTimeKind.Utc).AddTicks(5343),
                             Email = "a.rivas@deliverit.com",
                             FirstName = "Amador",
                             IsDeleted = false,
@@ -296,7 +297,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("198457ae-236c-4592-90af-3ca2302a8737"),
                             CategoryId = new Guid("1db0c76c-ab76-4105-be89-3af983f6f137"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 927, DateTimeKind.Utc).AddTicks(5925),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 92, DateTimeKind.Utc).AddTicks(5510),
                             CustomerId = new Guid("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1"),
                             EmployeeId = new Guid("d2c26c93-d589-4b05-850b-fbf21c59c84d"),
                             IsDeleted = false,
@@ -307,7 +308,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("28ae32a1-10a4-4aef-b262-3baaa1102753"),
                             CategoryId = new Guid("72280df2-7d81-4ec6-936a-51e19aabf7ff"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 927, DateTimeKind.Utc).AddTicks(8594),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 92, DateTimeKind.Utc).AddTicks(9280),
                             CustomerId = new Guid("5adb06fe-fca4-4347-b1ea-118c55e17331"),
                             EmployeeId = new Guid("facdefb9-19df-42b3-9d3d-6524076e152f"),
                             IsDeleted = false,
@@ -358,9 +359,9 @@ namespace Deliverit.Database.Migrations
                         new
                         {
                             Id = new Guid("ce465c59-4866-4905-bdbd-943a26f59fdd"),
-                            ArrivalDate = new DateTime(2021, 4, 27, 0, 38, 29, 928, DateTimeKind.Utc).AddTicks(191),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 927, DateTimeKind.Utc).AddTicks(9637),
-                            DepartureDate = new DateTime(2021, 4, 20, 0, 38, 29, 927, DateTimeKind.Utc).AddTicks(9637),
+                            ArrivalDate = new DateTime(2021, 4, 27, 0, 30, 3, 93, DateTimeKind.Utc).AddTicks(972),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 93, DateTimeKind.Utc).AddTicks(418),
+                            DepartureDate = new DateTime(2021, 4, 20, 0, 30, 3, 93, DateTimeKind.Utc).AddTicks(418),
                             IsDeleted = false,
                             StatusId = new Guid("917f8117-d392-4f64-81fb-48415f80f77e"),
                             WarehouseId = new Guid("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba")
@@ -368,9 +369,9 @@ namespace Deliverit.Database.Migrations
                         new
                         {
                             Id = new Guid("e2a2c29b-b7f4-458a-9cde-4a70717607c8"),
-                            ArrivalDate = new DateTime(2021, 4, 25, 0, 38, 29, 928, DateTimeKind.Utc).AddTicks(2551),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 928, DateTimeKind.Utc).AddTicks(2540),
-                            DepartureDate = new DateTime(2021, 4, 20, 0, 38, 29, 928, DateTimeKind.Utc).AddTicks(2544),
+                            ArrivalDate = new DateTime(2021, 4, 25, 0, 30, 3, 93, DateTimeKind.Utc).AddTicks(2865),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 93, DateTimeKind.Utc).AddTicks(2854),
+                            DepartureDate = new DateTime(2021, 4, 20, 0, 30, 3, 93, DateTimeKind.Utc).AddTicks(2858),
                             IsDeleted = false,
                             StatusId = new Guid("84568d3c-04df-47c3-9ad8-216b1d664166"),
                             WarehouseId = new Guid("988a4201-8c55-42fc-b2a6-e08d1abe6693")
@@ -409,14 +410,14 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba"),
                             AddressId = new Guid("36049406-10ba-499d-916b-063422046239"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(9609),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(8450),
                             IsDeleted = false
                         },
                         new
                         {
                             Id = new Guid("988a4201-8c55-42fc-b2a6-e08d1abe6693"),
                             AddressId = new Guid("ac2fee3a-f76e-4d94-aa42-d85b4bb45299"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 926, DateTimeKind.Utc).AddTicks(239),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(9078),
                             IsDeleted = false
                         });
                 });
@@ -559,28 +560,28 @@ namespace Deliverit.Database.Migrations
                         new
                         {
                             Id = new Guid("1db0c76c-ab76-4105-be89-3af983f6f137"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(3942),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(1788),
                             IsDeleted = false,
                             Name = "Electronics"
                         },
                         new
                         {
                             Id = new Guid("df79ccb6-1f56-41da-9f8f-df2f92a468bb"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(4561),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(2390),
                             IsDeleted = false,
                             Name = "Clothing"
                         },
                         new
                         {
                             Id = new Guid("7aeb290e-3592-4128-a77a-1a6db6fd81f5"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(4572),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(2400),
                             IsDeleted = false,
                             Name = "Medical"
                         },
                         new
                         {
                             Id = new Guid("72280df2-7d81-4ec6-936a-51e19aabf7ff"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(4576),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(2404),
                             IsDeleted = false,
                             Name = "Books"
                         });
@@ -623,7 +624,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("e99abf10-63e9-4212-9053-87cb1d80763e"),
                             CountryId = new Guid("2a84fe90-6605-4052-8a49-e7251af05754"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 922, DateTimeKind.Utc).AddTicks(7266),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 87, DateTimeKind.Utc).AddTicks(9043),
                             IsDeleted = false,
                             Name = "Barcelona"
                         },
@@ -631,7 +632,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("e422b2de-f54d-4a4e-9259-0f3f4033f93d"),
                             CountryId = new Guid("afbcad66-1a0a-49f2-9e9c-2c61ded8ae08"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 922, DateTimeKind.Utc).AddTicks(9031),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 88, DateTimeKind.Utc).AddTicks(819),
                             IsDeleted = false,
                             Name = "Berlin"
                         },
@@ -639,7 +640,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("7fdbb1a0-9f76-4b63-aab4-901c61591336"),
                             CountryId = new Guid("72ec653b-aeb1-42fc-bcd1-153f005b1cd4"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 922, DateTimeKind.Utc).AddTicks(9056),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 88, DateTimeKind.Utc).AddTicks(848),
                             IsDeleted = false,
                             Name = "Paris"
                         },
@@ -647,7 +648,7 @@ namespace Deliverit.Database.Migrations
                         {
                             Id = new Guid("8bf95d78-e5ac-495d-ab67-14b60f644b70"),
                             CountryId = new Guid("c4b3bb07-585f-412b-9f5f-f423928015d4"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 922, DateTimeKind.Utc).AddTicks(9060),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 88, DateTimeKind.Utc).AddTicks(852),
                             IsDeleted = false,
                             Name = "Vilnius"
                         });
@@ -684,28 +685,28 @@ namespace Deliverit.Database.Migrations
                         new
                         {
                             Id = new Guid("2a84fe90-6605-4052-8a49-e7251af05754"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(1888),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 89, DateTimeKind.Utc).AddTicks(9950),
                             IsDeleted = false,
                             Name = "Spain"
                         },
                         new
                         {
                             Id = new Guid("afbcad66-1a0a-49f2-9e9c-2c61ded8ae08"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(2541),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(584),
                             IsDeleted = false,
                             Name = "Germany"
                         },
                         new
                         {
                             Id = new Guid("72ec653b-aeb1-42fc-bcd1-153f005b1cd4"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(2552),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(599),
                             IsDeleted = false,
                             Name = "France"
                         },
                         new
                         {
                             Id = new Guid("c4b3bb07-585f-412b-9f5f-f423928015d4"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(2556),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(599),
                             IsDeleted = false,
                             Name = "Lithuania"
                         });
@@ -742,28 +743,28 @@ namespace Deliverit.Database.Migrations
                         new
                         {
                             Id = new Guid("917f8117-d392-4f64-81fb-48415f80f77e"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(5590),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(3407),
                             IsDeleted = false,
                             Name = "on the way"
                         },
                         new
                         {
                             Id = new Guid("858ac364-d94f-414c-bbea-a0f5b8679b3d"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(6286),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(3979),
                             IsDeleted = false,
                             Name = "on the way"
                         },
                         new
                         {
                             Id = new Guid("84568d3c-04df-47c3-9ad8-216b1d664166"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(6297),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(3990),
                             IsDeleted = false,
                             Name = "completed"
                         },
                         new
                         {
                             Id = new Guid("b31754e2-82fc-4862-ad20-9331a87537eb"),
-                            CreatedOn = new DateTime(2021, 4, 20, 0, 38, 29, 925, DateTimeKind.Utc).AddTicks(6301),
+                            CreatedOn = new DateTime(2021, 4, 20, 0, 30, 3, 90, DateTimeKind.Utc).AddTicks(3990),
                             IsDeleted = false,
                             Name = "canceled"
                         });
