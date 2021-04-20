@@ -461,6 +461,69 @@ namespace Deliverit.Tests
                 Assert.AreEqual(actualResult.Count, assertResult.Count);
             }
         }
+
+        [TestMethod]
+        public void Find_Incoming_Parcels_Should()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Find_Incoming_Parcels_Should));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Shipments.AddRange(Utils.GetShipments());
+                arrangeContext.Statuses.AddRange(Utils.GetStatuses());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+
+                //Act
+                Guid Id = new Guid("5adb06fe-fca4-4347-b1ea-118c55e17331");
+                var assertResult = sut.FindIncomingParcels(Id);
+                var customer = assertContext.Customers
+                      .Include(c => c.Parcels)
+                      .ThenInclude(c => c.Shipment)
+                      .ThenInclude(c => c.Status)
+                      .Include(c => c.Parcels)
+                      .ThenInclude(c => c.Category)
+                     .FirstOrDefault(s => s.Id == Id);
+                var actualParcels = customer.Parcels.Where(c => c.Shipment.Status.Name == "on the way").ToList();
+                //Assert
+                Assert.AreEqual(actualParcels.Count, assertResult.Count);
+            }
+        }
+
+        [TestMethod]
+        public void Find_Incoming_Parcels_Should_Throw_When_Customer_Invalid()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Find_Incoming_Parcels_Should_Throw_When_Customer_Invalid));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Shipments.AddRange(Utils.GetShipments());
+                arrangeContext.Statuses.AddRange(Utils.GetStatuses());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+
+                //Act
+                Guid Id = new Guid("3adb06fe-fca4-4347-b1ea-118c55e17331");            
+                //Assert
+                Assert.ThrowsException<ArgumentNullException>(() => sut.FindIncomingParcels(Id));
+            }
+        }
     }
 }
 
