@@ -661,6 +661,70 @@ namespace Deliverit.Tests
                 Assert.AreEqual(actualResult.Count, expectedResult.Count);
             }
         }
+        [TestMethod]
+        public void Get_By_MultipleCriteria()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Get_By_MultipleCriteria));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Shipments.AddRange(Utils.GetShipments());
+                arrangeContext.Statuses.AddRange(Utils.GetStatuses());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+
+                //Act
+                string category = "Electronics";
+                Guid customerId = new Guid("5adb06fe-fca4-4347-b1ea-118c55e17331");
+                var expectedResult = sut.GetByMultipleCriteria(category, customerId);
+                //Assert
+                var actualResult = assertContext.Parcels
+                .Include(p => p.Category)
+                .Include(p => p.Customer)
+                .Where(p => p.Category.Name == category && p.CustomerId == customerId)
+                .ToList();
+
+                Assert.AreEqual(actualResult.Count, expectedResult.Count);
+            }
+        }
+
+        [TestMethod]
+        public void Sort_By_Weight_Or_Arrival_Date()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Sort_By_Weight_Or_Arrival_Date));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Shipments.AddRange(Utils.GetShipments());
+                arrangeContext.Statuses.AddRange(Utils.GetStatuses());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+
+                //Act
+                string criteria = "weight";
+                var expectedResult = sut.SortByWeightOrArrivalDate(criteria);
+                //Assert
+                var actualResult = assertContext.Parcels.OrderBy(p => p.Weight).ToList();
+
+                Assert.AreEqual(actualResult.Count, expectedResult.Count);
+            }
+        }
 
     }
 }
