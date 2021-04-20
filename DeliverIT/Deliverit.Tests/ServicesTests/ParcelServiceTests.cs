@@ -519,11 +519,149 @@ namespace Deliverit.Tests
                 var sut = new ParcelService(assertContext);
 
                 //Act
-                Guid Id = new Guid("3adb06fe-fca4-4347-b1ea-118c55e17331");            
+                Guid Id = new Guid("3adb06fe-fca4-4347-b1ea-118c55e17331");
                 //Assert
                 Assert.ThrowsException<ArgumentNullException>(() => sut.FindIncomingParcels(Id));
             }
         }
+        [TestMethod]
+        public void Get_By_Warehouse()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Get_By_Warehouse));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Shipments.AddRange(Utils.GetShipments());
+                arrangeContext.Statuses.AddRange(Utils.GetStatuses());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+
+                //Act
+                Guid Id = new Guid("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba");
+                var expectedResult = sut.GetByWarehouse(Id);
+                //Assert
+                var actualResult = assertContext.Parcels
+                .Include(p => p.Shipment)
+                .ThenInclude(p => p.Warehouse)
+                .Include(p => p.Category)
+                .Include(p => p.Customer)
+                .Where(p => p.Shipment.Warehouse.Id == Id)
+                .ToList();
+
+                Assert.AreEqual(actualResult.Count, expectedResult.Count);
+            }
+        }
+        [TestMethod]
+        public void Get_By_Customer()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Get_By_Customer));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Shipments.AddRange(Utils.GetShipments());
+                arrangeContext.Statuses.AddRange(Utils.GetStatuses());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+
+                //Act
+                Guid Id = new Guid("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1");
+                var expectedResult = sut.GetByCustomer(Id);
+                //Assert
+                var actualResult = assertContext.Parcels
+                 .Include(p => p.Category)
+                .Include(p => p.Customer)
+                .Where(p => p.Customer.Id == Id)
+                .ToList();
+
+                Assert.AreEqual(actualResult.Count, expectedResult.Count);
+            }
+        }
+
+        [TestMethod]
+        public void Get_By_Weight()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Get_By_Weight));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Shipments.AddRange(Utils.GetShipments());
+                arrangeContext.Statuses.AddRange(Utils.GetStatuses());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+
+                //Act
+                Guid Id = new Guid("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1");
+                int weight = 5;
+                var expectedResult = sut.GetByWeight(5);
+                //Assert
+                var actualResult = assertContext.Parcels
+                .Include(p => p.Category)
+                .Include(p => p.Customer)
+                .Where(p => p.Weight == weight)
+                .ToList();
+
+                Assert.AreEqual(actualResult.Count, expectedResult.Count);
+            }
+        }
+
+        [TestMethod]
+        public void Get_By_Category()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Get_By_Category));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Parcels.AddRange(Utils.GetParcels());
+                arrangeContext.Shipments.AddRange(Utils.GetShipments());
+                arrangeContext.Statuses.AddRange(Utils.GetStatuses());
+                arrangeContext.Categories.AddRange(Utils.GetCategories());
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ParcelService(assertContext);
+
+                //Act
+                string category = "Electronics";
+                var expectedResult = sut.GetByCategory(category);
+                //Assert
+                var actualResult = assertContext.Parcels
+                .Include(p => p.Category)
+                .Include(p => p.Customer)
+                .Where(p => p.Category.Name == category)
+                .ToList();
+
+                Assert.AreEqual(actualResult.Count, expectedResult.Count);
+            }
+        }
+
     }
 }
 
