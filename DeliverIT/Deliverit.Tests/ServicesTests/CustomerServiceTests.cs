@@ -1,5 +1,6 @@
 ﻿using Deliverit.Services;
 using DeliverIT.Database;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,61 @@ namespace Deliverit.Tests.ServicesTests
                 var sut = new CustomerService(context);
 
                 Assert.ThrowsException<ArgumentNullException>(() => sut.GetByCustomerEmail("notfound@abv.bg"));
+            }
+        }
+
+        [TestMethod]
+        public void Get_By_Should_Return_Correct_Customer()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Get_By_Should_Return_Correct_Customer));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.Addresses.AddRange(Utils.GetAddresses());
+                arrangeContext.Cities.AddRange(Utils.GetCities());
+                arrangeContext.Countries.AddRange(Utils.GetCountries());
+
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new CustomerService(assertContext);
+
+                //Act
+                var actualResult = sut.Get(Guid.Parse("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1"));
+
+                //Assert
+                var expectedResult = assertContext.Customers
+                    .Include(c => c.Address)
+                       .ThenInclude(a => a.City)
+                          .ThenInclude(c => c.Country)
+                    .FirstOrDefault(w => w.Id == Guid.Parse("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1"));
+
+                Assert.AreEqual(expectedResult.Id, actualResult.Id);
+                Assert.AreEqual(expectedResult.FirstName, actualResult.FirstName);
+                Assert.AreEqual(expectedResult.LastName, actualResult.LastName);
+                Assert.AreEqual(expectedResult.Email, actualResult.Email);
+                Assert.AreEqual(expectedResult.Address.StreetName, actualResult.StreetName);
+                Assert.AreEqual(expectedResult.Address.City.Name, actualResult.City);
+                Assert.AreEqual(expectedResult.Address.City.Country.Name, actualResult.Country);
+            }
+        }
+
+        [TestMethod]
+        public void Throw_When_Customer_NotFound()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Throw_When_Customer_NotFound));
+
+            //Act & Assert
+            using (var context = new DeliveritDbContext(options))
+            {
+                var sut = new CustomerService(context);
+
+                Assert.ThrowsException<ArgumentNullException>(() => sut.Get(Guid.Parse("e6d2c0f7-cffb-4155-8a13-5976136cd4db")));
             }
         }
     }
