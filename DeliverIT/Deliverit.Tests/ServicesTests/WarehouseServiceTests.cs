@@ -112,10 +112,6 @@ namespace Deliverit.Tests.ServicesTests
             using (var arrangeContext = new DeliveritDbContext(options))
             {
                 arrangeContext.Warehouses.AddRange(Utils.GetWarehouses());
-                arrangeContext.Addresses.AddRange(Utils.GetAddresses());
-                arrangeContext.Cities.AddRange(Utils.GetCities());
-                arrangeContext.Countries.AddRange(Utils.GetCountries());
-
                 arrangeContext.SaveChanges();
             }
 

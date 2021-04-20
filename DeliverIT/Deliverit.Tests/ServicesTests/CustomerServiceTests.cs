@@ -1,5 +1,6 @@
 ﻿using Deliverit.Services;
 using DeliverIT.Database;
+using DeliverIT.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -146,6 +147,69 @@ namespace Deliverit.Tests.ServicesTests
                 Assert.AreEqual(firstCustomerInExpectedList.FirstName, firstCustomerInActualList.FirstName);
                 Assert.AreEqual(lastCustomerInExpectedList.Id, lastCustomerInActualList.Id);
                 Assert.AreEqual(lastCustomerInExpectedList.FirstName, lastCustomerInActualList.FirstName);
+            }
+        }
+
+        [TestMethod]
+        public void Should_Return_CustomersCount()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Should_Return_CustomersCount));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new CustomerService(assertContext);
+
+                //Act
+                var actualResult = sut.GetCount();
+
+                //Assert
+                var expectedResult = assertContext.Customers.Count();
+                
+                Assert.AreEqual(expectedResult, actualResult);
+            }
+        }
+
+        [TestMethod]
+        public void Should_Create_New_Customer()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Should_Create_New_Customer));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new CustomerService(assertContext);
+
+                //Act
+                var customerToCreate = new Customer()
+                {
+                    Id = Guid.Parse("ed15cc44-60a9-476d-9ad7-f694a6eb1aef"),
+                    FirstName = "Enrique",
+                    LastName = "Pastor",
+                    Email = "enriquete@gmail.com",
+                    AddressId = Guid.Parse("da703902-00bc-47da-b950-4fa730494d4e")
+                };
+
+                int customersCount = assertContext.Customers.Count();
+                var createdCustomer = sut.Create(customerToCreate);
+
+                //Assert
+                int expectedCustomersCount = customersCount + 1;
+                int actualCustomersCount = assertContext.Customers.Count();
+
+                Assert.AreEqual(expectedCustomersCount, actualCustomersCount);
             }
         }
     }
