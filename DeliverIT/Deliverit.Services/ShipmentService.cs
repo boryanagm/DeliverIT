@@ -135,12 +135,7 @@ namespace Deliverit.Services
             var shipment = this.context.Shipments
                 .FirstOrDefault(s => s.Id == id)
                 ?? throw new ArgumentNullException();
-
-            if (shipment.IsDeleted == true)
-            {
-                throw new ArgumentNullException("There is no shipment with this ID.");
-            }
-
+            
             shipment.IsDeleted = true;
             shipment.DeletedOn = DateTime.UtcNow;
             this.context.SaveChanges();

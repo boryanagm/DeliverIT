@@ -331,7 +331,7 @@ namespace Deliverit.Tests
                 {
                    Id = Guid.Parse("917f8117-d392-4f64-81fb-48415f80f77e"),
                    CreatedOn = DateTime.UtcNow,
-                   Name = "on the way"
+                   Name = "preparing"
                 },
 
                 new Status()

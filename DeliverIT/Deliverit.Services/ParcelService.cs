@@ -371,9 +371,9 @@ namespace Deliverit.Services
         public List<ParcelDTO> SortByWeightOrArrivalDate(string sortcriteria)
         {
             var parcels = this.context.Parcels
-                .Include(p => p.Category)
+                .Include(p => p.Shipment)
                 .Include(p => p.Customer)
-                .Include(p => p.Shipment);
+                .Include(p=>p.Category);
 
             if (sortcriteria == "weight")
                 parcels.OrderBy(p => p.Weight);
