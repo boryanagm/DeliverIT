@@ -47,9 +47,13 @@ namespace Deliverit.Web.Controllers
 
                 return this.Ok(this.customerService.Get(id));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -65,9 +69,13 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.customerService.GetAll());
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -97,9 +105,9 @@ namespace Deliverit.Web.Controllers
 
                 return this.Created("post", newCustomer);
             }
-            catch (ArgumentNullException)
+            catch (Exception)
             { 
-                return this.Conflict(); 
+                return this.BadRequest(); 
             }
         }
 
@@ -122,9 +130,13 @@ namespace Deliverit.Web.Controllers
                 var customerToUpdate = this.customerService.Update(id, addressId);
                 return this.Ok(customerToUpdate);
             }
-            catch (ArgumentNullException)
+            catch (UnauthorizedAccessException)
             {
-                return this.Conflict();
+                return this.Forbid();
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
             }
         }
 
@@ -150,9 +162,13 @@ namespace Deliverit.Web.Controllers
                     return this.NotFound();
                 }
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -175,9 +191,13 @@ namespace Deliverit.Web.Controllers
 
                 return this.Ok(this.customerService.GetIncomingParcels(id));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -200,9 +220,13 @@ namespace Deliverit.Web.Controllers
 
                 return this.Ok(this.customerService.GetPastParcels(id));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -219,12 +243,15 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.customerService.GetByKeyWord(key));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
-
 
         /// <summary>
         /// Gets the by multiple criteria.
@@ -239,9 +266,13 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
     }

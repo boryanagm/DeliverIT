@@ -38,9 +38,13 @@ namespace Deliverit.Web.Controllers
                 var admin = this.authEmployeeHelper.TryGetAdmin(authorizationEmail);
                 return this.Ok(this.employeeService.Get(id));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -56,9 +60,13 @@ namespace Deliverit.Web.Controllers
                 var admin = this.authEmployeeHelper.TryGetAdmin(authorizationEmail);
                 return this.Ok(this.employeeService.GetAll());
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -81,9 +89,13 @@ namespace Deliverit.Web.Controllers
                 var employeeToUpdate = this.employeeService.Create(employee);
                 return this.Created("post", employeeToUpdate);
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -106,9 +118,13 @@ namespace Deliverit.Web.Controllers
                 var employeeToUpdate = this.employeeService.Update(id, addressId);
                 return this.Ok(employeeToUpdate);
             }
-            catch (ArgumentNullException)
+            catch (UnauthorizedAccessException)
             {
-                return this.Conflict();
+                return this.Forbid();
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
             }
         }
 
@@ -134,9 +150,13 @@ namespace Deliverit.Web.Controllers
                     return this.NotFound();
                 }
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -155,9 +175,13 @@ namespace Deliverit.Web.Controllers
                 var employeeToRestore = this.employeeService.Restore(id);
                 return this.Created("post", employeeToRestore);
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
     }

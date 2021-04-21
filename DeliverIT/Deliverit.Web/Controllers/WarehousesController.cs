@@ -37,7 +37,7 @@ namespace Deliverit.Web.Controllers
             }
             catch (Exception)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
         }
@@ -71,9 +71,13 @@ namespace Deliverit.Web.Controllers
 
                 return this.Created("post", warehouseToUpdate);
             }
-            catch (Exception)
+            catch (UnauthorizedAccessException)
             {
-                return this.Conflict();
+                return this.Forbid();
+            }
+            catch(Exception)
+            {
+                return this.BadRequest();
             }
         }
 
@@ -97,9 +101,13 @@ namespace Deliverit.Web.Controllers
 
                 return this.Ok(warehouseToUpdate);
             }
-            catch (ArgumentNullException)
+            catch (UnauthorizedAccessException)
             {
-                return this.Conflict();
+                return this.Forbid();
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
             }
         }
 
@@ -126,9 +134,13 @@ namespace Deliverit.Web.Controllers
                     return this.NotFound();
                 }
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
     }

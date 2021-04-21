@@ -38,9 +38,13 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.parcelService.Get(id));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.NotFound();
+                return NotFound();
             }
         }
 
@@ -70,9 +74,13 @@ namespace Deliverit.Web.Controllers
                 var parcelToCreate = this.parcelService.Create(parcel);
                 return this.Created("post", parcelToCreate);
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -95,9 +103,13 @@ namespace Deliverit.Web.Controllers
 
                 return this.Ok(parcelToUpdate);
             }
-            catch (ArgumentNullException)
+            catch (UnauthorizedAccessException)
             {
-                return this.Conflict();
+                return this.Forbid();
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
             }
         }
 
@@ -117,11 +129,18 @@ namespace Deliverit.Web.Controllers
                 {
                     return this.NoContent();
                 }
-                return this.Conflict();
+                else
+                {
+                    return this.NotFound();
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
             }
             catch (Exception)
             {
-                return this.NotFound();
+                return this.BadRequest();
             }
         }
 
@@ -137,9 +156,13 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.parcelService.SearchByEmail(email));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -156,9 +179,13 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.parcelService.SearchByName(firstname, lastname));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -178,9 +205,13 @@ namespace Deliverit.Web.Controllers
                 else
                     return this.NotFound();
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -197,9 +228,13 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.parcelService.GetByWarehouse(Id));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -216,9 +251,13 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.parcelService.GetByCustomer(Id));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -234,9 +273,13 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.parcelService.GetByWeight(weight));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -252,9 +295,13 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.parcelService.GetByCategory(category));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -270,9 +317,13 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.parcelService.GetByMultipleCriteria(category, Id));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -288,9 +339,13 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.parcelService.SortByWeightOrArrivalDate(criteria));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
     }
