@@ -38,7 +38,11 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.shipmentService.Get(id));
             }
-            catch(Exception)
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
+            catch (Exception)
             {
                 return NotFound();
             }
@@ -51,8 +55,15 @@ namespace Deliverit.Web.Controllers
         [HttpGet("")]
         public IActionResult GetAll([FromHeader] string authorizationEmail)
         {
-            var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
-            return this.Ok(this.shipmentService.GetAll());
+            try
+            {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                return this.Ok(this.shipmentService.GetAll());
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
         }
 
         /// <summary>
@@ -73,10 +84,14 @@ namespace Deliverit.Web.Controllers
                 var shipmentToCreate = this.shipmentService.Create(shipment);
                 return this.Created("post", shipmentToCreate);
             }
-            catch(Exception)
+            catch (UnauthorizedAccessException)
             {
-                return Conflict();
-            }     
+                return this.Forbid();
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
+            }
         }
 
         /// <summary>
@@ -95,11 +110,18 @@ namespace Deliverit.Web.Controllers
                 {
                     return this.NoContent();
                 }
-                return this.Conflict();
+                else
+                {
+                    return this.NotFound();
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
             }
             catch (Exception)
             {
-                return this.NotFound();
+                return this.BadRequest();
             }
         }
 
@@ -121,12 +143,15 @@ namespace Deliverit.Web.Controllers
                 var shipmentToUpdate = this.shipmentService.Update(id, shipment);
                 return this.Ok(shipmentToUpdate);
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
-
 
         /// <summary>
         /// Filters the shipments by Warehouse.
@@ -140,12 +165,15 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.shipmentService.SearchByWarehouse(Id));
             }
-            catch(Exception)
+            catch (UnauthorizedAccessException)
             {
-                return Conflict();
+                return this.Forbid();
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
             }
         }
-
 
         /// <summary>
         /// Filters shippments by customers.
@@ -159,9 +187,13 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.shipmentService.SearchByCustomer(Id));
             }
-            catch(Exception)
+            catch (UnauthorizedAccessException)
             {
-                return NotFound();
+                return this.Forbid();
+            }
+            catch (Exception)
+            {
+                return this.NotFound();
             }
         }
     }
