@@ -27,9 +27,10 @@ namespace Deliverit.Web.Controllers
         }
 
         /// <summary>
-        /// Gets the a shipment by Id.
+        /// Gets a shipment by Id.
         /// </summary>
         /// <param name="id">The identifier.</param>
+        /// <param name="authorizationEmail">The authorization email.</param>
         [HttpGet("{id}")]
         public IActionResult Get([FromHeader] string authorizationEmail, Guid id)
         {
@@ -51,7 +52,7 @@ namespace Deliverit.Web.Controllers
         /// <summary>
         /// Gets all shipments.
         /// </summary>
-        /// <returns>IActionResult.</returns>
+        /// <param name="authorizationEmail">The authorization email.</param>
         [HttpGet("")]
         public IActionResult GetAll([FromHeader] string authorizationEmail)
         {
@@ -70,8 +71,8 @@ namespace Deliverit.Web.Controllers
         /// Creates a shipment.
         /// </summary>
         /// <param name="shipment">The shipment.</param>
-        /// <returns>IActionResult.</returns>
-        [HttpPost("create/")]
+        /// <param name="authorizationEmail">The authorization email.</param>
+        [HttpPost("")]
         public IActionResult Post([FromHeader] string authorizationEmail, [FromQuery] CreateShipmentDTO shipment)
         {
             if (!ModelState.IsValid)
@@ -98,7 +99,8 @@ namespace Deliverit.Web.Controllers
         /// Deletes a shipment.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        [HttpDelete("delete/{id}")]
+        /// <param name="authorizationEmail">The authorization email.</param>
+        [HttpDelete("{id}")]
         public IActionResult Delete([FromHeader] string authorizationEmail, Guid id)
         {
             try
@@ -130,13 +132,10 @@ namespace Deliverit.Web.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="shipment">The shipment update data.</param>
-        [HttpPut("update/{id}")]
+        /// <param name="authorizationEmail">The authorization email.</param>
+        [HttpPut("{id}")]
         public IActionResult Put([FromHeader] string authorizationEmail, Guid id, [FromQuery] ShipmentDTO shipment)
-        {
-            if (!ModelState.IsValid)
-            {
-                return this.BadRequest();
-            }
+        {          
             try
             {
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
@@ -154,11 +153,12 @@ namespace Deliverit.Web.Controllers
         }
 
         /// <summary>
-        /// Filters the shipments by Warehouse.
+        /// Filters shipments by Warehouse.
         /// </summary>
         /// <param name="Id">The identifier of the warehouse.</param>
-        [HttpGet("filter/warehouse")]
-        public IActionResult FilterShipments([FromHeader] string authorizationEmail, [FromQuery] Guid Id)
+        /// <param name="authorizationEmail">The authorization email.</param>
+        [HttpGet("filter/warehouse/{Id}")]
+        public IActionResult FilterShipments([FromHeader] string authorizationEmail, Guid Id)
         {
             try
             {
@@ -176,11 +176,12 @@ namespace Deliverit.Web.Controllers
         }
 
         /// <summary>
-        /// Filters shippments by customers.
+        /// Filters shipments by customers.
         /// </summary>
         /// <param name="Id">The identifier of the customer.</param>
-        [HttpGet("filter/customer")]
-        public IActionResult FilterCustomers([FromHeader] string authorizationEmail, [FromQuery] Guid Id)
+        /// <param name="authorizationEmail">The authorization email.</param>
+        [HttpGet("filter/customer/{Id}")]
+        public IActionResult FilterCustomers([FromHeader] string authorizationEmail, Guid Id)
         {
             try
             {

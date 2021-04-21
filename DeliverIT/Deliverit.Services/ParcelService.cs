@@ -106,7 +106,7 @@ namespace Deliverit.Services
                 .FirstOrDefault(s => s.Id == id)
                 ?? throw new ArgumentNullException();
 
-            if (parcel.CustomerId != null)
+            if (parcel.CustomerId != new Guid("{00000000-0000-0000-0000-000000000000}"))
             {
                 var customer = this.context.Customers
                 .FirstOrDefault(s => s.Id == parcel.CustomerId)
@@ -114,7 +114,7 @@ namespace Deliverit.Services
                 parcelToUpdate.Customer = customer;
             }
 
-            if (parcel.CategoryId != null)
+            if (parcel.CategoryId != new Guid("{00000000-0000-0000-0000-000000000000}"))
             {
                 var category = this.context.Categories
                 .FirstOrDefault(s => s.Id == parcel.CategoryId)
@@ -122,7 +122,7 @@ namespace Deliverit.Services
                 parcelToUpdate.Category = category;
             }
 
-            if (parcel.ShipmentId != null)
+            if (parcel.ShipmentId != new Guid("{00000000-0000-0000-0000-000000000000}"))
             {
                 var shipment = this.context.Shipments
                 .FirstOrDefault(s => s.Id == parcel.ShipmentId)

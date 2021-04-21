@@ -26,7 +26,7 @@ namespace Deliverit.Web.Controllers
         }
 
         /// <summary>
-        /// Gets an employee by e-mail.
+        /// Gets an employee by his ID.
         /// </summary>
         /// <param name="authorizationEmail">The authorization email.</param>
         /// <param name="id">The identifier.</param>

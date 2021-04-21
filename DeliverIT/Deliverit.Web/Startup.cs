@@ -9,6 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace Deliverit.Web
 {
@@ -31,7 +34,17 @@ namespace Deliverit.Web
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger Configuration", Version = "v1" });
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo
+                    {
+                        Title = "Swagger Configuration",
+                        Version = "v1",
+                        Description = "This is the Swagger documentation for DeliverIT group 12."
+                    });
+
+                var filename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var filePath = Path.Combine(AppContext.BaseDirectory, filename);
+                c.IncludeXmlComments(filePath);
             });
 
             services.AddScoped<ICityService, CityService>();

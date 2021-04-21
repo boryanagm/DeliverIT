@@ -29,7 +29,7 @@ namespace Deliverit.Web.Controllers
         }
 
         /// <summary>
-        /// Gets the specified customer by email.
+        /// Gets a customer by email.
         /// </summary>
         /// <param name="authorizationEmail">The authorization email.</param>
         /// <param name="id">The identifier of the customer.</param>
@@ -173,7 +173,7 @@ namespace Deliverit.Web.Controllers
         }
 
         /// <summary>
-        /// Gets the incoming parcels.
+        /// Gets all incoming parcels of a customer by his ID.
         /// </summary>
         /// <param name="authorizationEmail">The authorization email.</param>
         /// <param name="id">The identifier.</param>
@@ -202,7 +202,7 @@ namespace Deliverit.Web.Controllers
         }
 
         /// <summary>
-        /// Gets the past parcels.
+        /// Gets all past parcels of a customer by his ID.
         /// </summary>
         /// <param name="authorizationEmail">The authorization email.</param>
         /// <param name="id">The identifier.</param>
@@ -231,7 +231,7 @@ namespace Deliverit.Web.Controllers
         }
 
         /// <summary>
-        /// Gets by key word.
+        /// Gets customers by a key word.
         /// </summary>
         /// <param name="authorizationEmail">The authorization email.</param>
         /// <param name="key">The key.</param>
@@ -254,7 +254,7 @@ namespace Deliverit.Web.Controllers
         }
 
         /// <summary>
-        /// Gets the by multiple criteria.
+        /// Gets customers by multiple criteria.
         /// </summary>
         /// <param name="authorizationEmail">The authorization email.</param>
         /// <param name="customerFilter">The customer filter.</param>
