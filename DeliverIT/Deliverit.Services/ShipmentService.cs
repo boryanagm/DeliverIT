@@ -95,7 +95,7 @@ namespace Deliverit.Services
                 this.context.SaveChanges();
             }
 
-            var shipmentToDisplay = ShipmentMapper.DTOSelector.Compile().Invoke(shipmentToUpdate); ;
+            var shipmentToDisplay = ShipmentMapper.DTOSelector.Compile().Invoke(shipmentToUpdate); 
 
             return shipmentToDisplay;
         }
