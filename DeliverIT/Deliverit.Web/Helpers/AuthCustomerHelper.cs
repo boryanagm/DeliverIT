@@ -19,7 +19,7 @@ namespace Deliverit.Web.Helpers
             }
             catch (Exception)
             {
-                throw new UnauthorizedAccessException("Invalid email");
+                throw new UnauthorizedAccessException("Invalid authorization.");
             }
         }
     }
