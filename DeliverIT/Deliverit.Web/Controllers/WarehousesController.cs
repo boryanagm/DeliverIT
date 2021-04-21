@@ -60,6 +60,10 @@ namespace Deliverit.Web.Controllers
         [HttpPost("")]
         public IActionResult Post([FromHeader] string authorizationEmail, [FromBody] Warehouse warehouse)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
             try
             {
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
@@ -82,6 +86,10 @@ namespace Deliverit.Web.Controllers
         [HttpPut("{id}")]
         public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
             try
             {
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);

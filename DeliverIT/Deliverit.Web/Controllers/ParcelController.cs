@@ -60,6 +60,10 @@ namespace Deliverit.Web.Controllers
         [HttpPost("create/")]
         public IActionResult Post([FromHeader] string authorizationEmail, [FromQuery] CreateParcelDTO parcel)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
             try
             {
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
@@ -80,6 +84,10 @@ namespace Deliverit.Web.Controllers
         [HttpPut("update/{id}")]
         public IActionResult Put([FromHeader] string authorizationEmail, Guid id, [FromQuery] UpdateParcelDTO parcel)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
             try
             {
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);

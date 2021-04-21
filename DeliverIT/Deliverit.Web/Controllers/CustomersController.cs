@@ -87,6 +87,10 @@ namespace Deliverit.Web.Controllers
         [HttpPost("")]
         public IActionResult Post([FromBody] Customer customer)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
             try
             {
                 var newCustomer = this.customerService.Create(customer);
@@ -108,6 +112,10 @@ namespace Deliverit.Web.Controllers
         [HttpPut("{id}")]
         public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) 
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
             try
             {
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
@@ -126,7 +134,7 @@ namespace Deliverit.Web.Controllers
         /// <param name="authorizationEmail">The authorization email.</param>
         /// <param name="id">The identifier.</param>
         [HttpDelete("{id}")]
-        public IActionResult Delete([FromHeader] string authorizationEmail, Guid id)             // TODO: The customer should also be able to delete his/her profile
+        public IActionResult Delete([FromHeader] string authorizationEmail, Guid id)     // TODO: The customer should also be able to delete his/her profile
         {
             try
             {
