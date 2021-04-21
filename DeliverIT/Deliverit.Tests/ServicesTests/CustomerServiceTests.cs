@@ -136,13 +136,13 @@ namespace Deliverit.Tests.ServicesTests
                 var actualResult = sut.GetAll().ToList();
                 int actualCustomersCount = actualResult.Count();
                 var firstCustomerInActualList = actualResult.FirstOrDefault();
-                var lastCustomerInActualList = actualResult.Last();
+                var lastCustomerInActualList = actualResult.LastOrDefault();
 
                 //Assert
                 var expectedResult = assertContext.Customers.ToList();
                 int expectedCustomersCount = expectedResult.Count();
                 var firstCustomerInExpectedList = expectedResult.FirstOrDefault();
-                var lastCustomerInExpectedList = expectedResult.Last();
+                var lastCustomerInExpectedList = expectedResult.LastOrDefault();
 
                 Assert.AreEqual(expectedCustomersCount, actualCustomersCount);
                 Assert.AreEqual(firstCustomerInExpectedList.Id, firstCustomerInActualList.Id);
@@ -302,14 +302,86 @@ namespace Deliverit.Tests.ServicesTests
                 var customerFilter = new CustomerFilter
                 {
                     FirstName = firstNameSearch,
-                    LastName = "",
-                    Email = ""
+                    LastName = "x",
+                    Email = "x"
                 };
                 //Act
-                var actualResult = sut.GetByMultipleCriteria(customerFilter);             //.FirstOrDefault();
+                var actualResult = sut.GetByMultipleCriteria(customerFilter);             
 
                 //Assert
-                var expectedResult = assertContext.Customers.Where(c => c.FirstName == firstNameSearch).ToList(); //.FirstOrDefault(c => c.FirstName == firstNameSearch);
+                var expectedResult = assertContext.Customers.Where(c => c.FirstName == firstNameSearch).ToList();
+
+                Assert.AreEqual(expectedResult.Count(), actualResult.Count());
+            }
+        }
+
+        [TestMethod]
+        public void Should_Return_Customer_When_MultipleCriteria_SearchByLastName_IsApplied()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Should_Return_Customer_When_MultipleCriteria_SearchByLastName_IsApplied));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.Addresses.AddRange(Utils.GetAddresses());
+                arrangeContext.Cities.AddRange(Utils.GetCities());
+                arrangeContext.Countries.AddRange(Utils.GetCountries());
+
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new CustomerService(assertContext);
+                var lastNameSearch = "Petrauskas";
+                var customerFilter = new CustomerFilter
+                {
+                    FirstName = "x",
+                    LastName = lastNameSearch,
+                    Email = "x"
+                };
+                //Act
+                var actualResult = sut.GetByMultipleCriteria(customerFilter);
+
+                //Assert
+                var expectedResult = assertContext.Customers.Where(c => c.LastName == lastNameSearch).ToList();
+
+                Assert.AreEqual(expectedResult.Count(), actualResult.Count());
+            }
+        }
+
+        [TestMethod]
+        public void Should_Return_Customer_When_MultipleCriteria_SearchByEmail_IsApplied()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Should_Return_Customer_When_MultipleCriteria_SearchByEmail_IsApplied));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Customers.AddRange(Utils.GetCustomers());
+                arrangeContext.Addresses.AddRange(Utils.GetAddresses());
+                arrangeContext.Cities.AddRange(Utils.GetCities());
+                arrangeContext.Countries.AddRange(Utils.GetCountries());
+
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new CustomerService(assertContext);
+                var emailSearch = "isa";
+                var customerFilter = new CustomerFilter
+                {
+                    FirstName = "x",
+                    LastName = "x",
+                    Email = emailSearch
+                };
+                //Act
+                var actualResult = sut.GetByMultipleCriteria(customerFilter);
+
+                //Assert
+                var expectedResult = assertContext.Customers.Where(c => c.Email.Contains(emailSearch)).ToList();
 
                 Assert.AreEqual(expectedResult.Count(), actualResult.Count());
             }
@@ -337,11 +409,11 @@ namespace Deliverit.Tests.ServicesTests
                 var sut = new CustomerService(assertContext);
 
                 //Act
-                var customerId = Guid.Parse("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1");
+                var customerId = Guid.Parse("5adb06fe-fca4-4347-b1ea-118c55e17331");
                 var actualResult = sut.GetIncomingParcels(customerId);
                 int actualParcelsCount = actualResult.Count();
                 var firstParcelInActualList = actualResult.FirstOrDefault();
-                var lastParcelInActualList = actualResult.Last();
+                var lastParcelInActualList = actualResult.LastOrDefault();
 
                 //Assert
                 var expectedResult = assertContext.Customers
@@ -351,7 +423,7 @@ namespace Deliverit.Tests.ServicesTests
 
                 int expectedParcelsCount = expectedResult.Count();
                 var firstParcelInExpectedList = expectedResult.FirstOrDefault();
-                var lastParcelInExpectedList = expectedResult.Last();
+                var lastParcelInExpectedList = expectedResult.LastOrDefault();
 
                 Assert.AreEqual(expectedParcelsCount, actualParcelsCount);
                 Assert.AreEqual(firstParcelInExpectedList.Id, firstParcelInActualList.Id);
@@ -381,11 +453,11 @@ namespace Deliverit.Tests.ServicesTests
                 var sut = new CustomerService(assertContext);
 
                 //Act
-                var customerId = Guid.Parse("5adb06fe-fca4-4347-b1ea-118c55e17331");
+                var customerId = Guid.Parse("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1");
                 var actualResult = sut.GetPastParcels(customerId);
                 int actualParcelsCount = actualResult.Count();
                 var firstParcelInActualList = actualResult.FirstOrDefault();
-                var lastParcelInActualList = actualResult.Last();
+                var lastParcelInActualList = actualResult.LastOrDefault();
 
                 //Assert
                 var expectedResult = assertContext.Customers
@@ -395,7 +467,7 @@ namespace Deliverit.Tests.ServicesTests
 
                 int expectedParcelsCount = expectedResult.Count();
                 var firstParcelInExpectedList = expectedResult.FirstOrDefault();
-                var lastParcelInExpectedList = expectedResult.Last();
+                var lastParcelInExpectedList = expectedResult.LastOrDefault();
 
                 Assert.AreEqual(expectedParcelsCount, actualParcelsCount);
                 Assert.AreEqual(firstParcelInExpectedList.Id, firstParcelInActualList.Id);

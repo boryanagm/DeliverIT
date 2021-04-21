@@ -71,13 +71,13 @@ namespace Deliverit.Tests
                 var actualResult = sut.GetAll().ToList();
                 int actualCitiesCount = actualResult.Count();
                 var firstCityInActualList = actualResult.FirstOrDefault();
-                var lastCityInActualList = actualResult.Last();
+                var lastCityInActualList = actualResult.LastOrDefault();
 
                 //Assert
                 var expectedResult = assertContext.Cities.ToList();
                 int expectedCitiesCount = expectedResult.Count();
                 var firstCityInExpectedList = expectedResult.FirstOrDefault();
-                var lastCityInExpectedList = expectedResult.Last();
+                var lastCityInExpectedList = expectedResult.LastOrDefault();
 
                 Assert.AreEqual(expectedCitiesCount, actualCitiesCount);
                 Assert.AreEqual(firstCityInExpectedList.Id, firstCityInActualList.Id);

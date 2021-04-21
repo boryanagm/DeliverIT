@@ -87,13 +87,13 @@ namespace Deliverit.Tests.ServicesTests
                 var actualResult = sut.GetAll().ToList();
                 int actualWarehousesCount = actualResult.Count();
                 var firstWarehouseInActualList = actualResult.FirstOrDefault();
-                var lastWarehouseInActualList = actualResult.Last();
+                var lastWarehouseInActualList = actualResult.LastOrDefault();
 
                 //Assert
                 var expectedResult = assertContext.Warehouses.ToList();
                 int expectedWarehousesCount = expectedResult.Count();
                 var firstWarehouseInExpectedList = expectedResult.FirstOrDefault();
-                var lastWarehouseInExpectedList = expectedResult.Last();
+                var lastWarehouseInExpectedList = expectedResult.LastOrDefault();
 
                 Assert.AreEqual(expectedWarehousesCount, actualWarehousesCount);
                 Assert.AreEqual(firstWarehouseInExpectedList.Id, firstWarehouseInActualList.Id);
