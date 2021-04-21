@@ -24,7 +24,6 @@ namespace Deliverit.Services
             this.context = context;
         }
 
-
         /// <summary>
         /// Gets a customer by Id.
         /// </summary>
@@ -60,7 +59,6 @@ namespace Deliverit.Services
             }
             return shipments;
         }
-
 
         /// <summary>
         /// Updates the specified Shipment.
@@ -102,7 +100,6 @@ namespace Deliverit.Services
             return shipmentToDisplay;
         }
 
-
         /// <summary>
         /// Creates a shipment.
         /// </summary>
@@ -129,7 +126,6 @@ namespace Deliverit.Services
             return shipmentToDisplay;
         }
 
-
         /// <summary>
         /// Deletes a shipment.
         /// </summary>
@@ -139,18 +135,12 @@ namespace Deliverit.Services
             var shipment = this.context.Shipments
                 .FirstOrDefault(s => s.Id == id)
                 ?? throw new ArgumentNullException();
-
-            if (shipment.IsDeleted == true)
-            {
-                throw new ArgumentNullException("There is no shipment with this ID.");
-            }
-
+            
             shipment.IsDeleted = true;
             shipment.DeletedOn = DateTime.UtcNow;
             this.context.SaveChanges();
             return true;
         }
-
 
         /// <summary>
         /// Searches a shipment by a Warehouse Id.

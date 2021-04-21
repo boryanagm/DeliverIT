@@ -5,7 +5,6 @@ using System;
 
 namespace Deliverit.Services
 {
-
     /// <summary>
     /// Class AdressService.
     /// Implements the <see cref="Deliverit.Services.Contracts.IAddressService" />

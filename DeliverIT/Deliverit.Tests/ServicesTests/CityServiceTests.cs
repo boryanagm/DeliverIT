@@ -11,10 +11,10 @@ namespace Deliverit.Tests
     public class CityServiceTests
     {
         [TestMethod]
-        public void Get_By_Should_Return_Correct_Entity()
+        public void Get_By_Should_Return_Correct_City()
         {
             //Arrange
-            var options = Utils.GetOptions(nameof(Get_By_Should_Return_Correct_Entity));
+            var options = Utils.GetOptions(nameof(Get_By_Should_Return_Correct_City));
            
             using (var arrangeContext = new DeliveritDbContext(options))
             {
@@ -71,13 +71,13 @@ namespace Deliverit.Tests
                 var actualResult = sut.GetAll().ToList();
                 int actualCitiesCount = actualResult.Count();
                 var firstCityInActualList = actualResult.FirstOrDefault();
-                var lastCityInActualList = actualResult.Last();
+                var lastCityInActualList = actualResult.LastOrDefault();
 
                 //Assert
                 var expectedResult = assertContext.Cities.ToList();
                 int expectedCitiesCount = expectedResult.Count();
                 var firstCityInExpectedList = expectedResult.FirstOrDefault();
-                var lastCityInExpectedList = expectedResult.Last();
+                var lastCityInExpectedList = expectedResult.LastOrDefault();
 
                 Assert.AreEqual(expectedCitiesCount, actualCitiesCount);
                 Assert.AreEqual(firstCityInExpectedList.Id, firstCityInActualList.Id);

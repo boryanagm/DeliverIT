@@ -36,7 +36,6 @@ namespace Deliverit.Services
                  ?? throw new ArgumentNullException();
         }
 
-
         /// <summary>
         /// Gets a customer by Id.
         /// </summary>
@@ -51,7 +50,6 @@ namespace Deliverit.Services
 
             return dto;
         }
-
 
         /// <summary>
         /// Gets all customers.
@@ -71,7 +69,6 @@ namespace Deliverit.Services
             }
             return customers;
         }
-
 
         /// <summary>
         /// Gets the count of all customers.
@@ -103,8 +100,7 @@ namespace Deliverit.Services
 
             var dto = this.context.Customers
                .Select(CustomerMapper.DTOSelector)
-               .FirstOrDefault(c => c.Id == customer.Id)
-               ?? throw new ArgumentNullException();
+               .FirstOrDefault(c => c.Id == customer.Id);
 
             return dto;
         }
@@ -181,14 +177,7 @@ namespace Deliverit.Services
         public List<ParcelDTO> GetIncomingParcels(Guid id)
         {
             List<ParcelDTO> dto = GetIncomingParcelsMapper.ReturnIncomingParcels(context, id)
-                .Select(p => new ParcelDTO 
-                {
-                    Id = p.Id,
-                    Weight = p.Weight,
-                    Category = p.Category.Name,
-                    CustomerFirstName = p.Customer.FirstName,
-                    CustomerLastName = p.Customer.LastName
-                })
+                .Select(ParcelMapper.DTOSelector)
                 .ToList();
 
             return dto;
@@ -202,14 +191,7 @@ namespace Deliverit.Services
         public List<ParcelDTO> GetPastParcels(Guid id)
         {
             List<ParcelDTO> dto = GetPastParcelsMapper.ReturnPastParcels(context, id)
-                 .Select(p => new ParcelDTO
-                 {
-                     Id = p.Id,
-                     Weight = p.Weight,
-                     Category = p.Category.Name,
-                     CustomerFirstName = p.Customer.FirstName,
-                     CustomerLastName = p.Customer.LastName
-                 })
+                 .Select(ParcelMapper.DTOSelector)
                 .ToList();
 
             return dto;

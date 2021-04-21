@@ -14,7 +14,9 @@ namespace DeliverIT.Database
     public class DeliveritDbContext : DbContext
     {
         public DeliveritDbContext (DbContextOptions<DeliveritDbContext> options)
-            : base (options) {   }
+            : base (options) 
+        { 
+        }
 
         public DbSet<Role> Roles { get; set; }
         public DbSet<Customer> Customers { get; set; }

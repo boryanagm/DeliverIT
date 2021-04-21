@@ -24,7 +24,6 @@ namespace Deliverit.Services
             this.context = context;
         }
 
-
         /// <summary>
         /// Gets a warehouse by an Id.
         /// </summary>
@@ -39,7 +38,6 @@ namespace Deliverit.Services
 
             return dto;
         }
-
 
         /// <summary>
         /// Gets all warehouses.
@@ -74,12 +72,10 @@ namespace Deliverit.Services
 
             var dto = this.context.Warehouses
                  .Select(WarehouseMapper.DTOSelector)
-                 .FirstOrDefault(w => w.Id == warehouse.Id)
-                 ?? throw new ArgumentNullException();
+                 .FirstOrDefault(w => w.Id == warehouse.Id);
 
             return dto;
         }
-
 
         /// <summary>
         /// Updates a warehouse.
@@ -106,7 +102,6 @@ namespace Deliverit.Services
 
             return dto;
         }
-
 
         /// <summary>
         /// Deletes a warehouse.
