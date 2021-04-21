@@ -148,11 +148,6 @@ namespace Deliverit.Services
                 .FirstOrDefault(s => s.Id == id)
                 ?? throw new ArgumentNullException();
 
-            if (parcel.IsDeleted == true)
-            {
-                throw new ArgumentNullException("There is no shipment with this ID.");
-            }
-
             parcel.IsDeleted = true;
             parcel.DeletedOn = DateTime.UtcNow;
             this.context.SaveChanges();
@@ -376,9 +371,9 @@ namespace Deliverit.Services
         public List<ParcelDTO> SortByWeightOrArrivalDate(string sortcriteria)
         {
             var parcels = this.context.Parcels
-                .Include(p => p.Category)
+                .Include(p => p.Shipment)
                 .Include(p => p.Customer)
-                .Include(p => p.Shipment);
+                .Include(p=>p.Category);
 
             if (sortcriteria == "weight")
                 parcels.OrderBy(p => p.Weight);
