@@ -10,7 +10,7 @@ namespace Deliverit.Models.Abstract
     /// Class Entity.
     /// An abstract class defining the base properties of all models. />
     /// </summary>
-    public class Entity : IEntity
+    public abstract class Entity : IEntity
     {
         [Key]
         public Guid Id { get; set; }

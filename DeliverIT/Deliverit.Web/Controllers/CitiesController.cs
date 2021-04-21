@@ -40,7 +40,6 @@ namespace Deliverit.Web.Controllers
             }
         }
 
-
         /// <summary>
         /// Shows all cities.
         /// </summary>
