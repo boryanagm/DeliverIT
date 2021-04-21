@@ -207,6 +207,42 @@ namespace Deliverit.Tests
             }
         }
 
+        [TestMethod]
+        public void Search_By_Warehouse()
+        {
+            //Arrange
+            var options = Utils.GetOptions(nameof(Search_By_Warehouse));
+
+            using (var arrangeContext = new DeliveritDbContext(options))
+            {
+                arrangeContext.Warehouses.AddRange(Utils.GetWarehouses());
+                arrangeContext.Shipments.AddRange(Utils.GetShipments());
+                arrangeContext.Statuses.AddRange(Utils.GetStatuses());
+                arrangeContext.SaveChanges();
+            }
+
+            using (var assertContext = new DeliveritDbContext(options))
+            {
+                var sut = new ShipmentService(assertContext);
+
+                //Act
+                Guid Id = new Guid("f15b5cf4-6eb6-4e5a-b84f-297e16c206ba");
+                var expectedResult = sut.SearchByWarehouse(Id);
+                //Assert
+                var warehouse = assertContext.Warehouses
+                .Include(w => w.Shipments)
+                .FirstOrDefault(w => w.Id == Id);
+
+                var actualResult = assertContext.Warehouses
+                .Include(s => s.Shipments)
+                .ThenInclude(s => s.Status)
+                .Where(s => s.Id == warehouse.Id)
+                .SelectMany(s => s.Shipments).ToList();
+
+                Assert.AreEqual(actualResult.Count, expectedResult.Count);
+            }
+        }
+
     }
 
 }
