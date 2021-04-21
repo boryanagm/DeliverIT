@@ -43,7 +43,6 @@ namespace Deliverit.Web
             services.AddScoped<IAuthCustomerHelper, AuthCustomerHelper>();
             services.AddScoped<IAuthEmployeeHelper, AuthEmployeeHelper>();
             services.AddScoped<IParcelService, ParcelService>();
-            //services.AddScoped<IEmployeeService, EmployeeService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
