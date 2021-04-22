@@ -1,4 +1,4 @@
-<img src="https://i.ibb.co/bJ7kCjB/team12logo.png)" alt="logo" width="1000px" style="margin-top: 40px;"/>
+<img src="https://i.ibb.co/bJ7kCjB/team12logo.png)" alt="logo" width="1500px" style="margin-top: 20px;"/>
 
 # TeamWork Group 12
 ##### Boryana Mihaylova and Stefan Zhuntovski
