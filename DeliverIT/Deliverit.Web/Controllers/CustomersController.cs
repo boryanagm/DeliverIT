@@ -29,7 +29,7 @@ namespace Deliverit.Web.Controllers
         }
 
         /// <summary>
-        /// Gets the specified customer by email.
+        /// Gets a customer by email.
         /// </summary>
         /// <param name="authorizationEmail">The authorization email.</param>
         /// <param name="id">The identifier of the customer.</param>
@@ -47,9 +47,13 @@ namespace Deliverit.Web.Controllers
 
                 return this.Ok(this.customerService.Get(id));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -65,9 +69,13 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.customerService.GetAll());
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -87,15 +95,19 @@ namespace Deliverit.Web.Controllers
         [HttpPost("")]
         public IActionResult Post([FromBody] Customer customer)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
             try
             {
                 var newCustomer = this.customerService.Create(customer);
 
                 return this.Created("post", newCustomer);
             }
-            catch (ArgumentNullException)
+            catch (Exception)
             { 
-                return this.Conflict(); 
+                return this.BadRequest(); 
             }
         }
 
@@ -108,15 +120,23 @@ namespace Deliverit.Web.Controllers
         [HttpPut("{id}")]
         public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) 
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
             try
             {
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 var customerToUpdate = this.customerService.Update(id, addressId);
                 return this.Ok(customerToUpdate);
             }
-            catch (ArgumentNullException)
+            catch (UnauthorizedAccessException)
             {
-                return this.Conflict();
+                return this.Forbid();
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
             }
         }
 
@@ -126,7 +146,7 @@ namespace Deliverit.Web.Controllers
         /// <param name="authorizationEmail">The authorization email.</param>
         /// <param name="id">The identifier.</param>
         [HttpDelete("{id}")]
-        public IActionResult Delete([FromHeader] string authorizationEmail, Guid id)             // TODO: The customer should also be able to delete his/her profile
+        public IActionResult Delete([FromHeader] string authorizationEmail, Guid id)     // TODO: The customer should also be able to delete his/her profile
         {
             try
             {
@@ -142,14 +162,18 @@ namespace Deliverit.Web.Controllers
                     return this.NotFound();
                 }
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
         /// <summary>
-        /// Gets the incoming parcels.
+        /// Gets all incoming parcels of a customer by his ID.
         /// </summary>
         /// <param name="authorizationEmail">The authorization email.</param>
         /// <param name="id">The identifier.</param>
@@ -167,14 +191,18 @@ namespace Deliverit.Web.Controllers
 
                 return this.Ok(this.customerService.GetIncomingParcels(id));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
         /// <summary>
-        /// Gets the past parcels.
+        /// Gets all past parcels of a customer by his ID.
         /// </summary>
         /// <param name="authorizationEmail">The authorization email.</param>
         /// <param name="id">The identifier.</param>
@@ -192,14 +220,18 @@ namespace Deliverit.Web.Controllers
 
                 return this.Ok(this.customerService.GetPastParcels(id));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
         /// <summary>
-        /// Gets by key word.
+        /// Gets customers by a key word.
         /// </summary>
         /// <param name="authorizationEmail">The authorization email.</param>
         /// <param name="key">The key.</param>
@@ -211,15 +243,18 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.customerService.GetByKeyWord(key));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
-
         /// <summary>
-        /// Gets the by multiple criteria.
+        /// Gets customers by multiple criteria.
         /// </summary>
         /// <param name="authorizationEmail">The authorization email.</param>
         /// <param name="customerFilter">The customer filter.</param>
@@ -231,9 +266,13 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.customerService.GetByMultipleCriteria(customerFilter));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
     }

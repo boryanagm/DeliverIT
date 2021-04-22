@@ -24,7 +24,11 @@ namespace Deliverit.Services.Extension_Methods
                 Country = e.Address.City.Country.Name,
                 Parcels = e.Parcels.Select(p => p.Id).ToList()
             };
+    }
+}
 
+/*
+ 
         public static EmployeeDTO ToEmployeeDTO(this Employee employee) // Not working
         {
             return new EmployeeDTO
@@ -39,7 +43,4 @@ namespace Deliverit.Services.Extension_Methods
                 Parcels = employee.Parcels.Select(p => p.Id).ToList()
             };
         }
-    }
-}
-
-
+ */

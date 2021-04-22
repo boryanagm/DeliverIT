@@ -24,7 +24,7 @@ namespace Deliverit.Web.Controllers
         }
 
         /// <summary>
-        /// Shows city by the ID.
+        /// Shows city by ID.
         /// </summary>
         /// <param name="id">The identifier.</param>
         [HttpGet("{id}")]
@@ -39,7 +39,6 @@ namespace Deliverit.Web.Controllers
                 return this.NotFound();
             }
         }
-
 
         /// <summary>
         /// Shows all cities.

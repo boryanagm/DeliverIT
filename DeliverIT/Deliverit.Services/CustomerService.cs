@@ -100,8 +100,7 @@ namespace Deliverit.Services
 
             var dto = this.context.Customers
                .Select(CustomerMapper.DTOSelector)
-               .FirstOrDefault(c => c.Id == customer.Id)
-               ?? throw new ArgumentNullException();
+               .FirstOrDefault(c => c.Id == customer.Id);
 
             return dto;
         }

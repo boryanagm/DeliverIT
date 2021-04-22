@@ -26,7 +26,7 @@ namespace Deliverit.Web.Controllers
         }
 
         /// <summary>
-        /// Gets an employee by e-mail.
+        /// Gets an employee by his ID.
         /// </summary>
         /// <param name="authorizationEmail">The authorization email.</param>
         /// <param name="id">The identifier.</param>
@@ -38,9 +38,13 @@ namespace Deliverit.Web.Controllers
                 var admin = this.authEmployeeHelper.TryGetAdmin(authorizationEmail);
                 return this.Ok(this.employeeService.Get(id));
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -56,9 +60,13 @@ namespace Deliverit.Web.Controllers
                 var admin = this.authEmployeeHelper.TryGetAdmin(authorizationEmail);
                 return this.Ok(this.employeeService.GetAll());
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -71,15 +79,23 @@ namespace Deliverit.Web.Controllers
         [HttpPost("")]
         public IActionResult Post([FromHeader] string authorizationEmail, [FromBody] Employee employee)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
             try
             {
                 var admin = this.authEmployeeHelper.TryGetAdmin(authorizationEmail);
                 var employeeToUpdate = this.employeeService.Create(employee);
                 return this.Created("post", employeeToUpdate);
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -92,15 +108,23 @@ namespace Deliverit.Web.Controllers
         [HttpPut("{id}")]
         public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) 
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
             try
             {
                 var admin = this.authEmployeeHelper.TryGetAdmin(authorizationEmail);
                 var employeeToUpdate = this.employeeService.Update(id, addressId);
                 return this.Ok(employeeToUpdate);
             }
-            catch (ArgumentNullException)
+            catch (UnauthorizedAccessException)
             {
-                return this.Conflict();
+                return this.Forbid();
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
             }
         }
 
@@ -126,9 +150,13 @@ namespace Deliverit.Web.Controllers
                     return this.NotFound();
                 }
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
@@ -147,9 +175,13 @@ namespace Deliverit.Web.Controllers
                 var employeeToRestore = this.employeeService.Restore(id);
                 return this.Created("post", employeeToRestore);
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
     }

@@ -23,7 +23,7 @@ namespace Deliverit.Web.Controllers
             }
 
             /// <summary>
-            /// Shows country by the ID.
+            /// Shows country by ID.
             /// </summary>
             /// <param name="id">The identifier.</param>
             [HttpGet("{id}")]

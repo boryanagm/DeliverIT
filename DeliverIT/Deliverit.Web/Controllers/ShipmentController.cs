@@ -27,9 +27,10 @@ namespace Deliverit.Web.Controllers
         }
 
         /// <summary>
-        /// Gets the a shipment by Id.
+        /// Gets a shipment by Id.
         /// </summary>
         /// <param name="id">The identifier.</param>
+        /// <param name="authorizationEmail">The authorization email.</param>
         [HttpGet("{id}")]
         public IActionResult Get([FromHeader] string authorizationEmail, Guid id)
         {
@@ -38,7 +39,11 @@ namespace Deliverit.Web.Controllers
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.shipmentService.Get(id));
             }
-            catch(Exception)
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
+            catch (Exception)
             {
                 return NotFound();
             }
@@ -47,39 +52,55 @@ namespace Deliverit.Web.Controllers
         /// <summary>
         /// Gets all shipments.
         /// </summary>
-        /// <returns>IActionResult.</returns>
+        /// <param name="authorizationEmail">The authorization email.</param>
         [HttpGet("")]
         public IActionResult GetAll([FromHeader] string authorizationEmail)
         {
-            var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
-            return this.Ok(this.shipmentService.GetAll());
+            try
+            {
+                var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
+                return this.Ok(this.shipmentService.GetAll());
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
         }
 
         /// <summary>
         /// Creates a shipment.
         /// </summary>
         /// <param name="shipment">The shipment.</param>
-        /// <returns>IActionResult.</returns>
-        [HttpPost("create/")]
+        /// <param name="authorizationEmail">The authorization email.</param>
+        [HttpPost("")]
         public IActionResult Post([FromHeader] string authorizationEmail, [FromQuery] CreateShipmentDTO shipment)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
             try
             {
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 var shipmentToCreate = this.shipmentService.Create(shipment);
                 return this.Created("post", shipmentToCreate);
             }
-            catch(Exception)
+            catch (UnauthorizedAccessException)
             {
-                return Conflict();
-            }     
+                return this.Forbid();
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
+            }
         }
 
         /// <summary>
         /// Deletes a shipment.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        [HttpDelete("delete/{id}")]
+        /// <param name="authorizationEmail">The authorization email.</param>
+        [HttpDelete("{id}")]
         public IActionResult Delete([FromHeader] string authorizationEmail, Guid id)
         {
             try
@@ -91,11 +112,18 @@ namespace Deliverit.Web.Controllers
                 {
                     return this.NoContent();
                 }
-                return this.Conflict();
+                else
+                {
+                    return this.NotFound();
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
             }
             catch (Exception)
             {
-                return this.NotFound();
+                return this.BadRequest();
             }
         }
 
@@ -104,56 +132,69 @@ namespace Deliverit.Web.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="shipment">The shipment update data.</param>
-        [HttpPut("update/{id}")]
+        /// <param name="authorizationEmail">The authorization email.</param>
+        [HttpPut("{id}")]
         public IActionResult Put([FromHeader] string authorizationEmail, Guid id, [FromQuery] ShipmentDTO shipment)
-        {
+        {          
             try
             {
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 var shipmentToUpdate = this.shipmentService.Update(id, shipment);
                 return this.Ok(shipmentToUpdate);
             }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Forbid();
+            }
             catch (Exception)
             {
-                return this.Conflict();
+                return this.BadRequest();
             }
         }
 
-
         /// <summary>
-        /// Filters the shipments by Warehouse.
+        /// Filters shipments by Warehouse.
         /// </summary>
         /// <param name="Id">The identifier of the warehouse.</param>
-        [HttpGet("filter/warehouse")]
-        public IActionResult FilterShipments([FromHeader] string authorizationEmail, [FromQuery] Guid Id)
+        /// <param name="authorizationEmail">The authorization email.</param>
+        [HttpGet("filter/warehouse/{Id}")]
+        public IActionResult FilterShipments([FromHeader] string authorizationEmail, Guid Id)
         {
             try
             {
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.shipmentService.SearchByWarehouse(Id));
             }
-            catch(Exception)
+            catch (UnauthorizedAccessException)
             {
-                return Conflict();
+                return this.Forbid();
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
             }
         }
 
-
         /// <summary>
-        /// Filters shippments by customers.
+        /// Filters shipments by customers.
         /// </summary>
         /// <param name="Id">The identifier of the customer.</param>
-        [HttpGet("filter/customer")]
-        public IActionResult FilterCustomers([FromHeader] string authorizationEmail, [FromQuery] Guid Id)
+        /// <param name="authorizationEmail">The authorization email.</param>
+        [HttpGet("filter/customer/{Id}")]
+        public IActionResult FilterCustomers([FromHeader] string authorizationEmail, Guid Id)
         {
             try
             {
                 var employee = this.authEmployeeHelper.TryGetEmployee(authorizationEmail);
                 return this.Ok(this.shipmentService.SearchByCustomer(Id));
             }
-            catch(Exception)
+            catch (UnauthorizedAccessException)
             {
-                return NotFound();
+                return this.Forbid();
+            }
+            catch (Exception)
+            {
+                return this.NotFound();
             }
         }
     }

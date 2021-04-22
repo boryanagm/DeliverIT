@@ -20,10 +20,6 @@ namespace Deliverit.Database.DataConfigurations
 
             builder.HasQueryFilter(s => !s.IsDeleted);
         }
-
-
-
-
         /*
          Exercise with Fluent Api:
 
