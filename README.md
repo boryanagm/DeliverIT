@@ -8,4 +8,4 @@ _Swagger Documentation:  https://app.swaggerhub.com/apis-docs/T3683/swagger-conf
 
 ## Database Diagram
 
- <img src="https://i.ibb.co/5jKBF9R/Database-Diagram.png)" alt="logo" width="500px" style="margin-top: 400px;"/>
+ <img src="https://i.ibb.co/5jKBF9R/Database-Diagram.png)" alt="logo" width="1200px" style="margin-top: 600px;"/>
