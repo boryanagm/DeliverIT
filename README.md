@@ -5,6 +5,7 @@
 _Trello link: https://trello.com/b/C4OJX6c0/deliverit_
 
 _Swagger Documentation:  https://app.swaggerhub.com/apis-docs/T3683/swagger-configuration/v1#/_
+
 _https://localhost:5001/swagger/index.html_
 
 ## Database Diagram
