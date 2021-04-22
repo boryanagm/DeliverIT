@@ -21,7 +21,7 @@ Run solution file
 
 #### - Database
 Add a new migration from the package manager and update the database.
-> add-migration Initial
+> add-migration Initial;
 > update-database
 #### - Running the app
 
