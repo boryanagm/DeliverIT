@@ -106,8 +106,8 @@ namespace Deliverit.Web.Controllers
                 return this.Created("post", newCustomer);
             }
             catch (Exception)
-            { 
-                return this.BadRequest(); 
+            {
+                return this.BadRequest();
             }
         }
 
@@ -118,7 +118,7 @@ namespace Deliverit.Web.Controllers
         /// <param name="id">The identifier.</param>
         /// <param name="addressId">The address identifier.</param>
         [HttpPut("{id}")]
-        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) 
+        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId)
         {
             if (!ModelState.IsValid)
             {

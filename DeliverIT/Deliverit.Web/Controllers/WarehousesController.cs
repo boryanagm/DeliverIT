@@ -74,7 +74,7 @@ namespace Deliverit.Web.Controllers
             {
                 return this.Forbid();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return this.BadRequest();
             }

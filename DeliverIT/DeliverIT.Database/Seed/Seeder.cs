@@ -178,7 +178,7 @@ namespace Deliverit.Database.Seed
                 },
 
                 new Address()
-                { 
+                {
                    Id = Guid.Parse("5fd8c18f-6885-488e-af8c-ff06901a7d37"),
                    CreatedOn = DateTime.UtcNow,
                    StreetName = "Gran Via De Les Corts Catalanes 105",
@@ -186,7 +186,7 @@ namespace Deliverit.Database.Seed
                 },
 
                 new Address()
-                { 
+                {
                    Id = Guid.Parse("da703902-00bc-47da-b950-4fa730494d4e"),
                    CreatedOn = DateTime.UtcNow,
                    StreetName = "Passatge De Bocabella 11",
@@ -226,7 +226,7 @@ namespace Deliverit.Database.Seed
                 },
 
                 new Customer()
-                { 
+                {
                    Id = Guid.Parse("5adb06fe-fca4-4347-b1ea-118c55e17331"),
                    CreatedOn = DateTime.UtcNow,
                    FirstName = "Lukas",
@@ -238,9 +238,9 @@ namespace Deliverit.Database.Seed
             modelBuilder.Entity<Customer>().HasData(customers);
 
             var employees = new List<Employee>()
-            { 
+            {
                 new Employee() // Admin
-                { 
+                {
                    Id = Guid.Parse("e9a6b4e2-073b-4ebc-a248-a8d71d426174"),
                    CreatedOn = DateTime.UtcNow,
                    FirstName = "Antonio",
@@ -250,7 +250,7 @@ namespace Deliverit.Database.Seed
                 },
 
                 new Employee()
-                { 
+                {
                    Id = Guid.Parse("d2c26c93-d589-4b05-850b-fbf21c59c84d"),
                    CreatedOn = DateTime.UtcNow,
                    FirstName = "Fermin",
@@ -260,7 +260,7 @@ namespace Deliverit.Database.Seed
                 },
 
                 new Employee()
-                { 
+                {
                    Id = Guid.Parse("facdefb9-19df-42b3-9d3d-6524076e152f"),
                    CreatedOn = DateTime.UtcNow,
                    FirstName = "Amador",
@@ -280,13 +280,13 @@ namespace Deliverit.Database.Seed
                },
 
                new Role()
-               { 
+               {
                   Id = Guid.Parse("275a10a1-e965-460e-a965-e1fe2453e916"),
                   Name = "Employee"
                },
 
                new Role()
-               { 
+               {
                   Id = Guid.Parse("2d598edd-793a-4324-ac29-c505a5c790a5"),
                   Name = "Customer"
                }
@@ -294,23 +294,23 @@ namespace Deliverit.Database.Seed
             modelBuilder.Entity<Role>().HasData(roles);
 
             var employeeRoles = new List<EmployeeRole>()
-            { 
+            {
                new EmployeeRole()
-               { 
+               {
                   Id = Guid.Parse("4abd3404-5295-4b7c-be0f-e6cd01ea4ba8"),
                   RoleId = Guid.Parse("02424b1b-8544-427e-b7bc-e868c8196f40"),     // Admin
                   EmployeeId = Guid.Parse("e9a6b4e2-073b-4ebc-a248-a8d71d426174")
                },
 
                new EmployeeRole()
-               { 
+               {
                   Id = Guid.Parse("48bdf2fc-0090-489e-a7bb-027e37ad204e"),
                   RoleId = Guid.Parse("275a10a1-e965-460e-a965-e1fe2453e916"),     // Employee
                   EmployeeId = Guid.Parse("d2c26c93-d589-4b05-850b-fbf21c59c84d")
                },
 
                new EmployeeRole()
-               { 
+               {
                   Id = Guid.Parse("dbce65ef-242f-44a7-982d-fd144014cd4d"),
                   RoleId = Guid.Parse("275a10a1-e965-460e-a965-e1fe2453e916"),     // Employee
                   EmployeeId = Guid.Parse("facdefb9-19df-42b3-9d3d-6524076e152f")
@@ -321,14 +321,14 @@ namespace Deliverit.Database.Seed
             var customerRoles = new List<CustomerRole>()
             {
                new CustomerRole()
-               { 
+               {
                   Id = Guid.Parse("e90608c8-9382-401c-ac2a-51b2c2c4528a"),         // Customer
                   RoleId = Guid.Parse("2d598edd-793a-4324-ac29-c505a5c790a5"),
                   CustomerId = Guid.Parse("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1")
                },
 
                new CustomerRole()
-               { 
+               {
                   Id = Guid.Parse("8a631bc5-1bed-4555-8359-fc9815a84bc8"),         // Customer
                   RoleId = Guid.Parse("2d598edd-793a-4324-ac29-c505a5c790a5"),
                   CustomerId = Guid.Parse("5adb06fe-fca4-4347-b1ea-118c55e17331")
@@ -337,26 +337,26 @@ namespace Deliverit.Database.Seed
             modelBuilder.Entity<CustomerRole>().HasData(customerRoles);
 
             var parcels = new List<Parcel>()
-            { 
+            {
                 new Parcel()
-                { 
+                {
                    Id = Guid.Parse("198457ae-236c-4592-90af-3ca2302a8737"),
                    CreatedOn = DateTime.UtcNow,
                    Weight = 10,
                    CategoryId = Guid.Parse("1db0c76c-ab76-4105-be89-3af983f6f137"),
                    CustomerId = Guid.Parse("c803ff6d-efb9-401a-81d8-7e9df0fcd4c1"),
-                   EmployeeId = Guid.Parse("d2c26c93-d589-4b05-850b-fbf21c59c84d"),                
+                   EmployeeId = Guid.Parse("d2c26c93-d589-4b05-850b-fbf21c59c84d"),
                    ShipmentId = Guid.Parse("ce465c59-4866-4905-bdbd-943a26f59fdd")
                 },
 
                 new Parcel()
-                { 
+                {
                    Id = Guid.Parse("28ae32a1-10a4-4aef-b262-3baaa1102753"),
                    CreatedOn = DateTime.UtcNow,
                    Weight = 5,
                    CategoryId = Guid.Parse("72280df2-7d81-4ec6-936a-51e19aabf7ff"),
                    CustomerId = Guid.Parse("5adb06fe-fca4-4347-b1ea-118c55e17331"),
-                   EmployeeId = Guid.Parse("facdefb9-19df-42b3-9d3d-6524076e152f"),              
+                   EmployeeId = Guid.Parse("facdefb9-19df-42b3-9d3d-6524076e152f"),
                    ShipmentId = Guid.Parse("e2a2c29b-b7f4-458a-9cde-4a70717607c8")
                 }
             };
@@ -375,7 +375,7 @@ namespace Deliverit.Database.Seed
                 },
 
                 new Shipment()
-                { 
+                {
                    Id = Guid.Parse("e2a2c29b-b7f4-458a-9cde-4a70717607c8"),
                    CreatedOn = DateTime.UtcNow,
                    DepartureDate = DateTime.UtcNow,

@@ -88,7 +88,7 @@ namespace Deliverit.Services
             var warehouseToUpdate = this.context.Warehouses
                 .FirstOrDefault(w => w.Id == id)
                 ?? throw new ArgumentNullException();
-           
+
             warehouseToUpdate.ModifiedOn = DateTime.UtcNow;
             warehouseToUpdate.AddressId = addressId;
             this.context.SaveChanges();
@@ -115,7 +115,7 @@ namespace Deliverit.Services
             if (warehouse != null)
             {
                 warehouse.DeletedOn = DateTime.UtcNow;
-                warehouse.IsDeleted = true;           
+                warehouse.IsDeleted = true;
                 this.context.SaveChanges();
 
                 return true;

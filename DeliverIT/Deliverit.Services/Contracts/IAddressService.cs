@@ -1,8 +1,4 @@
-﻿using Deliverit.Models;
-using DeliverIT.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DeliverIT.Models;
 
 namespace Deliverit.Services.Contracts
 {

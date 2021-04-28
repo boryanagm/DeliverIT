@@ -1,5 +1,4 @@
-﻿using Deliverit.Models;
-using Deliverit.Services.Models;
+﻿using Deliverit.Services.Models;
 using System;
 using System.Collections.Generic;
 

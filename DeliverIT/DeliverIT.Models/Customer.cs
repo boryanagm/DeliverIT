@@ -12,7 +12,7 @@ namespace DeliverIT.Models
     /// Configures the properties of a customer.
     /// </summary>
     public class Customer : Entity
-    { 
+    {
         /// <summary>
         /// Gets or sets the first name.
         /// </summary>

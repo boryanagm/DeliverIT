@@ -106,7 +106,7 @@ namespace Deliverit.Web.Controllers
         /// <param name="id">The identifier.</param>
         /// <param name="addressId">The address identifier.</param>
         [HttpPut("{id}")]
-        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId) 
+        public IActionResult Put([FromHeader] string authorizationEmail, Guid id, Guid addressId)
         {
             if (!ModelState.IsValid)
             {
@@ -166,7 +166,7 @@ namespace Deliverit.Web.Controllers
         /// <param name="authorizationEmail">The authorization email.</param>
         /// <param name="id">The identifier.</param>
         /// <returns>IActionResult.</returns>
-        [HttpPost("{id}/restore")] 
+        [HttpPost("{id}/restore")]
         public IActionResult Restore([FromHeader] string authorizationEmail, Guid id)
         {
             try

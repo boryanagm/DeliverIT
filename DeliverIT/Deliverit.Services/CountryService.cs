@@ -29,7 +29,7 @@ namespace Deliverit.Services
         public CountryDTO Get(Guid id)
         {
             var country = this.context.Countries
-                .Include(c=> c.Cities)
+                .Include(c => c.Cities)
                 .FirstOrDefault(c => c.Id == id)
                 ?? throw new ArgumentNullException();
             var dto = new CountryDTO
@@ -50,13 +50,13 @@ namespace Deliverit.Services
         {
             List<CountryDTO> countries = new List<CountryDTO>();
 
-            foreach(var country in this.context.Countries.Include(c=>c.Cities))
+            foreach (var country in this.context.Countries.Include(c => c.Cities))
             {
                 CountryDTO countryToAdd = new CountryDTO
                 {
                     Id = country.Id,
                     Name = country.Name,
-                    NumberOfCities = country.Cities.Count()                 
+                    NumberOfCities = country.Cities.Count()
                 };
 
                 countries.Add(countryToAdd);

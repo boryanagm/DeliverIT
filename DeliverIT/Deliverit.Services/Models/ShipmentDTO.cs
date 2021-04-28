@@ -1,5 +1,4 @@
-﻿using Deliverit.Models;
-using System;
+﻿using System;
 using System.Text.Json.Serialization;
 
 namespace Deliverit.Services.Models
@@ -16,6 +15,6 @@ namespace Deliverit.Services.Models
         [JsonIgnore]
         public DateTime DepartureDate { get; set; }
         [JsonIgnore]
-        public DateTime ArrivalDate { get; set; }      
+        public DateTime ArrivalDate { get; set; }
     }
 }

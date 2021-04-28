@@ -1,6 +1,5 @@
 ﻿using Deliverit.Models.Abstract;
 using DeliverIT.Models;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,7 +10,7 @@ namespace Deliverit.Models
     /// Configures the properties of a status.
     /// </summary>
     public class Status : Entity
-    { 
+    {
         /// <summary>
         /// Gets or sets the name.
         /// </summary>

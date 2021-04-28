@@ -1,7 +1,6 @@
 ﻿using Deliverit.Services;
 using DeliverIT.Database;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System;
 using System.Linq;
 
@@ -15,7 +14,7 @@ namespace Deliverit.Tests
         {
             //Arrange
             var options = Utils.GetOptions(nameof(Get_By_Should_Return_Correct_City));
-           
+
             using (var arrangeContext = new DeliveritDbContext(options))
             {
                 arrangeContext.Cities.AddRange(Utils.GetCities());

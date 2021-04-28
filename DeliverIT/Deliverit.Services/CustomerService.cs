@@ -1,13 +1,13 @@
-﻿using Deliverit.Services.Contracts;
+﻿using Deliverit.Models.Authentication;
+using Deliverit.Services.Contracts;
+using Deliverit.Services.Mappers;
 using Deliverit.Services.Models;
 using DeliverIT.Database;
 using DeliverIT.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Deliverit.Models.Authentication;
-using Deliverit.Services.Mappers;
 
 namespace Deliverit.Services
 {

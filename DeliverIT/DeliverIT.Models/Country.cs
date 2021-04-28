@@ -1,5 +1,4 @@
 ﻿using Deliverit.Models.Abstract;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -23,6 +22,6 @@ namespace Deliverit.Models
         /// Gets or sets the cities.
         /// </summary>
         /// <value>The cities.</value>
-        public ICollection<City> Cities { get; set; } 
+        public ICollection<City> Cities { get; set; }
     }
 }

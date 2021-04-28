@@ -85,7 +85,7 @@ namespace Deliverit.Services
                 var dto = EmployeeMapper.DTOSelector.Compile().Invoke(employee);     // Also works EmployeeMapper.DTOSelector.Compile()(employee);
                                                                                      // Compile() is needed because of Expression<Func<>>  
                 employees.Add(dto);
-                                                                                     // Check with: var dto = employee.ToEmployeeDTO(); - not working
+                // Check with: var dto = employee.ToEmployeeDTO(); - not working
             }
 
             return employees;
@@ -140,7 +140,7 @@ namespace Deliverit.Services
                .FirstOrDefault(a => a.Id == addressId);
 
             var dto = EmployeeMapper.DTOSelector.Compile().Invoke(employeeToUpdate);
-            
+
             return dto;
         }
 
@@ -170,11 +170,11 @@ namespace Deliverit.Services
         /// </summary>
         /// <param name="id">The identifier of the employee.</param>
         /// <returns>The employee in a EmployeeDTO format.</returns>
-        public EmployeeDTO Restore(Guid id) 
+        public EmployeeDTO Restore(Guid id)
         {
             var employeeToRestore = this.context.Employees
                 .IgnoreQueryFilters()
-                .FirstOrDefault(e => e.Id == id); 
+                .FirstOrDefault(e => e.Id == id);
 
             employeeToRestore.IsDeleted = false;
             this.context.SaveChanges();

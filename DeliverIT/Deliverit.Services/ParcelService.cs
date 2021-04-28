@@ -373,7 +373,7 @@ namespace Deliverit.Services
             var parcels = this.context.Parcels
                 .Include(p => p.Shipment)
                 .Include(p => p.Customer)
-                .Include(p=>p.Category);
+                .Include(p => p.Category);
 
             if (sortcriteria == "weight")
                 parcels.OrderBy(p => p.Weight);

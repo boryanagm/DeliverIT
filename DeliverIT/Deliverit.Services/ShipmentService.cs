@@ -95,7 +95,7 @@ namespace Deliverit.Services
                 this.context.SaveChanges();
             }
 
-            var shipmentToDisplay = ShipmentMapper.DTOSelector.Compile().Invoke(shipmentToUpdate); 
+            var shipmentToDisplay = ShipmentMapper.DTOSelector.Compile().Invoke(shipmentToUpdate);
 
             return shipmentToDisplay;
         }
@@ -135,7 +135,7 @@ namespace Deliverit.Services
             var shipment = this.context.Shipments
                 .FirstOrDefault(s => s.Id == id)
                 ?? throw new ArgumentNullException();
-            
+
             shipment.IsDeleted = true;
             shipment.DeletedOn = DateTime.UtcNow;
             this.context.SaveChanges();
@@ -194,7 +194,7 @@ namespace Deliverit.Services
                 .FirstOrDefault(s => s.Id == member)
                 ?? throw new ArgumentNullException();
 
-                var shipmentToDisplay= ShipmentMapper.DTOSelector.Compile().Invoke(shipment);
+                var shipmentToDisplay = ShipmentMapper.DTOSelector.Compile().Invoke(shipment);
                 shipmentsToDisplay.Add(shipmentToDisplay);
             }
 

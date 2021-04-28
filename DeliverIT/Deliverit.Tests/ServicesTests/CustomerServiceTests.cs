@@ -3,11 +3,8 @@ using DeliverIT.Database;
 using DeliverIT.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Deliverit.Tests.ServicesTests
 {
@@ -306,7 +303,7 @@ namespace Deliverit.Tests.ServicesTests
                     Email = "x"
                 };
                 //Act
-                var actualResult = sut.GetByMultipleCriteria(customerFilter);             
+                var actualResult = sut.GetByMultipleCriteria(customerFilter);
 
                 //Assert
                 var expectedResult = assertContext.Customers.Where(c => c.FirstName == firstNameSearch).ToList();

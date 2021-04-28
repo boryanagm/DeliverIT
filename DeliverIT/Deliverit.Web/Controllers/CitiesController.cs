@@ -34,7 +34,7 @@ namespace Deliverit.Web.Controllers
             {
                 return this.Ok(this.cityService.Get(id));
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return this.NotFound();
             }

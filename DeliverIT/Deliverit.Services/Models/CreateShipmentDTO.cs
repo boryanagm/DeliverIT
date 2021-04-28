@@ -1,6 +1,4 @@
-﻿using Deliverit.Models;
-using System;
-using System.Text.Json.Serialization;
+﻿using System;
 
 namespace Deliverit.Services.Models
 {
