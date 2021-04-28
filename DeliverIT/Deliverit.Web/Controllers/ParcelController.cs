@@ -334,7 +334,8 @@ namespace Deliverit.Web.Controllers
         /// <summary>
         /// Filters parcels by category and Id.
         /// </summary>
-        /// <param name="category">The category.</param>   
+        /// <param name="category">The category.</param>
+        /// <param name="Id"></param>   
         /// <param name="authorizationEmail">The authorization email.</param>
         [HttpGet("filter/multiplecriteria")]
         public IActionResult GetByMultipleCriteria([FromHeader] string authorizationEmail, [FromQuery] string category, [FromQuery] Guid Id)
