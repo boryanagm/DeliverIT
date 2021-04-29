@@ -4,7 +4,7 @@ using Deliverit.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
-namespace Deliverit.Web.Controllers
+namespace Deliverit.Web.ApiControllers
 {
     /// <summary>
     /// Class ShipmentController.
@@ -14,12 +14,12 @@ namespace Deliverit.Web.Controllers
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
     [Route("api/[controller]")]
     [ApiController]
-    public class ShipmentController : Controller
+    public class ShipmentApiController : Controller
     {
         private readonly IShipmentService shipmentService;
         private readonly IAuthEmployeeHelper authEmployeeHelper;
         private readonly IAuthCustomerHelper authCustomerHelper;
-        public ShipmentController(IShipmentService shipmentService, IAuthEmployeeHelper authEmployeeHelper, IAuthCustomerHelper authCustomerHelper)
+        public ShipmentApiController(IShipmentService shipmentService, IAuthEmployeeHelper authEmployeeHelper, IAuthCustomerHelper authCustomerHelper)
         {
             this.shipmentService = shipmentService;
             this.authEmployeeHelper = authEmployeeHelper;

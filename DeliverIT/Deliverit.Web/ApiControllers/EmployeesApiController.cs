@@ -4,7 +4,7 @@ using DeliverIT.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
-namespace Deliverit.Web.Controllers
+namespace Deliverit.Web.ApiControllers
 {
     /// <summary>
     /// Class EmployeesController.
@@ -14,12 +14,12 @@ namespace Deliverit.Web.Controllers
     /// <seealso cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeesController : ControllerBase
+    public class EmployeesApiController : ControllerBase
     {
         private readonly IEmployeeService employeeService;
         private readonly IAuthEmployeeHelper authEmployeeHelper;
 
-        public EmployeesController(IEmployeeService employeeService, IAuthEmployeeHelper authEmployeeHelper)
+        public EmployeesApiController(IEmployeeService employeeService, IAuthEmployeeHelper authEmployeeHelper)
         {
             this.employeeService = employeeService;
             this.authEmployeeHelper = authEmployeeHelper;

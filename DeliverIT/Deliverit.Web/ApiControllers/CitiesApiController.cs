@@ -3,7 +3,7 @@ using Deliverit.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
-namespace Deliverit.Web.Controllers
+namespace Deliverit.Web.ApiControllers
 {
     /// <summary>
     /// Class CitiesController.
@@ -12,12 +12,12 @@ namespace Deliverit.Web.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class CitiesController : ControllerBase
+    public class CitiesApiController : ControllerBase
     {
         private readonly ICityService cityService;
         private readonly IAuthEmployeeHelper autHelper;
 
-        public CitiesController(ICityService cityService, IAuthEmployeeHelper autHelper)
+        public CitiesApiController(ICityService cityService, IAuthEmployeeHelper autHelper)
         {
             this.cityService = cityService;
             this.autHelper = autHelper;

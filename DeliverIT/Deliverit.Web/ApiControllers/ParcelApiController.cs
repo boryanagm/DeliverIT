@@ -4,7 +4,7 @@ using Deliverit.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
-namespace Deliverit.Web.Controllers
+namespace Deliverit.Web.ApiControllers
 {
     /// <summary>
     /// Class ParcelController.
@@ -14,12 +14,12 @@ namespace Deliverit.Web.Controllers
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
     [Route("api/[controller]")]
     [ApiController]
-    public class ParcelController : Controller
+    public class ParcelApiController : Controller
     {
         private readonly IParcelService parcelService;
         private readonly IAuthEmployeeHelper authEmployeeHelper;
         private readonly IAuthCustomerHelper authCustomerHelper;
-        public ParcelController(IParcelService parcelService, IAuthEmployeeHelper authEmployeeHelper, IAuthCustomerHelper authCustomerHelper)
+        public ParcelApiController(IParcelService parcelService, IAuthEmployeeHelper authEmployeeHelper, IAuthCustomerHelper authCustomerHelper)
         {
             this.parcelService = parcelService;
             this.authEmployeeHelper = authEmployeeHelper;
