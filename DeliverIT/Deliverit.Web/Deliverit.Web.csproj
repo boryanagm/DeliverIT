@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DeliverIT.Models\Deliverit.Models.csproj" />
     <ProjectReference Include="..\Deliverit.Services\Deliverit.Services.csproj" />
   </ItemGroup>
 
