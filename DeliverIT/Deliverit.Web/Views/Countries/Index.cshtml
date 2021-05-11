@@ -1,1 +1,21 @@
 ﻿@model IEnumerable<CountryViewModel>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(x => x.Name)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var country in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => country.Name)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
