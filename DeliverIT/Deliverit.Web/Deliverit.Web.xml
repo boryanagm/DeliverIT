@@ -267,7 +267,8 @@
             <summary>
             Filters parcels by category and Id.
             </summary>
-            <param name="category">The category.</param>   
+            <param name="category">The category.</param>
+            <param name="Id"></param>   
             <param name="authorizationEmail">The authorization email.</param>
         </member>
         <member name="M:Deliverit.Web.Controllers.ParcelController.SortByWeightOrDate(System.String,System.String)">

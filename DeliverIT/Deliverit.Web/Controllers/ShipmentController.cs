@@ -18,12 +18,10 @@ namespace Deliverit.Web.Controllers
     {
         private readonly IShipmentService shipmentService;
         private readonly IAuthEmployeeHelper authEmployeeHelper;
-        private readonly IAuthCustomerHelper authCustomerHelper;
-        public ShipmentController(IShipmentService shipmentService, IAuthEmployeeHelper authEmployeeHelper, IAuthCustomerHelper authCustomerHelper)
+        public ShipmentController(IShipmentService shipmentService, IAuthEmployeeHelper authEmployeeHelper)
         {
             this.shipmentService = shipmentService;
             this.authEmployeeHelper = authEmployeeHelper;
-            this.authCustomerHelper = authCustomerHelper;
         }
 
         /// <summary>

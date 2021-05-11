@@ -15,12 +15,10 @@ namespace Deliverit.Web.Controllers
     public class CitiesController : ControllerBase
     {
         private readonly ICityService cityService;
-        private readonly IAuthEmployeeHelper autHelper;
 
-        public CitiesController(ICityService cityService, IAuthEmployeeHelper autHelper)
+        public CitiesController(ICityService cityService)
         {
             this.cityService = cityService;
-            this.autHelper = autHelper;
         }
 
         /// <summary>

@@ -6,7 +6,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;NU1701;1591</NoWarn>
-    <DocumentationFile>C:\Users\2001\source\repos\deliverit\DeliverIT\Deliverit.Web\Deliverit.Web.xml</DocumentationFile>
+    <DocumentationFile>C:\Users\Bambi\Desktop\Telerik\Alpha 26\GitLab Repos\deliverit\DeliverIT\Deliverit.Web\Deliverit.Web.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
